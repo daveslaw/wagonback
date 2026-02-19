@@ -82,16 +82,23 @@ CREATE TABLE assessments (
 );
 ```
 
-## Netlify Deployment
+## Vercel Deployment
 
-```bash
-npm install -g netlify-cli
-netlify login
-netlify init          # Create & configure a new site
-netlify deploy --prod # Deploy to production
-```
+Deployed on Vercel. To redeploy after changes:
 
-Add all environment variables in Netlify dashboard: **Site Settings → Environment Variables** before deploying.
+1. Push changes to your connected GitHub repo — Vercel auto-deploys on every push to `main`
+2. Or trigger a manual redeploy from the Vercel dashboard
+
+Add/update environment variables in: **Vercel dashboard → Project → Settings → Environment Variables**
+
+| Variable | Used in |
+|---|---|
+| `NEXT_PUBLIC_SUPABASE_URL` | All environments |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | All environments |
+| `SUPABASE_SERVICE_ROLE_KEY` | Production / Preview |
+| `RESEND_API_KEY` | Production / Preview |
+| `NEXT_PUBLIC_CALENDLY_URL` | All environments |
+| `INTERNAL_NOTIFICATION_EMAIL` | Production / Preview |
 
 ## Design Tokens
 
