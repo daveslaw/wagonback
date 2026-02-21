@@ -58,7 +58,7 @@ export function Integrations() {
         </div>
 
         <p className="text-center text-xs text-white/20 mt-8 tracking-widest uppercase">
-          + Hundreds more via Workato, Make.com &amp; n8n
+          + Hundreds more via our automation platform integrations
         </p>
       </div>
     </section>

@@ -1,25 +1,25 @@
 const tools = [
   {
-    name: 'Workato',
-    tagline: 'Enterprise-grade automation',
+    name: 'Enterprise Integration Layer',
+    tagline: 'Mission-critical automation at scale',
     description:
-      'The most powerful integration platform for mid-market and enterprise workflows. Handles complex logic, conditional branching, and enterprise security requirements.',
+      'Handles complex, high-volume workflows with built-in governance, 1,000+ pre-built connectors, and enterprise-grade reliability — ideal for businesses running complex ERP and CRM stacks.',
     badge: 'Enterprise',
     color: '#E84B35',
   },
   {
-    name: 'Make.com',
-    tagline: 'Visual workflow builder',
+    name: 'Visual Workflow Engine',
+    tagline: 'Rapid deployment, zero complexity',
     description:
-      'Intuitive drag-and-drop automation with exceptional flexibility. Perfect for SMEs needing fast, affordable automation across 1,500+ apps.',
+      'Rapid deployment through intuitive visual workflow design. Map entire business processes in hours, not weeks — built for mid-market teams that need speed without sacrificing power.',
     badge: 'Flexible',
     color: '#6C3EBE',
   },
   {
-    name: 'n8n',
-    tagline: 'AI-native automation',
+    name: 'AI-Native Automation',
+    tagline: 'Intelligent, adaptive workflows',
     description:
-      'Open-source, self-hostable automation platform with deep AI integration. Ideal for data privacy requirements and custom AI agent workflows.',
+      'Self-learning, adaptive workflows that evolve with your data. Deeply integrates with LLMs and intelligent pipelines — for businesses ready to embed AI into their operations.',
     badge: 'AI-Native',
     color: '#EA4B71',
   },
@@ -33,18 +33,18 @@ export function Tools() {
         <div className="flex items-center gap-3 mb-4">
           <div className="w-8 h-px bg-[#00c8ff]" />
           <span className="text-[10px] tracking-[0.3em] uppercase text-[#00c8ff]/70">
-            Our Stack
+            Our Approach
           </span>
         </div>
 
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-extralight tracking-wide uppercase text-white">
-            World-Class Tools,
+            Our Automation
             <br />
-            <span className="text-white/40">Right Tool For Your Need.</span>
+            <span className="text-white/40">Framework.</span>
           </h2>
           <p className="text-sm text-white/40 max-w-xs leading-relaxed">
-            We match the automation platform to your complexity, budget, and data requirements.
+            We select and deploy the right automation tier for your scale, complexity, and goals — you never need to evaluate or manage platforms yourself.
           </p>
         </div>
 
