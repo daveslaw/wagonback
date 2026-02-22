@@ -1,11 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { renderToBuffer } from '@react-pdf/renderer'
 import { createServerClient } from '@/lib/supabase'
-import { generateProposalDocument } from '@/lib/generateProposal'
-import { sendProposalEmail, sendInternalNotification } from '@/lib/sendProposalEmail'
+import { sendInternalNotification } from '@/lib/sendProposalEmail'
 import { AssessmentFormData } from '@/types/assessment'
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type AnyElement = any
 
 export async function POST(req: NextRequest) {
   try {
@@ -29,14 +25,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Failed to save assessment' }, { status: 500 })
     }
 
-    // 2. Generate PDF
-    const doc: AnyElement = generateProposalDocument(data)
-    const pdfBuffer = await renderToBuffer(doc)
-
-    // 3. Send proposal email to prospect
-    await sendProposalEmail(data, Buffer.from(pdfBuffer))
-
-    // 4. Send internal notification (optional — only if env var set)
+    // 2. Notify internally (non-fatal) — so you know a submission arrived
     await sendInternalNotification(data).catch((err) =>
       console.warn('Internal notification failed (non-fatal):', err)
     )

@@ -1,5 +1,6 @@
 import { renderToBuffer } from '@react-pdf/renderer'
 import { generateProposalDocument } from '@/lib/generateProposal'
+import { generateProposalCopy } from '@/lib/generateProposalCopy'
 import { AssessmentFormData } from '@/types/assessment'
 
 const SAMPLE: AssessmentFormData = {
@@ -26,8 +27,9 @@ const SAMPLE: AssessmentFormData = {
 }
 
 export async function GET() {
+  const proposalCopy = await generateProposalCopy(SAMPLE)
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const doc: any = generateProposalDocument(SAMPLE)
+  const doc: any = generateProposalDocument(SAMPLE, proposalCopy)
   const buffer = await renderToBuffer(doc)
 
   return new Response(new Uint8Array(buffer), {

@@ -40,7 +40,7 @@ export default function ConfirmationPage() {
               You&#39;re All Set.
             </h1>
             <p className="text-sm text-white/40 leading-relaxed max-w-md mx-auto">
-              Your assessment has been received and your custom automation proposal is on its way to your inbox.
+              Your assessment has been received. We&#39;ll review it and send your personalised automation proposal within 24 hours.
             </p>
           </div>
 
@@ -51,9 +51,9 @@ export default function ConfirmationPage() {
                 <Mail size={14} className="text-[#00c8ff]" />
               </div>
               <div>
-                <p className="text-sm font-light text-white mb-1">Check Your Inbox</p>
+                <p className="text-sm font-light text-white mb-1">Expect Your Proposal</p>
                 <p className="text-xs text-white/40 leading-relaxed">
-                  We&#39;ve sent your personalised automation proposal as a PDF. It covers your identified opportunities, our recommended approach, and estimated ROI.
+                  We&#39;ll review your answers and send a personalised automation proposal to your inbox — covering your key opportunities, our recommended approach, and estimated ROI.
                 </p>
               </div>
             </div>
@@ -65,7 +65,7 @@ export default function ConfirmationPage() {
               <div>
                 <p className="text-sm font-light text-white mb-1">Book a Discovery Call</p>
                 <p className="text-xs text-white/40 leading-relaxed">
-                  Book a free 30-minute call to walk through the proposal together, ask questions, and get a detailed quote — no obligation.
+                  Can&#39;t wait? Book a free 30-minute call now and we&#39;ll walk through everything together — no obligation.
                 </p>
               </div>
             </div>
@@ -90,7 +90,7 @@ export default function ConfirmationPage() {
           </div>
 
           <p className="text-[10px] text-white/20 tracking-widest uppercase">
-            Didn&#39;t receive an email? Check your spam folder or contact{' '}
+            Questions? Contact us at{' '}
             <a href="mailto:hello@wagonback.co.za" className="text-[#00c8ff]/60 hover:text-[#00c8ff] transition-colors">
               hello@wagonback.co.za
             </a>

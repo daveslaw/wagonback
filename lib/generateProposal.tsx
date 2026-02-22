@@ -4,9 +4,10 @@ import {
   Text,
   View,
   StyleSheet,
-  Font,
 } from '@react-pdf/renderer'
 import { AssessmentFormData } from '@/types/assessment'
+import { ProposalCopy, getRecommendedTier, getROIEstimate } from '@/lib/generateProposalCopy'
+import { getIntegrationOpportunities } from '@/lib/integrationOpportunities'
 
 // Use built-in Helvetica — no font registration needed for deployment
 const styles = StyleSheet.create({
@@ -157,23 +158,8 @@ const styles = StyleSheet.create({
   },
 })
 
-function getRecommendedTool(data: AssessmentFormData): string {
-  const budget = data.budget_range
-  if (budget?.includes('R20,000') || budget?.includes('Over')) return 'Workato'
-  if (budget?.includes('R8,000') || budget?.includes('R3,000')) return 'Make.com'
-  return 'n8n'
-}
-
-function getROIEstimate(data: AssessmentFormData): string {
-  const size = data.team_size
-  if (size === '100+' || size === '51–100') return '20–40 hours/week across your team'
-  if (size === '21–50') return '10–20 hours/week across your team'
-  if (size === '6–20') return '5–15 hours/week across your team'
-  return '3–10 hours/week'
-}
-
-export function generateProposalDocument(data: AssessmentFormData) {
-  const tool = getRecommendedTool(data)
+export function generateProposalDocument(data: AssessmentFormData, copy: ProposalCopy) {
+  const tier = getRecommendedTier(data)
   const roi = getROIEstimate(data)
   const date = new Date().toLocaleDateString('en-ZA', {
     day: 'numeric',
@@ -200,9 +186,7 @@ export function generateProposalDocument(data: AssessmentFormData) {
           <Text style={styles.coverTitle}>
             Automation{'\n'}Proposal
           </Text>
-          <Text style={styles.coverSubtitle}>
-            A custom integration and AI automation plan prepared specifically for your business.
-          </Text>
+          <Text style={styles.coverSubtitle}>{copy.cover_subtitle}</Text>
         </View>
 
         <View>
@@ -223,12 +207,10 @@ export function generateProposalDocument(data: AssessmentFormData) {
       <Page size="A4" style={styles.page}>
         <Text style={styles.sectionLabel}>01 — Executive Summary</Text>
         <Text style={styles.sectionTitle}>The Opportunity</Text>
-        <Text style={styles.body}>
-          Based on your assessment, {data.business_name} has significant opportunities to reduce
-          manual work and improve operational efficiency through targeted AI automation and platform
-          integration. Your team of {data.team_size} people, operating in the {data.industry} sector,
-          stands to reclaim an estimated {roi} — time that can be redirected toward revenue-generating activities.
-        </Text>
+
+        {copy.exec_intro.split('\n\n').map((para, i) => (
+          <Text key={i} style={styles.body}>{para}</Text>
+        ))}
 
         {data.desired_outcomes ? (
           <View style={styles.card}>
@@ -264,9 +246,7 @@ export function generateProposalDocument(data: AssessmentFormData) {
       <Page size="A4" style={styles.page}>
         <Text style={styles.sectionLabel}>02 — Integration Opportunities</Text>
         <Text style={styles.sectionTitle}>Where We Can Help</Text>
-        <Text style={styles.body}>
-          Based on the platforms your business uses, here are the integration workflows we recommend:
-        </Text>
+        <Text style={styles.body}>{copy.integration_intro}</Text>
 
         {integrationOpportunities.map((opp, i) => (
           <View key={i} style={styles.card}>
@@ -294,21 +274,14 @@ export function generateProposalDocument(data: AssessmentFormData) {
       <Page size="A4" style={styles.page}>
         <Text style={styles.sectionLabel}>03 — Recommended Solution</Text>
         <Text style={styles.sectionTitle}>Our Approach</Text>
-        <Text style={styles.body}>
-          Based on your team size, budget range ({data.budget_range}), and complexity requirements,
-          we recommend building your automation stack on{' '}
-          <Text style={{ color: '#00c8ff' }}>{tool}</Text> — the right tool for your scale and needs.
-        </Text>
+
+        {copy.solution_intro.split('\n\n').map((para, i) => (
+          <Text key={i} style={styles.body}>{para}</Text>
+        ))}
 
         <View style={styles.card}>
-          <Text style={styles.cardTitle}>{tool}</Text>
-          <Text style={styles.cardBody}>
-            {tool === 'Workato'
-              ? 'Enterprise-grade automation platform with the most powerful integration capabilities, audit logging, and enterprise security. Best for complex, multi-system workflows at scale.'
-              : tool === 'Make.com'
-              ? 'Highly flexible visual automation platform supporting 1,500+ apps. Excellent balance of power and cost-efficiency for growing SMEs needing fast time-to-value.'
-              : 'Open-source, AI-native automation platform. Ideal for businesses that value data privacy, want self-hosted control, and need deep AI agent capabilities.'}
-          </Text>
+          <Text style={styles.cardTitle}>{tier}</Text>
+          <Text style={styles.cardBody}>{copy.solution_tier_description}</Text>
         </View>
 
         <View style={styles.divider} />
@@ -318,11 +291,10 @@ export function generateProposalDocument(data: AssessmentFormData) {
         <Text style={styles.body}>
           Conservative estimate: <Text style={{ color: '#00c8ff' }}>{roi}</Text> saved through automation.
         </Text>
-        <Text style={styles.body}>
-          Most clients see full ROI within 60–90 days of deployment. Beyond time savings, common
-          outcomes include faster invoice processing, higher lead conversion rates through instant
-          follow-up, and fewer errors from manual data entry.
-        </Text>
+
+        {copy.roi_body.split('\n\n').map((para, i) => (
+          <Text key={i} style={styles.body}>{para}</Text>
+        ))}
 
         <View style={styles.footer}>
           <Text style={styles.footerText}>WAGON BACK SOLUTIONS — CONFIDENTIAL</Text>
@@ -334,9 +306,7 @@ export function generateProposalDocument(data: AssessmentFormData) {
       <Page size="A4" style={styles.page}>
         <Text style={styles.sectionLabel}>04 — Next Steps</Text>
         <Text style={styles.sectionTitle}>Let&#39;s Get Started</Text>
-        <Text style={styles.body}>
-          We&#39;re excited about the opportunity to work with {data.business_name}. Here&#39;s how to move forward:
-        </Text>
+        <Text style={styles.body}>{copy.next_steps_intro}</Text>
 
         {[
           { step: '01', title: 'Book a Discovery Call', desc: 'A 30-minute call to walk through this proposal, answer your questions, and refine the scope. No obligation.' },
@@ -371,49 +341,4 @@ export function generateProposalDocument(data: AssessmentFormData) {
       </Page>
     </Document>
   )
-}
-
-function getIntegrationOpportunities(data: AssessmentFormData) {
-  const tools = data.current_tools ?? []
-  const opps = []
-
-  if (tools.includes('Shopify') && (tools.includes('Xero') || tools.includes('QuickBooks'))) {
-    opps.push({
-      title: 'Shopify → Accounting Auto-Sync',
-      description: 'Automatically create invoices and reconcile payments in your accounting platform every time an order is placed or fulfilled on Shopify. Eliminates manual data entry entirely.',
-    })
-  }
-  if (tools.includes('Shopify') && (tools.includes('Salesforce') || tools.includes('HubSpot') || tools.includes('Zoho CRM'))) {
-    opps.push({
-      title: 'E-commerce → CRM Lead Sync',
-      description: 'Push every new Shopify customer into your CRM automatically, trigger follow-up sequences, and track lifetime value without any manual work.',
-    })
-  }
-  if (tools.includes('WhatsApp') && (tools.includes('Salesforce') || tools.includes('HubSpot') || tools.includes('Zoho CRM'))) {
-    opps.push({
-      title: 'WhatsApp → CRM Integration',
-      description: 'Log WhatsApp conversations, create contacts, and trigger follow-up tasks in your CRM automatically — making every customer interaction traceable.',
-    })
-  }
-  if (tools.includes('Gmail / Google Workspace') || tools.includes('Microsoft 365')) {
-    opps.push({
-      title: 'Email-Triggered Workflows',
-      description: 'Turn incoming emails into automated actions: create tasks, update CRM records, send notifications to Slack, or trigger approval workflows — without lifting a finger.',
-    })
-  }
-  if (tools.includes('Slack')) {
-    opps.push({
-      title: 'Team Notification Hub',
-      description: 'Route critical business events (new leads, payment received, support tickets) directly to the right Slack channels — so your team stays informed in real time.',
-    })
-  }
-
-  if (opps.length === 0) {
-    opps.push({
-      title: 'Custom Integration Assessment',
-      description: 'Based on your current tool stack, we will map out the highest-value integration points during our discovery call and present a custom workflow design.',
-    })
-  }
-
-  return opps
 }
