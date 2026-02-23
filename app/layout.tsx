@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://www.wagonback.co.za'),
+  metadataBase: new URL('https://www.wagonback.com'),
   title: 'Wagon Back Solutions | AI Automation & Integration',
   description:
     'Johannesburg-based AI automation and integration specialists. We connect Salesforce, Xero, Shopify, HubSpot and more to save your SME time and increase ROI.',
@@ -35,14 +35,14 @@ export const metadata: Metadata = {
   ],
   robots: { index: true, follow: true },
   alternates: {
-    canonical: 'https://www.wagonback.co.za',
+    canonical: 'https://www.wagonback.com',
   },
   openGraph: {
     title: 'Wagon Back Solutions | AI Automation & Integration',
     description:
       'Connecting your platforms. Automating your workflows. Amplifying your results.',
     type: 'website',
-    url: 'https://www.wagonback.co.za',
+    url: 'https://www.wagonback.com',
     siteName: 'Wagon Back Solutions',
     locale: 'en_ZA',
     images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'Wagon Back Solutions' }],
@@ -73,8 +73,8 @@ export default function RootLayout({
               name: 'Wagon Back Solutions',
               description:
                 'Johannesburg-based AI automation and integration specialists helping South African SMEs connect their platforms, automate workflows, and amplify results.',
-              url: 'https://www.wagonback.co.za',
-              email: 'hello@wagonback.co.za',
+              url: 'https://www.wagonback.com',
+              email: 'hello@wagonback.com',
               address: {
                 '@type': 'PostalAddress',
                 addressLocality: 'Johannesburg',

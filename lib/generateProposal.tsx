@@ -330,12 +330,12 @@ export function generateProposalDocument(data: AssessmentFormData, copy: Proposa
         <View style={{ ...styles.card, borderLeft: '2px solid #00c8ff', marginTop: 20 }}>
           <Text style={styles.cardTitle}>Book Your Discovery Call</Text>
           <Text style={styles.cardBody}>
-            {process.env.NEXT_PUBLIC_CALENDLY_URL || 'Please contact us at hello@wagonback.co.za to schedule your call.'}
+            {process.env.NEXT_PUBLIC_CALENDLY_URL || 'Please contact us at hello@wagonback.com to schedule your call.'}
           </Text>
         </View>
 
         <View style={styles.footer}>
-          <Text style={styles.footerText}>WAGON BACK SOLUTIONS · hello@wagonback.co.za</Text>
+          <Text style={styles.footerText}>WAGON BACK SOLUTIONS · hello@wagonback.com</Text>
           <Text style={styles.footerText}>PAGE 5</Text>
         </View>
       </Page>

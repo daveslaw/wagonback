@@ -51,11 +51,11 @@ export function Footer() {
               Johannesburg, Gauteng, South Africa
             </div>
             <a
-              href="mailto:hello@wagonback.co.za"
+              href="mailto:hello@wagonback.com"
               className="flex items-center gap-2 text-xs text-white/40 hover:text-white transition-colors"
             >
               <Mail size={12} className="text-[#00c8ff]/50 flex-shrink-0" />
-              hello@wagonback.co.za
+              hello@wagonback.com
             </a>
             <Link
               href="/assessment"

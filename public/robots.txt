@@ -3,4 +3,4 @@ Allow: /
 Disallow: /admin
 Disallow: /api/
 
-Sitemap: https://www.wagonback.co.za/sitemap.xml
+Sitemap: https://www.wagonback.com/sitemap.xml

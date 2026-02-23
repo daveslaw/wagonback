@@ -10,7 +10,7 @@ export async function sendProposalEmail(data: AssessmentFormData, pdfBuffer: Buf
 
   const resend = getResend()
   await resend.emails.send({
-    from: 'Wagon Back Solutions <hello@wagonback.co.za>',
+    from: 'Wagon Back Solutions <hello@wagonback.com>',
     to: data.email,
     subject: `Your Automation Proposal — ${data.business_name}`,
     html: `
@@ -74,7 +74,7 @@ export async function sendProposalEmail(data: AssessmentFormData, pdfBuffer: Buf
             <td style="padding-top:24px;">
               <p style="margin:0;font-size:11px;color:#444;line-height:1.6;">
                 Wagon Back Solutions · Johannesburg, South Africa<br/>
-                <a href="mailto:hello@wagonback.co.za" style="color:#444;text-decoration:none;">hello@wagonback.co.za</a>
+                <a href="mailto:hello@wagonback.com" style="color:#444;text-decoration:none;">hello@wagonback.com</a>
               </p>
             </td>
           </tr>
@@ -100,7 +100,7 @@ export async function sendInternalNotification(data: AssessmentFormData) {
 
   const resend = getResend()
   await resend.emails.send({
-    from: 'Wagon Back Solutions <hello@wagonback.co.za>',
+    from: 'Wagon Back Solutions <hello@wagonback.com>',
     to: internalEmail,
     subject: `New Assessment: ${data.business_name} — ${data.timeline}`,
     html: `

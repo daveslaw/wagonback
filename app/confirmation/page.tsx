@@ -98,8 +98,8 @@ export default function ConfirmationPage() {
 
           <p className="text-[10px] text-white/20 tracking-widest uppercase">
             Questions? Contact us at{' '}
-            <a href="mailto:hello@wagonback.co.za" className="text-[#00c8ff]/60 hover:text-[#00c8ff] transition-colors">
-              hello@wagonback.co.za
+            <a href="mailto:hello@wagonback.com" className="text-[#00c8ff]/60 hover:text-[#00c8ff] transition-colors">
+              hello@wagonback.com
             </a>
           </p>
         </div>
