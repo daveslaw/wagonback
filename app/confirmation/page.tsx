@@ -1,6 +1,13 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import { ArrowLeft, Mail, Calendar, CheckCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+
+export const metadata: Metadata = {
+  title: 'Assessment Received | Wagon Back Solutions',
+  description: 'Your automation assessment has been received. We\u2019ll review it and send your personalised proposal within 24 hours.',
+  robots: { index: false, follow: false },
+}
 
 export default function ConfirmationPage() {
   const calendlyUrl = process.env.NEXT_PUBLIC_CALENDLY_URL || '#'
