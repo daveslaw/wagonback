@@ -17,14 +17,14 @@ export function CTABanner() {
             </div>
 
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-extralight tracking-wide uppercase text-white leading-tight">
-              Ready to See What&#39;s
+              Find Out What Your Manual Processes
               <br />
-              <span className="text-[#00c8ff]">Possible?</span>
+              <span className="text-[#00c8ff]">Are Costing You.</span>
             </h2>
 
             <p className="text-sm text-white/40 leading-relaxed max-w-lg">
-              Fill in our 3-minute assessment and we&#39;ll build you a custom automation proposal —
-              showing exactly what we&#39;d automate, which tools we&#39;d use, and what ROI you can expect.
+              Answer 10 questions about your business. We&#39;ll show you exactly what to automate,
+              what it costs to build, and what you get back — in rand, not hours.
             </p>
 
             <Link href="/assessment">

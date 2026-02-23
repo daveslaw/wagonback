@@ -3,27 +3,27 @@ import { Clock, TrendingUp, Zap } from 'lucide-react'
 const props = [
   {
     icon: Clock,
-    title: 'Reclaim Your Time',
+    title: 'Cut Admin Cost, Not Headcount',
     description:
-      'Eliminate repetitive data entry, manual reporting, and copy-paste workflows. Your team gets hours back every week.',
-    stat: '10–30 hrs',
-    statLabel: 'saved per team/week',
+      'Replace manual data entry, reporting, and copy-paste workflows with automated systems. Same team, significantly lower cost per transaction.',
+    stat: 'Avg. 22 hrs',
+    statLabel: 'recovered per team/week',
   },
   {
     icon: TrendingUp,
-    title: 'Increase ROI',
+    title: 'Payback in Weeks, Not Years',
     description:
-      'Faster invoicing, fewer errors, and instant lead follow-up. Automation pays for itself — typically within 90 days.',
-    stat: '3–10×',
-    statLabel: 'return on investment',
+      'Faster invoicing, zero-error reconciliation, and instant lead response. Most clients recover their full investment within 6–10 weeks.',
+    stat: '6–10 wks',
+    statLabel: 'typical payback period',
   },
   {
     icon: Zap,
-    title: 'Connect Everything',
+    title: 'Scale Without Hiring',
     description:
-      'Your CRM, accounting, e-commerce, and communication tools working in sync — automatically, in real time.',
+      'Handle 2× the orders, leads, and admin without 2× the headcount. Your platforms work in sync — automatically, in real time.',
     stat: '50+',
-    statLabel: 'platforms supported',
+    statLabel: 'platforms connected',
   },
 ]
 

@@ -40,8 +40,8 @@ export function Hero() {
         </h1>
 
         <p className="text-sm sm:text-base md:text-lg font-light text-white/50 max-w-2xl leading-relaxed">
-          We connect your platforms, eliminate manual processes, and deploy AI-powered workflows
-          — so your team can focus on what actually grows your business.
+          Most SA businesses are paying people to do work a machine should handle. We identify
+          exactly what to automate, build it, and show you the rand value — before you commit.
         </p>
 
         <div className="flex flex-col sm:flex-row items-center gap-4 mt-4">

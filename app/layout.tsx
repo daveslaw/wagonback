@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://www.wagonback.com'),
   title: 'Wagon Back Solutions | AI Automation & Integration',
   description:
-    'Johannesburg-based AI automation and integration specialists. We connect Salesforce, Xero, Shopify, HubSpot and more to save your SME time and increase ROI.',
+    'Johannesburg-based AI automation specialists. We identify manual processes costing your SA SME money, automate them, and deliver measurable ROI — typically within 6–10 weeks.',
   keywords: [
     'AI automation',
     'AI automation consultancy',
@@ -40,7 +40,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Wagon Back Solutions | AI Automation & Integration',
     description:
-      'Connecting your platforms. Automating your workflows. Amplifying your results.',
+      'Stop paying people to do what machines should handle. We build AI automation systems for SA SMEs — and show you the rand value upfront.',
     type: 'website',
     url: 'https://www.wagonback.com',
     siteName: 'Wagon Back Solutions',
@@ -51,7 +51,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Wagon Back Solutions | AI Automation & Integration',
     description:
-      'Connecting your platforms. Automating your workflows. Amplifying your results.',
+      'Stop paying people to do what machines should handle. We build AI automation systems for SA SMEs — and show you the rand value upfront.',
     images: ['/og-image.png'],
   },
 }
