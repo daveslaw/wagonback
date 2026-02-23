@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
     }
 
     // 2. Notify internally (non-fatal) — so you know a submission arrived
-    await sendInternalNotification(data).catch((err) =>
+    await sendInternalNotification(data, inserted.id).catch((err) =>
       console.warn('Internal notification failed (non-fatal):', err)
     )
 

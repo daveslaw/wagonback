@@ -94,9 +94,13 @@ export async function sendProposalEmail(data: AssessmentFormData, pdfBuffer: Buf
   })
 }
 
-export async function sendInternalNotification(data: AssessmentFormData) {
+export async function sendInternalNotification(data: AssessmentFormData, id: string) {
   const internalEmail = process.env.INTERNAL_NOTIFICATION_EMAIL
   if (!internalEmail) return
+
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.wagonback.com'
+  const token = process.env.ADMIN_TOKEN || ''
+  const generateUrl = `${baseUrl}/api/generate-proposal?id=${id}&token=${encodeURIComponent(token)}`
 
   const resend = getResend()
   await resend.emails.send({
@@ -105,6 +109,12 @@ export async function sendInternalNotification(data: AssessmentFormData) {
     subject: `New Assessment: ${data.business_name} — ${data.timeline}`,
     html: `
       <p><strong>New assessment submitted:</strong></p>
+      <p>
+        <a href="${generateUrl}"
+           style="display:inline-block;background-color:#00c8ff;color:#0d0d0d;text-decoration:none;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;padding:12px 24px;border-radius:100px;">
+          Generate &amp; Send Proposal →
+        </a>
+      </p>
       <ul>
         <li><strong>Business:</strong> ${data.business_name}</li>
         <li><strong>Contact:</strong> ${data.contact_name} (${data.email}, ${data.phone || 'no phone'})</li>
