@@ -1,22 +1,8 @@
 import { createServerClient } from '@/lib/supabase'
 import { GenerateButton } from './GenerateButton'
+import { logoutAction } from './login/actions'
 
-interface PageProps {
-  searchParams: Promise<{ token?: string }>
-}
-
-export default async function AdminPage({ searchParams }: PageProps) {
-  const { token } = await searchParams
-  const adminToken = process.env.ADMIN_TOKEN
-
-  if (!adminToken || !token || token !== adminToken) {
-    return (
-      <div className="min-h-screen bg-[#0d0d0d] flex items-center justify-center">
-        <p className="text-white/40 text-sm tracking-widest uppercase">Access denied.</p>
-      </div>
-    )
-  }
-
+export default async function AdminPage() {
   const supabase = createServerClient()
   const { data: rows, error } = await supabase
     .from('assessments')
@@ -34,17 +20,27 @@ export default async function AdminPage({ searchParams }: PageProps) {
   return (
     <div className="min-h-screen bg-[#0d0d0d] px-4 md:px-8 py-10">
       {/* Header */}
-      <div className="mb-10">
-        <div className="flex items-center gap-3 mb-3">
-          <div className="w-8 h-px bg-[#00c8ff]" />
-          <span className="text-[10px] tracking-[0.3em] uppercase text-[#00c8ff]/70">
-            Admin
-          </span>
+      <div className="mb-10 flex items-start justify-between">
+        <div>
+          <div className="flex items-center gap-3 mb-3">
+            <div className="w-8 h-px bg-[#00c8ff]" />
+            <span className="text-[10px] tracking-[0.3em] uppercase text-[#00c8ff]/70">
+              Admin
+            </span>
+          </div>
+          <h1 className="text-2xl font-extralight tracking-wide uppercase text-white">
+            Assessment Submissions
+          </h1>
+          <p className="text-xs text-white/30 mt-1">{rows?.length ?? 0} total</p>
         </div>
-        <h1 className="text-2xl font-extralight tracking-wide uppercase text-white">
-          Assessment Submissions
-        </h1>
-        <p className="text-xs text-white/30 mt-1">{rows?.length ?? 0} total</p>
+        <form action={logoutAction}>
+          <button
+            type="submit"
+            className="text-[10px] tracking-widest uppercase text-white/20 hover:text-white/50 transition-colors"
+          >
+            Sign out
+          </button>
+        </form>
       </div>
 
       {/* Table */}
@@ -59,6 +55,7 @@ export default async function AdminPage({ searchParams }: PageProps) {
                   (h) => (
                     <th
                       key={h}
+                      scope="col"
                       className="pb-3 pr-6 text-[9px] tracking-widest uppercase text-white/30 font-normal"
                     >
                       {h}
@@ -107,7 +104,7 @@ export default async function AdminPage({ searchParams }: PageProps) {
                       )}
                     </td>
                     <td className="py-4">
-                      <GenerateButton id={row.id} token={token} alreadySent={sent} />
+                      <GenerateButton id={row.id} alreadySent={sent} />
                     </td>
                   </tr>
                 )

@@ -4,11 +4,10 @@ import { useState } from 'react'
 
 interface GenerateButtonProps {
   id: string
-  token: string
   alreadySent: boolean
 }
 
-export function GenerateButton({ id, token, alreadySent }: GenerateButtonProps) {
+export function GenerateButton({ id, alreadySent }: GenerateButtonProps) {
   const [status, setStatus] = useState<'idle' | 'loading' | 'sent' | 'error'>(
     alreadySent ? 'sent' : 'idle'
   )
@@ -21,7 +20,7 @@ export function GenerateButton({ id, token, alreadySent }: GenerateButtonProps) 
       const res = await fetch('/api/generate-proposal', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id, token }),
+        body: JSON.stringify({ id }),
       })
       if (res.status === 409) {
         setStatus('sent')

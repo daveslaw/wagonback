@@ -1,5 +1,6 @@
 import { Resend } from 'resend'
 import { AssessmentFormData } from '@/types/assessment'
+import { escapeHtml } from '@/lib/utils'
 
 function getResend() {
   return new Resend(process.env.RESEND_API_KEY!)
@@ -7,6 +8,8 @@ function getResend() {
 
 export async function sendProposalEmail(data: AssessmentFormData, pdfBuffer: Buffer) {
   const calendlyUrl = process.env.NEXT_PUBLIC_CALENDLY_URL || '#'
+  const safeContact = escapeHtml(data.contact_name)
+  const safeBusiness = escapeHtml(data.business_name)
 
   const resend = getResend()
   await resend.emails.send({
@@ -48,10 +51,10 @@ export async function sendProposalEmail(data: AssessmentFormData, pdfBuffer: Buf
           <tr>
             <td style="padding-bottom:24px;">
               <p style="margin:0 0 12px;font-size:14px;color:#888;line-height:1.7;">
-                Hi ${data.contact_name},
+                Hi ${safeContact},
               </p>
               <p style="margin:0 0 12px;font-size:14px;color:#888;line-height:1.7;">
-                Thank you for completing your assessment. We've reviewed your responses and prepared a custom automation proposal for <strong style="color:#f5f5f5;">${data.business_name}</strong> — it's attached to this email as a PDF.
+                Thank you for completing your assessment. We've reviewed your responses and prepared a custom automation proposal for <strong style="color:#f5f5f5;">${safeBusiness}</strong> — it's attached to this email as a PDF.
               </p>
               <p style="margin:0;font-size:14px;color:#888;line-height:1.7;">
                 The proposal outlines the integration opportunities we've identified, our recommended automation platform, and estimated ROI for your team.
@@ -100,7 +103,9 @@ export async function sendInternalNotification(data: AssessmentFormData, id: str
 
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.wagonback.com'
   const token = process.env.ADMIN_TOKEN || ''
-  const generateUrl = `${baseUrl}/api/generate-proposal?id=${id}&token=${encodeURIComponent(token)}`
+  // Link to the admin panel rather than a direct action URL to avoid
+  // embedding the admin token in an actionable email link.
+  const adminUrl = `${baseUrl}/admin?token=${encodeURIComponent(token)}`
 
   const resend = getResend()
   await resend.emails.send({
@@ -108,27 +113,27 @@ export async function sendInternalNotification(data: AssessmentFormData, id: str
     to: internalEmail,
     subject: `New Assessment: ${data.business_name} — ${data.timeline}`,
     html: `
-      <p><strong>New assessment submitted:</strong></p>
+      <p><strong>New assessment submitted (ID: ${escapeHtml(id)}):</strong></p>
       <p>
-        <a href="${generateUrl}"
+        <a href="${adminUrl}"
            style="display:inline-block;background-color:#00c8ff;color:#0d0d0d;text-decoration:none;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;padding:12px 24px;border-radius:100px;">
-          Generate &amp; Send Proposal →
+          Open Admin Panel →
         </a>
       </p>
       <ul>
-        <li><strong>Business:</strong> ${data.business_name}</li>
-        <li><strong>Contact:</strong> ${data.contact_name} (${data.email}, ${data.phone || 'no phone'})</li>
-        <li><strong>Industry:</strong> ${data.industry}</li>
-        <li><strong>Team Size:</strong> ${data.team_size}</li>
-        <li><strong>Revenue:</strong> ${data.revenue_range}</li>
-        <li><strong>Budget:</strong> ${data.budget_range}</li>
-        <li><strong>Timeline:</strong> ${data.timeline}</li>
-        <li><strong>Pain Points:</strong> ${(data.pain_points ?? []).join(', ')}</li>
-        <li><strong>Tools:</strong> ${(data.current_tools ?? []).join(', ')}</li>
+        <li><strong>Business:</strong> ${escapeHtml(data.business_name)}</li>
+        <li><strong>Contact:</strong> ${escapeHtml(data.contact_name)} (${escapeHtml(data.email)}, ${escapeHtml(data.phone || 'no phone')})</li>
+        <li><strong>Industry:</strong> ${escapeHtml(data.industry)}</li>
+        <li><strong>Team Size:</strong> ${escapeHtml(data.team_size)}</li>
+        <li><strong>Revenue:</strong> ${escapeHtml(data.revenue_range)}</li>
+        <li><strong>Budget:</strong> ${escapeHtml(data.budget_range)}</li>
+        <li><strong>Timeline:</strong> ${escapeHtml(data.timeline)}</li>
+        <li><strong>Pain Points:</strong> ${(data.pain_points ?? []).map(escapeHtml).join(', ')}</li>
+        <li><strong>Tools:</strong> ${(data.current_tools ?? []).map(escapeHtml).join(', ')}</li>
       </ul>
-      <p><strong>Desired Outcomes:</strong><br/>${data.desired_outcomes}</p>
-      ${data.time_drains ? `<p><strong>Time Drains:</strong><br/>${data.time_drains}</p>` : ''}
-      ${data.additional_notes ? `<p><strong>Notes:</strong><br/>${data.additional_notes}</p>` : ''}
+      <p><strong>Desired Outcomes:</strong><br/>${escapeHtml(data.desired_outcomes)}</p>
+      ${data.time_drains ? `<p><strong>Time Drains:</strong><br/>${escapeHtml(data.time_drains)}</p>` : ''}
+      ${data.additional_notes ? `<p><strong>Notes:</strong><br/>${escapeHtml(data.additional_notes)}</p>` : ''}
     `,
   })
 }

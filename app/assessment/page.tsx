@@ -133,31 +133,35 @@ export default function AssessmentPage() {
               </div>
 
               <div className="space-y-5">
-                <Field label="Business Name" required>
+                <Field label="Business Name" id="business_name" required>
                   <Input
+                    id="business_name"
                     placeholder="Acme (Pty) Ltd"
                     value={form.business_name}
                     onChange={(v) => setField('business_name', v)}
                   />
                 </Field>
-                <Field label="Your Name" required>
+                <Field label="Your Name" id="contact_name" required>
                   <Input
+                    id="contact_name"
                     placeholder="Jane Smith"
                     value={form.contact_name}
                     onChange={(v) => setField('contact_name', v)}
                   />
                 </Field>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                  <Field label="Email Address" required>
+                  <Field label="Email Address" id="email" required>
                     <Input
+                      id="email"
                       type="email"
                       placeholder="jane@acme.co.za"
                       value={form.email}
                       onChange={(v) => setField('email', v)}
                     />
                   </Field>
-                  <Field label="Phone Number">
+                  <Field label="Phone Number" id="phone">
                     <Input
+                      id="phone"
                       type="tel"
                       placeholder="+27 71 000 0000"
                       value={form.phone}
@@ -166,16 +170,18 @@ export default function AssessmentPage() {
                   </Field>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                  <Field label="Industry" required>
+                  <Field label="Industry" id="industry" required>
                     <Select
+                      id="industry"
                       value={form.industry}
                       onChange={(v) => setField('industry', v)}
                       options={INDUSTRIES as unknown as string[]}
                       placeholder="Select industry"
                     />
                   </Field>
-                  <Field label="Team Size" required>
+                  <Field label="Team Size" id="team_size" required>
                     <Select
+                      id="team_size"
                       value={form.team_size}
                       onChange={(v) => setField('team_size', v)}
                       options={TEAM_SIZES as unknown as string[]}
@@ -235,13 +241,14 @@ export default function AssessmentPage() {
                   </div>
                 </Field>
 
-                <Field label="Describe your biggest time drains in your own words">
+                <Field label="Describe your biggest time drains in your own words" id="time_drains">
                   <textarea
+                    id="time_drains"
                     value={form.time_drains}
                     onChange={(e) => setField('time_drains', e.target.value)}
                     placeholder="e.g. Every morning I manually copy orders from Shopify into Xero and update our CRM..."
                     rows={4}
-                    className="w-full bg-[#1a1a1a] border border-white/10 rounded-xl px-4 py-3 text-sm text-white/80 placeholder:text-white/20 focus:outline-none focus:border-[#00c8ff]/40 resize-none transition-colors"
+                    className="w-full bg-[#1a1a1a] border border-white/10 rounded-xl px-4 py-3 text-sm text-white/80 placeholder:text-white/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00c8ff]/60 focus:border-[#00c8ff]/40 resize-none transition-colors"
                   />
                 </Field>
               </div>
@@ -277,27 +284,30 @@ export default function AssessmentPage() {
               </div>
 
               <div className="space-y-5">
-                <Field label="What outcomes are you hoping for?" required>
+                <Field label="What outcomes are you hoping for?" id="desired_outcomes" required>
                   <textarea
+                    id="desired_outcomes"
                     value={form.desired_outcomes}
                     onChange={(e) => setField('desired_outcomes', e.target.value)}
                     placeholder="e.g. I want my team to stop doing manual data entry. I want leads from Shopify to flow into HubSpot automatically..."
                     rows={4}
-                    className="w-full bg-[#1a1a1a] border border-white/10 rounded-xl px-4 py-3 text-sm text-white/80 placeholder:text-white/20 focus:outline-none focus:border-[#00c8ff]/40 resize-none transition-colors"
+                    className="w-full bg-[#1a1a1a] border border-white/10 rounded-xl px-4 py-3 text-sm text-white/80 placeholder:text-white/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00c8ff]/60 focus:border-[#00c8ff]/40 resize-none transition-colors"
                   />
                 </Field>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                  <Field label="Annual Revenue Range" required>
+                  <Field label="Annual Revenue Range" id="revenue_range" required>
                     <Select
+                      id="revenue_range"
                       value={form.revenue_range}
                       onChange={(v) => setField('revenue_range', v)}
                       options={REVENUE_RANGES as unknown as string[]}
                       placeholder="Select range"
                     />
                   </Field>
-                  <Field label="Monthly Automation Budget" required>
+                  <Field label="Monthly Automation Budget" id="budget_range" required>
                     <Select
+                      id="budget_range"
                       value={form.budget_range}
                       onChange={(v) => setField('budget_range', v)}
                       options={BUDGET_RANGES as unknown as string[]}
@@ -306,8 +316,9 @@ export default function AssessmentPage() {
                   </Field>
                 </div>
 
-                <Field label="Timeline" required>
+                <Field label="Timeline" id="timeline" required>
                   <Select
+                    id="timeline"
                     value={form.timeline}
                     onChange={(v) => setField('timeline', v)}
                     options={TIMELINES as unknown as string[]}
@@ -315,19 +326,20 @@ export default function AssessmentPage() {
                   />
                 </Field>
 
-                <Field label="Anything else you&#39;d like us to know?">
+                <Field label="Anything else you&#39;d like us to know?" id="additional_notes">
                   <textarea
+                    id="additional_notes"
                     value={form.additional_notes}
                     onChange={(e) => setField('additional_notes', e.target.value)}
                     placeholder="Any context, constraints, or questions..."
                     rows={3}
-                    className="w-full bg-[#1a1a1a] border border-white/10 rounded-xl px-4 py-3 text-sm text-white/80 placeholder:text-white/20 focus:outline-none focus:border-[#00c8ff]/40 resize-none transition-colors"
+                    className="w-full bg-[#1a1a1a] border border-white/10 rounded-xl px-4 py-3 text-sm text-white/80 placeholder:text-white/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00c8ff]/60 focus:border-[#00c8ff]/40 resize-none transition-colors"
                   />
                 </Field>
               </div>
 
               {error && (
-                <div className="text-xs text-red-400 border border-red-400/20 bg-red-400/5 rounded-xl px-4 py-3">
+                <div role="alert" className="text-xs text-red-400 border border-red-400/20 bg-red-400/5 rounded-xl px-4 py-3">
                   {error}
                 </div>
               )}
@@ -360,10 +372,10 @@ export default function AssessmentPage() {
 
 // ─── Reusable form primitives ──────────────────────────────────────────────
 
-function Field({ label, required, children }: { label: string; required?: boolean; children: React.ReactNode }) {
+function Field({ label, id, required, children }: { label: string; id?: string; required?: boolean; children: React.ReactNode }) {
   return (
     <div className="flex flex-col gap-2">
-      <label className="text-xs tracking-widest uppercase text-white/40">
+      <label htmlFor={id} className="text-xs tracking-widest uppercase text-white/40">
         {label}
         {required && <span className="text-[#00c8ff] ml-1">*</span>}
       </label>
@@ -373,11 +385,13 @@ function Field({ label, required, children }: { label: string; required?: boolea
 }
 
 function Input({
+  id,
   value,
   onChange,
   placeholder,
   type = 'text',
 }: {
+  id?: string
   value: string
   onChange: (v: string) => void
   placeholder?: string
@@ -385,21 +399,24 @@ function Input({
 }) {
   return (
     <input
+      id={id}
       type={type}
       value={value}
       onChange={(e) => onChange(e.target.value)}
       placeholder={placeholder}
-      className="w-full bg-[#1a1a1a] border border-white/10 rounded-xl px-4 py-3 text-sm text-white/80 placeholder:text-white/20 focus:outline-none focus:border-[#00c8ff]/40 transition-colors h-11 touch-manipulation"
+      className="w-full bg-[#1a1a1a] border border-white/10 rounded-xl px-4 py-3 text-sm text-white/80 placeholder:text-white/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00c8ff]/60 focus:border-[#00c8ff]/40 transition-colors h-11 touch-manipulation"
     />
   )
 }
 
 function Select({
+  id,
   value,
   onChange,
   options,
   placeholder,
 }: {
+  id?: string
   value: string
   onChange: (v: string) => void
   options: string[]
@@ -407,9 +424,10 @@ function Select({
 }) {
   return (
     <select
+      id={id}
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      className="w-full bg-[#1a1a1a] border border-white/10 rounded-xl px-4 py-3 text-sm text-white/80 focus:outline-none focus:border-[#00c8ff]/40 transition-colors h-11 appearance-none cursor-pointer touch-manipulation"
+      className="w-full bg-[#1a1a1a] border border-white/10 rounded-xl px-4 py-3 text-sm text-white/80 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00c8ff]/60 focus:border-[#00c8ff]/40 transition-colors h-11 appearance-none cursor-pointer touch-manipulation"
     >
       <option value="" disabled className="text-white/20">
         {placeholder}
@@ -435,8 +453,10 @@ function CheckItem({
   return (
     <button
       type="button"
+      role="checkbox"
+      aria-checked={checked}
       onClick={onChange}
-      className={`flex items-center gap-3 px-3 py-2.5 rounded-xl border text-left text-xs transition-all duration-150 touch-manipulation ${
+      className={`flex items-center gap-3 px-3 py-2.5 rounded-xl border text-left text-xs transition-all duration-150 touch-manipulation focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00c8ff]/60 ${
         checked
           ? 'border-[#00c8ff]/40 bg-[#00c8ff]/5 text-white'
           : 'border-white/8 bg-[#1a1a1a] text-white/40 hover:border-white/20 hover:text-white/60'

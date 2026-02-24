@@ -1,5 +1,5 @@
 import Anthropic from '@anthropic-ai/sdk'
-import fs from 'fs'
+import fs from 'fs/promises'
 import path from 'path'
 import { AssessmentFormData } from '@/types/assessment'
 
@@ -36,8 +36,9 @@ function getAnthropic() {
 
 export function getRecommendedTier(data: AssessmentFormData): string {
   const budget = data.budget_range
-  if (budget?.includes('R20,000') || budget?.includes('Over')) return 'Enterprise Integration Layer'
-  if (budget?.includes('R8,000') || budget?.includes('R3,000')) return 'Visual Workflow Engine'
+  if (budget === 'Over R20,000/month') return 'Enterprise Integration Layer'
+  if (budget === 'R8,000 – R20,000/month') return 'Visual Workflow Engine'
+  if (budget === 'R3,000 – R8,000/month') return 'Visual Workflow Engine'
   return 'AI-Native Automation'
 }
 
@@ -51,7 +52,7 @@ export function getROIEstimate(data: AssessmentFormData): string {
 
 export async function generateProposalCopy(data: AssessmentFormData): Promise<ProposalCopy> {
   try {
-    const systemPrompt = fs.readFileSync(
+    const systemPrompt = await fs.readFile(
       path.join(process.cwd(), 'content', 'proposal-prompt.md'),
       'utf-8'
     )
