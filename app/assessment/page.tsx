@@ -78,15 +78,15 @@ export default function AssessmentPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0d0d0d] flex flex-col">
+    <div className="min-h-screen bg-white dark:bg-[#0d0d0d] flex flex-col">
       {/* Top bar */}
-      <div className="px-4 md:px-8 py-5 flex items-center justify-between border-b border-white/5">
-        <Link href="/" className="flex items-center gap-2 text-white/40 hover:text-white transition-colors text-xs tracking-widest uppercase">
+      <div className="px-4 md:px-8 py-5 flex items-center justify-between border-b border-gray-200 dark:border-white/5">
+        <Link href="/" className="flex items-center gap-2 text-gray-400 dark:text-white/40 hover:text-gray-900 dark:hover:text-white transition-colors text-xs tracking-widest uppercase">
           <ArrowLeft size={14} />
           Back
         </Link>
         <div className="flex items-center gap-2">
-          <span className="text-xs font-extralight tracking-[0.15em] uppercase text-white/50">
+          <span className="text-xs font-extralight tracking-[0.15em] uppercase text-gray-500 dark:text-white/50">
             Wagon Back
           </span>
           <span className="w-px h-3 bg-[#00c8ff]/40" />
@@ -97,7 +97,7 @@ export default function AssessmentPage() {
       </div>
 
       {/* Progress bar */}
-      <div className="w-full h-px bg-white/5">
+      <div className="w-full h-px bg-black/5 dark:bg-white/5">
         <div
           className={styles.progressFill}
           style={{ '--progress': `${(step / TOTAL_STEPS) * 100}%` } as React.CSSProperties}
@@ -116,7 +116,7 @@ export default function AssessmentPage() {
                 <div
                   key={i}
                   className={`h-0.5 w-6 rounded-full transition-all duration-300 ${
-                    i + 1 <= step ? 'bg-[#00c8ff]' : 'bg-white/10'
+                    i + 1 <= step ? 'bg-[#00c8ff]' : 'bg-gray-200 dark:bg-white/10'
                   }`}
                 />
               ))}
@@ -127,10 +127,10 @@ export default function AssessmentPage() {
           {step === 1 && (
             <div className="space-y-8">
               <div>
-                <h1 className="text-2xl sm:text-3xl font-extralight tracking-wide uppercase text-white mb-2">
+                <h1 className="text-2xl sm:text-3xl font-extralight tracking-wide uppercase text-gray-900 dark:text-white mb-2">
                   About Your Business
                 </h1>
-                <p className="text-sm text-white/40">Tell us a bit about who you are.</p>
+                <p className="text-sm text-gray-400 dark:text-white/40">Tell us a bit about who you are.</p>
               </div>
 
               <div className="space-y-5">
@@ -196,7 +196,7 @@ export default function AssessmentPage() {
                 <Button
                   onClick={() => setStep(2)}
                   disabled={!form.business_name || !form.contact_name || !form.email || !form.industry || !form.team_size}
-                  className="bg-[#00c8ff] text-[#0d0d0d] hover:bg-white disabled:opacity-30 font-medium tracking-widest text-xs uppercase rounded-full px-8 h-11 touch-manipulation"
+                  className="bg-[#00c8ff] text-[#0d0d0d] hover:bg-gray-100 dark:hover:bg-white disabled:opacity-30 font-medium tracking-widest text-xs uppercase rounded-full px-8 h-11 touch-manipulation"
                 >
                   Continue
                   <ArrowRight size={14} className="ml-2" />
@@ -209,10 +209,10 @@ export default function AssessmentPage() {
           {step === 2 && (
             <div className="space-y-8">
               <div>
-                <h1 className="text-2xl sm:text-3xl font-extralight tracking-wide uppercase text-white mb-2">
+                <h1 className="text-2xl sm:text-3xl font-extralight tracking-wide uppercase text-gray-900 dark:text-white mb-2">
                   Current Challenges
                 </h1>
-                <p className="text-sm text-white/40">Help us understand what&#39;s slowing you down.</p>
+                <p className="text-sm text-gray-400 dark:text-white/40">Help us understand what&#39;s slowing you down.</p>
               </div>
 
               <div className="space-y-7">
@@ -249,7 +249,7 @@ export default function AssessmentPage() {
                     onChange={(e) => setField('time_drains', e.target.value)}
                     placeholder="e.g. Every morning I manually copy orders from Shopify into Xero and update our CRM..."
                     rows={4}
-                    className="w-full bg-[#1a1a1a] border border-white/10 rounded-xl px-4 py-3 text-sm text-white/80 placeholder:text-white/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00c8ff]/60 focus:border-[#00c8ff]/40 resize-none transition-colors"
+                    className="w-full bg-[#f5f5f5] dark:bg-[#1a1a1a] border border-gray-200 dark:border-white/10 rounded-xl px-4 py-3 text-sm text-gray-700 dark:text-white/80 placeholder:text-gray-400 dark:placeholder:text-white/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00c8ff]/60 focus:border-[#00c8ff]/40 resize-none transition-colors"
                   />
                 </Field>
               </div>
@@ -258,14 +258,14 @@ export default function AssessmentPage() {
                 <Button
                   variant="ghost"
                   onClick={() => setStep(1)}
-                  className="text-white/40 hover:text-white border border-white/10 hover:border-white/30 tracking-widest text-xs uppercase rounded-full px-6 h-11 touch-manipulation"
+                  className="text-gray-400 dark:text-white/40 hover:text-gray-900 dark:hover:text-white border border-gray-200 dark:border-white/10 hover:border-gray-400 dark:hover:border-white/30 tracking-widest text-xs uppercase rounded-full px-6 h-11 touch-manipulation"
                 >
                   <ArrowLeft size={14} className="mr-2" />
                   Back
                 </Button>
                 <Button
                   onClick={() => setStep(3)}
-                  className="bg-[#00c8ff] text-[#0d0d0d] hover:bg-white font-medium tracking-widest text-xs uppercase rounded-full px-8 h-11 touch-manipulation"
+                  className="bg-[#00c8ff] text-[#0d0d0d] hover:bg-gray-100 dark:hover:bg-white font-medium tracking-widest text-xs uppercase rounded-full px-8 h-11 touch-manipulation"
                 >
                   Continue
                   <ArrowRight size={14} className="ml-2" />
@@ -278,10 +278,10 @@ export default function AssessmentPage() {
           {step === 3 && (
             <div className="space-y-8">
               <div>
-                <h1 className="text-2xl sm:text-3xl font-extralight tracking-wide uppercase text-white mb-2">
+                <h1 className="text-2xl sm:text-3xl font-extralight tracking-wide uppercase text-gray-900 dark:text-white mb-2">
                   Goals &amp; Budget
                 </h1>
-                <p className="text-sm text-white/40">Help us scope the right solution for you.</p>
+                <p className="text-sm text-gray-400 dark:text-white/40">Help us scope the right solution for you.</p>
               </div>
 
               <div className="space-y-5">
@@ -292,7 +292,7 @@ export default function AssessmentPage() {
                     onChange={(e) => setField('desired_outcomes', e.target.value)}
                     placeholder="e.g. I want my team to stop doing manual data entry. I want leads from Shopify to flow into HubSpot automatically..."
                     rows={4}
-                    className="w-full bg-[#1a1a1a] border border-white/10 rounded-xl px-4 py-3 text-sm text-white/80 placeholder:text-white/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00c8ff]/60 focus:border-[#00c8ff]/40 resize-none transition-colors"
+                    className="w-full bg-[#f5f5f5] dark:bg-[#1a1a1a] border border-gray-200 dark:border-white/10 rounded-xl px-4 py-3 text-sm text-gray-700 dark:text-white/80 placeholder:text-gray-400 dark:placeholder:text-white/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00c8ff]/60 focus:border-[#00c8ff]/40 resize-none transition-colors"
                   />
                 </Field>
 
@@ -334,7 +334,7 @@ export default function AssessmentPage() {
                     onChange={(e) => setField('additional_notes', e.target.value)}
                     placeholder="Any context, constraints, or questions..."
                     rows={3}
-                    className="w-full bg-[#1a1a1a] border border-white/10 rounded-xl px-4 py-3 text-sm text-white/80 placeholder:text-white/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00c8ff]/60 focus:border-[#00c8ff]/40 resize-none transition-colors"
+                    className="w-full bg-[#f5f5f5] dark:bg-[#1a1a1a] border border-gray-200 dark:border-white/10 rounded-xl px-4 py-3 text-sm text-gray-700 dark:text-white/80 placeholder:text-gray-400 dark:placeholder:text-white/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00c8ff]/60 focus:border-[#00c8ff]/40 resize-none transition-colors"
                   />
                 </Field>
               </div>
@@ -349,7 +349,7 @@ export default function AssessmentPage() {
                 <Button
                   variant="ghost"
                   onClick={() => setStep(2)}
-                  className="text-white/40 hover:text-white border border-white/10 hover:border-white/30 tracking-widest text-xs uppercase rounded-full px-6 h-11 touch-manipulation"
+                  className="text-gray-400 dark:text-white/40 hover:text-gray-900 dark:hover:text-white border border-gray-200 dark:border-white/10 hover:border-gray-400 dark:hover:border-white/30 tracking-widest text-xs uppercase rounded-full px-6 h-11 touch-manipulation"
                 >
                   <ArrowLeft size={14} className="mr-2" />
                   Back
@@ -357,7 +357,7 @@ export default function AssessmentPage() {
                 <Button
                   onClick={handleSubmit}
                   disabled={submitting || !form.desired_outcomes || !form.revenue_range || !form.budget_range || !form.timeline}
-                  className="bg-[#00c8ff] text-[#0d0d0d] hover:bg-white disabled:opacity-30 font-medium tracking-widest text-xs uppercase rounded-full px-8 h-11 touch-manipulation"
+                  className="bg-[#00c8ff] text-[#0d0d0d] hover:bg-gray-100 dark:hover:bg-white disabled:opacity-30 font-medium tracking-widest text-xs uppercase rounded-full px-8 h-11 touch-manipulation"
                 >
                   {submitting ? 'Sending...' : 'Submit Assessment'}
                   {!submitting && <Check size={14} className="ml-2" />}
@@ -376,7 +376,7 @@ export default function AssessmentPage() {
 function Field({ label, id, required, children }: { label: string; id?: string; required?: boolean; children: React.ReactNode }) {
   return (
     <div className="flex flex-col gap-2">
-      <label htmlFor={id} className="text-xs tracking-widest uppercase text-white/40">
+      <label htmlFor={id} className="text-xs tracking-widest uppercase text-gray-400 dark:text-white/40">
         {label}
         {required && <span className="text-[#00c8ff] ml-1">*</span>}
       </label>
@@ -405,7 +405,7 @@ function Input({
       value={value}
       onChange={(e) => onChange(e.target.value)}
       placeholder={placeholder}
-      className="w-full bg-[#1a1a1a] border border-white/10 rounded-xl px-4 py-3 text-sm text-white/80 placeholder:text-white/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00c8ff]/60 focus:border-[#00c8ff]/40 transition-colors h-11 touch-manipulation"
+      className="w-full bg-[#f5f5f5] dark:bg-[#1a1a1a] border border-gray-200 dark:border-white/10 rounded-xl px-4 py-3 text-sm text-gray-700 dark:text-white/80 placeholder:text-gray-400 dark:placeholder:text-white/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00c8ff]/60 focus:border-[#00c8ff]/40 transition-colors h-11 touch-manipulation"
     />
   )
 }
@@ -428,13 +428,13 @@ function Select({
       id={id}
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      className="w-full bg-[#1a1a1a] border border-white/10 rounded-xl px-4 py-3 text-sm text-white/80 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00c8ff]/60 focus:border-[#00c8ff]/40 transition-colors h-11 appearance-none cursor-pointer touch-manipulation"
+      className="w-full bg-[#f5f5f5] dark:bg-[#1a1a1a] border border-gray-200 dark:border-white/10 rounded-xl px-4 py-3 text-sm text-gray-700 dark:text-white/80 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00c8ff]/60 focus:border-[#00c8ff]/40 transition-colors h-11 appearance-none cursor-pointer touch-manipulation"
     >
-      <option value="" disabled className="text-white/20">
+      <option value="" disabled className="text-gray-400 dark:text-white/20">
         {placeholder}
       </option>
       {options.map((opt) => (
-        <option key={opt} value={opt} className="bg-[#1a1a1a]">
+        <option key={opt} value={opt} className="bg-white dark:bg-[#1a1a1a]">
           {opt}
         </option>
       ))}
@@ -459,13 +459,13 @@ function CheckItem({
       onClick={onChange}
       className={`flex items-center gap-3 px-3 py-2.5 rounded-xl border text-left text-xs transition-all duration-150 touch-manipulation focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00c8ff]/60 ${
         checked
-          ? 'border-[#00c8ff]/40 bg-[#00c8ff]/5 text-white'
-          : 'border-white/8 bg-[#1a1a1a] text-white/40 hover:border-white/20 hover:text-white/60'
+          ? 'border-[#00c8ff]/40 bg-[#00c8ff]/5 text-gray-900 dark:text-white'
+          : 'border-gray-200 dark:border-white/8 bg-[#f5f5f5] dark:bg-[#1a1a1a] text-gray-400 dark:text-white/40 hover:border-gray-300 dark:hover:border-white/20 hover:text-gray-600 dark:hover:text-white/60'
       }`}
     >
       <div
         className={`w-4 h-4 rounded flex-shrink-0 flex items-center justify-center border transition-colors ${
-          checked ? 'bg-[#00c8ff] border-[#00c8ff]' : 'border-white/20'
+          checked ? 'bg-[#00c8ff] border-[#00c8ff]' : 'border-gray-300 dark:border-white/20'
         }`}
       >
         {checked && <Check size={10} className="text-[#0d0d0d]" />}
