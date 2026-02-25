@@ -24,7 +24,7 @@ export function Hero() {
       </div>
 
       {/* Gradient overlay for content legibility */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#0d0d0d]" />
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-white dark:to-[#0d0d0d]" />
 
       {/* Content */}
       <div className="relative z-10 flex flex-col items-center text-center px-4 md:px-8 max-w-5xl mx-auto gap-6">
@@ -33,13 +33,13 @@ export function Hero() {
           Johannesburg, South Africa
         </div>
 
-        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extralight tracking-[0.08em] uppercase text-white leading-[1.1]">
+        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extralight tracking-[0.08em] uppercase text-gray-900 dark:text-white leading-[1.1]">
           Automate The Work.
           <br />
           <span className="text-[#00c8ff]">Amplify The Results.</span>
         </h1>
 
-        <p className="text-sm sm:text-base md:text-lg font-light text-white/50 max-w-2xl leading-relaxed">
+        <p className="text-sm sm:text-base md:text-lg font-light text-gray-500 dark:text-white/50 max-w-2xl leading-relaxed">
           Most SA businesses are paying people to do work a machine should handle. We identify
           exactly what to automate, build it, and show you the rand value — before you commit.
         </p>
@@ -48,7 +48,7 @@ export function Hero() {
           <Link href="/assessment">
             <Button
               size="lg"
-              className="bg-[#00c8ff] text-[#0d0d0d] hover:bg-white font-medium tracking-widest text-xs uppercase rounded-full px-8 h-12 touch-manipulation transition-all duration-300"
+              className="bg-[#00c8ff] text-[#0d0d0d] hover:bg-gray-100 dark:hover:bg-white font-medium tracking-widest text-xs uppercase rounded-full px-8 h-12 touch-manipulation transition-all duration-300"
             >
               Get Your Free Assessment
               <ArrowRight size={14} className="ml-2" />
@@ -58,7 +58,7 @@ export function Hero() {
             <Button
               size="lg"
               variant="ghost"
-              className="text-white/50 hover:text-white border border-white/10 hover:border-white/30 tracking-widest text-xs uppercase rounded-full px-8 h-12 touch-manipulation"
+              className="text-gray-500 dark:text-white/50 hover:text-gray-900 dark:hover:text-white border border-gray-200 dark:border-white/10 hover:border-gray-400 dark:hover:border-white/30 tracking-widest text-xs uppercase rounded-full px-8 h-12 touch-manipulation"
             >
               See How It Works
             </Button>
@@ -68,8 +68,8 @@ export function Hero() {
 
       {/* Scroll indicator */}
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-30">
-        <span className="text-[9px] tracking-[0.3em] uppercase text-white">Scroll</span>
-        <div className="w-px h-8 bg-gradient-to-b from-white to-transparent" />
+        <span className="text-[9px] tracking-[0.3em] uppercase text-gray-400 dark:text-white">Scroll</span>
+        <div className="w-px h-8 bg-gradient-to-b from-gray-400 dark:from-white to-transparent" />
       </div>
     </section>
   )

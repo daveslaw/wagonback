@@ -1,0 +1,9 @@
+.accentGlow {
+  background: linear-gradient(90deg, transparent, var(--tool-color), transparent);
+}
+
+.badge {
+  color: var(--tool-color);
+  border-color: var(--tool-color-30);
+  background: var(--tool-color-10);
+}

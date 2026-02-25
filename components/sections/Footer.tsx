@@ -5,13 +5,13 @@ export function Footer() {
   const currentYear = new Date().getFullYear()
 
   return (
-    <footer className="bg-[#0a0a0a] border-t border-white/5 py-12 md:py-16">
+    <footer className="bg-[#f5f5f5] dark:bg-[#0a0a0a] border-t border-gray-200 dark:border-white/5 py-12 md:py-16">
       <div className="container mx-auto px-4 md:px-8 lg:px-16">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-8 mb-12">
           {/* Brand */}
           <div className="flex flex-col gap-4">
             <div className="flex items-center gap-2">
-              <span className="text-sm font-extralight tracking-[0.2em] uppercase text-white/90">
+              <span className="text-sm font-extralight tracking-[0.2em] uppercase text-gray-800 dark:text-white/90">
                 Wagon Back
               </span>
               <span className="w-px h-4 bg-[#00c8ff]/60" />
@@ -19,14 +19,14 @@ export function Footer() {
                 Solutions
               </span>
             </div>
-            <p className="text-xs text-white/30 leading-relaxed max-w-xs">
+            <p className="text-xs text-gray-400 dark:text-white/30 leading-relaxed max-w-xs">
               AI automation and integration specialists helping South African SMEs work smarter, not harder.
             </p>
           </div>
 
           {/* Links */}
           <div className="flex flex-col gap-3">
-            <h4 className="text-[9px] tracking-[0.3em] uppercase text-white/30 mb-1">Quick Links</h4>
+            <h4 className="text-[9px] tracking-[0.3em] uppercase text-gray-400 dark:text-white/30 mb-1">Quick Links</h4>
             {[
               { label: 'Services', href: '#services' },
               { label: 'How It Works', href: '#how-it-works' },
@@ -36,7 +36,7 @@ export function Footer() {
               <a
                 key={link.href}
                 href={link.href}
-                className="text-xs text-white/40 hover:text-white transition-colors tracking-wide"
+                className="text-xs text-gray-400 dark:text-white/40 hover:text-gray-600 dark:hover:text-white/60 transition-colors tracking-wide"
               >
                 {link.label}
               </a>
@@ -45,14 +45,14 @@ export function Footer() {
 
           {/* Contact */}
           <div className="flex flex-col gap-3">
-            <h4 className="text-[9px] tracking-[0.3em] uppercase text-white/30 mb-1">Contact</h4>
-            <div className="flex items-center gap-2 text-xs text-white/40">
+            <h4 className="text-[9px] tracking-[0.3em] uppercase text-gray-400 dark:text-white/30 mb-1">Contact</h4>
+            <div className="flex items-center gap-2 text-xs text-gray-400 dark:text-white/40">
               <MapPin size={12} className="text-[#00c8ff]/50 flex-shrink-0" />
               Johannesburg, Gauteng, South Africa
             </div>
             <a
               href="mailto:hello@wagonback.com"
-              className="flex items-center gap-2 text-xs text-white/40 hover:text-white transition-colors"
+              className="flex items-center gap-2 text-xs text-gray-400 dark:text-white/40 hover:text-gray-600 dark:hover:text-white transition-colors"
             >
               <Mail size={12} className="text-[#00c8ff]/50 flex-shrink-0" />
               hello@wagonback.com
@@ -67,11 +67,11 @@ export function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="border-t border-white/5 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p className="text-[10px] text-white/20 tracking-widest uppercase">
+        <div className="border-t border-gray-200 dark:border-white/5 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <p className="text-[10px] text-gray-300 dark:text-white/20 tracking-widest uppercase">
             © {currentYear} Wagon Back Solutions. All rights reserved.
           </p>
-          <p className="text-[10px] text-white/20 tracking-widest uppercase">
+          <p className="text-[10px] text-gray-300 dark:text-white/20 tracking-widest uppercase">
             Built in Johannesburg 🇿🇦
           </p>
         </div>

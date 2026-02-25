@@ -156,7 +156,52 @@ const styles = StyleSheet.create({
     color: '#444',
     letterSpacing: 1,
   },
+  brandSeparator: {
+    color: '#00c8ff',
+    fontSize: 10,
+  },
+  submittedOn: {
+    fontSize: 9,
+    color: '#555',
+    marginBottom: 4,
+  },
+  painPointRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    marginBottom: 6,
+  },
+  painPointArrow: {
+    color: '#00c8ff',
+    fontSize: 10,
+    marginRight: 8,
+    marginTop: 1,
+  },
+  roiHighlight: {
+    color: '#00c8ff',
+  },
+  nextStepRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: 10,
+  },
+  nextStepNumber: {
+    color: '#00c8ff',
+    fontSize: 16,
+    fontFamily: 'Helvetica',
+    letterSpacing: 1,
+    minWidth: 28,
+  },
+  nextStepContent: {
+    flex: 1,
+  },
 })
+
+// Extended styles that spread base entries (react-pdf requires plain objects for spread)
+const extendedStyles = {
+  painPointText: { ...styles.body, marginBottom: 0, flex: 1 },
+  toolsLabel:    { ...styles.sectionLabel, marginTop: 16 },
+  ctaCard:       { ...styles.card, marginTop: 20 },
+}
 
 export function generateProposalDocument(data: AssessmentFormData, copy: ProposalCopy) {
   const tier = getRecommendedTier(data)
@@ -176,7 +221,7 @@ export function generateProposalDocument(data: AssessmentFormData, copy: Proposa
         <View>
           <View style={styles.brandRow}>
             <Text style={styles.brandName}>Wagon Back</Text>
-            <Text style={{ color: '#00c8ff', fontSize: 10 }}> · </Text>
+            <Text style={styles.brandSeparator}> · </Text>
             <Text style={styles.brandAccent}>Solutions</Text>
           </View>
         </View>
@@ -191,7 +236,7 @@ export function generateProposalDocument(data: AssessmentFormData, copy: Proposa
 
         <View>
           <Text style={styles.coverClient}>{data.business_name}</Text>
-          <Text style={{ fontSize: 9, color: '#555', marginBottom: 4 }}>
+          <Text style={styles.submittedOn}>
             Prepared for: {data.contact_name}
           </Text>
           <Text style={styles.coverDate}>{date}</Text>
@@ -230,9 +275,9 @@ export function generateProposalDocument(data: AssessmentFormData, copy: Proposa
 
         <Text style={styles.sectionLabel}>Pain Points Identified</Text>
         {(data.pain_points ?? []).map((pt, i) => (
-          <View key={i} style={{ flexDirection: 'row', alignItems: 'flex-start', marginBottom: 6 }}>
-            <Text style={{ color: '#00c8ff', fontSize: 10, marginRight: 8, marginTop: 1 }}>→</Text>
-            <Text style={{ ...styles.body, marginBottom: 0, flex: 1 }}>{pt}</Text>
+          <View key={i} style={styles.painPointRow}>
+            <Text style={styles.painPointArrow}>→</Text>
+            <Text style={extendedStyles.painPointText}>{pt}</Text>
           </View>
         ))}
 
@@ -255,7 +300,7 @@ export function generateProposalDocument(data: AssessmentFormData, copy: Proposa
           </View>
         ))}
 
-        <Text style={{ ...styles.sectionLabel, marginTop: 16 }}>Current Tools</Text>
+        <Text style={extendedStyles.toolsLabel}>Current Tools</Text>
         <View style={styles.badgeRow}>
           {(data.current_tools ?? []).map((tool, i) => (
             <View key={i} style={styles.badge}>
@@ -289,7 +334,7 @@ export function generateProposalDocument(data: AssessmentFormData, copy: Proposa
         <Text style={styles.sectionLabel}>Estimated ROI</Text>
         <Text style={styles.sectionTitle}>What To Expect</Text>
         <Text style={styles.body}>
-          Conservative estimate: <Text style={{ color: '#00c8ff' }}>{roi}</Text> saved through automation.
+          Conservative estimate: <Text style={styles.roiHighlight}>{roi}</Text> saved through automation.
         </Text>
 
         {copy.roi_body.split('\n\n').map((para, i) => (
@@ -315,11 +360,11 @@ export function generateProposalDocument(data: AssessmentFormData, copy: Proposa
           { step: '04', title: 'Ongoing Support', desc: 'Monthly retainer for monitoring, optimisation, and expanding your automation as your business grows.' },
         ].map((item) => (
           <View key={item.step} style={styles.card}>
-            <View style={{ flexDirection: 'row', alignItems: 'flex-start', gap: 10 }}>
-              <Text style={{ color: '#00c8ff', fontSize: 16, fontFamily: 'Helvetica', letterSpacing: 1, minWidth: 28 }}>
+            <View style={styles.nextStepRow}>
+              <Text style={styles.nextStepNumber}>
                 {item.step}
               </Text>
-              <View style={{ flex: 1 }}>
+              <View style={styles.nextStepContent}>
                 <Text style={styles.cardTitle}>{item.title}</Text>
                 <Text style={styles.cardBody}>{item.desc}</Text>
               </View>
@@ -327,7 +372,7 @@ export function generateProposalDocument(data: AssessmentFormData, copy: Proposa
           </View>
         ))}
 
-        <View style={{ ...styles.card, borderLeft: '2px solid #00c8ff', marginTop: 20 }}>
+        <View style={extendedStyles.ctaCard}>
           <Text style={styles.cardTitle}>Book Your Discovery Call</Text>
           <Text style={styles.cardBody}>
             {process.env.NEXT_PUBLIC_CALENDLY_URL || 'Please contact us at hello@wagonback.com to schedule your call.'}

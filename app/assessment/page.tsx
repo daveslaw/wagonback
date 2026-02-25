@@ -1,10 +1,11 @@
 'use client'
 
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { ArrowLeft, ArrowRight, Check } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import styles from './assessment.module.css'
 import {
   AssessmentFormData,
   PAIN_POINTS,
@@ -98,8 +99,8 @@ export default function AssessmentPage() {
       {/* Progress bar */}
       <div className="w-full h-px bg-white/5">
         <div
-          className="h-full bg-[#00c8ff] transition-all duration-500"
-          style={{ width: `${(step / TOTAL_STEPS) * 100}%` }}
+          className={styles.progressFill}
+          style={{ '--progress': `${(step / TOTAL_STEPS) * 100}%` } as React.CSSProperties}
         />
       </div>
 

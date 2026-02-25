@@ -29,7 +29,7 @@ const props = [
 
 export function ValueProps() {
   return (
-    <section id="services" className="py-20 md:py-28 bg-[#0d0d0d]">
+    <section id="services" className="py-20 md:py-28 bg-white dark:bg-[#0d0d0d]">
       <div className="container mx-auto px-4 md:px-8 lg:px-16">
         {/* Section label */}
         <div className="flex items-center gap-3 mb-12">
@@ -45,25 +45,25 @@ export function ValueProps() {
             return (
               <div
                 key={prop.title}
-                className="group bg-[#161616] border border-white/5 rounded-2xl p-7 hover:border-[#00c8ff]/20 transition-all duration-300"
+                className="group bg-white dark:bg-[#161616] border border-gray-200 dark:border-white/5 rounded-2xl p-7 hover:border-[#00c8ff]/20 transition-all duration-300"
               >
                 <div className="flex items-center justify-between mb-6">
                   <div className="w-10 h-10 rounded-xl bg-[#00c8ff]/10 flex items-center justify-center">
                     <Icon size={18} className="text-[#00c8ff]" />
                   </div>
                   <div className="text-right">
-                    <div className="text-2xl font-extralight text-white tracking-tight">
+                    <div className="text-2xl font-extralight text-gray-900 dark:text-white tracking-tight">
                       {prop.stat}
                     </div>
-                    <div className="text-[9px] tracking-widest uppercase text-white/30">
+                    <div className="text-[9px] tracking-widest uppercase text-gray-400 dark:text-white/30">
                       {prop.statLabel}
                     </div>
                   </div>
                 </div>
-                <h3 className="text-base font-light tracking-wide text-white mb-3">
+                <h3 className="text-base font-light tracking-wide text-gray-900 dark:text-white mb-3">
                   {prop.title}
                 </h3>
-                <p className="text-sm text-white/40 leading-relaxed">{prop.description}</p>
+                <p className="text-sm text-gray-400 dark:text-white/40 leading-relaxed">{prop.description}</p>
               </div>
             )
           })}

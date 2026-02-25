@@ -1,3 +1,5 @@
+import toolStyles from './tools.module.css'
+
 const tools = [
   {
     name: 'Enterprise Integration Layer',
@@ -27,7 +29,7 @@ const tools = [
 
 export function Tools() {
   return (
-    <section id="tools" className="py-20 md:py-28 bg-[#0a0a0a]">
+    <section id="tools" className="py-20 md:py-28 bg-[#f5f5f5] dark:bg-[#0a0a0a]">
       <div className="container mx-auto px-4 md:px-8 lg:px-16">
         {/* Section label */}
         <div className="flex items-center gap-3 mb-4">
@@ -38,12 +40,12 @@ export function Tools() {
         </div>
 
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extralight tracking-wide uppercase text-white">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extralight tracking-wide uppercase text-gray-900 dark:text-white">
             Our Automation
             <br />
-            <span className="text-white/40">Framework.</span>
+            <span className="text-gray-400 dark:text-white/40">Framework.</span>
           </h2>
-          <p className="text-sm text-white/40 max-w-xs leading-relaxed">
+          <p className="text-sm text-gray-400 dark:text-white/40 max-w-xs leading-relaxed">
             We select and deploy the right automation tier for your scale, complexity, and goals — you never need to evaluate or manage platforms yourself.
           </p>
         </div>
@@ -52,28 +54,27 @@ export function Tools() {
           {tools.map((tool) => (
             <div
               key={tool.name}
-              className="group relative bg-[#161616] border border-white/5 rounded-2xl p-7 hover:border-white/10 transition-all duration-300 overflow-hidden"
+              className="group relative bg-white dark:bg-[#161616] border border-gray-200 dark:border-white/5 rounded-2xl p-7 hover:border-gray-300 dark:hover:border-white/10 transition-all duration-300 overflow-hidden"
+              style={{
+                '--tool-color': tool.color,
+                '--tool-color-30': `${tool.color}30`,
+                '--tool-color-10': `${tool.color}10`,
+              } as React.CSSProperties}
             >
               {/* Accent glow */}
-              <div
-                className="absolute top-0 left-0 right-0 h-px opacity-40"
-                style={{ background: `linear-gradient(90deg, transparent, ${tool.color}, transparent)` }}
-              />
+              <div className={`absolute top-0 left-0 right-0 h-px opacity-40 ${toolStyles.accentGlow}`} />
 
               <div className="flex items-start justify-between mb-5">
                 <div>
-                  <h3 className="text-xl font-light text-white tracking-wide">{tool.name}</h3>
-                  <p className="text-xs text-white/30 tracking-wider mt-0.5">{tool.tagline}</p>
+                  <h3 className="text-xl font-light text-gray-900 dark:text-white tracking-wide">{tool.name}</h3>
+                  <p className="text-xs text-gray-400 dark:text-white/30 tracking-wider mt-0.5">{tool.tagline}</p>
                 </div>
-                <span
-                  className="text-[9px] tracking-widest uppercase px-2.5 py-1 rounded-full border font-medium"
-                  style={{ color: tool.color, borderColor: `${tool.color}30`, background: `${tool.color}10` }}
-                >
+                <span className={`text-[9px] tracking-widest uppercase px-2.5 py-1 rounded-full border font-medium ${toolStyles.badge}`}>
                   {tool.badge}
                 </span>
               </div>
 
-              <p className="text-sm text-white/40 leading-relaxed">{tool.description}</p>
+              <p className="text-sm text-gray-400 dark:text-white/40 leading-relaxed">{tool.description}</p>
             </div>
           ))}
         </div>

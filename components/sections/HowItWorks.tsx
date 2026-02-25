@@ -26,7 +26,7 @@ const steps = [
 
 export function HowItWorks() {
   return (
-    <section id="how-it-works" className="py-20 md:py-28 bg-[#0a0a0a]">
+    <section id="how-it-works" className="py-20 md:py-28 bg-[#f5f5f5] dark:bg-[#0a0a0a]">
       <div className="container mx-auto px-4 md:px-8 lg:px-16">
         {/* Section label */}
         <div className="flex items-center gap-3 mb-4">
@@ -36,7 +36,7 @@ export function HowItWorks() {
           </span>
         </div>
 
-        <h2 className="text-3xl sm:text-4xl md:text-5xl font-extralight tracking-wide uppercase text-white mb-16">
+        <h2 className="text-3xl sm:text-4xl md:text-5xl font-extralight tracking-wide uppercase text-gray-900 dark:text-white mb-16">
           How It Works
         </h2>
 
@@ -65,10 +65,10 @@ export function HowItWorks() {
                       <div className="text-[9px] tracking-[0.3em] uppercase text-[#00c8ff]/50 mb-2">
                         Step {step.number}
                       </div>
-                      <h3 className="text-lg font-light tracking-wide text-white mb-2">
+                      <h3 className="text-lg font-light tracking-wide text-gray-900 dark:text-white mb-2">
                         {step.title}
                       </h3>
-                      <p className="text-sm text-white/40 leading-relaxed">
+                      <p className="text-sm text-gray-400 dark:text-white/40 leading-relaxed">
                         {step.description}
                       </p>
                     </div>

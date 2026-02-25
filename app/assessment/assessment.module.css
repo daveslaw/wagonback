@@ -1,0 +1,6 @@
+.progressFill {
+  height: 100%;
+  background-color: #00c8ff;
+  transition: width 500ms;
+  width: var(--progress);
+}
