@@ -1,26 +1,22 @@
-const platforms = [
-  { name: 'Salesforce', category: 'CRM' },
-  { name: 'HubSpot', category: 'CRM' },
-  { name: 'Zoho CRM', category: 'CRM' },
-  { name: 'Xero', category: 'Accounting' },
-  { name: 'QuickBooks', category: 'Accounting' },
-  { name: 'Shopify', category: 'E-commerce' },
-  { name: 'WooCommerce', category: 'E-commerce' },
-  { name: 'WhatsApp', category: 'Messaging' },
-  { name: 'Gmail', category: 'Email' },
-  { name: 'Microsoft 365', category: 'Productivity' },
-  { name: 'Slack', category: 'Messaging' },
-  { name: 'Monday.com', category: 'Project Mgmt' },
-  { name: 'Asana', category: 'Project Mgmt' },
-  { name: 'Stripe', category: 'Payments' },
-  { name: 'Pipedrive', category: 'CRM' },
-  { name: 'Airtable', category: 'Database' },
+import Image from 'next/image'
+
+const partners = [
+  { name: 'Make',       slug: 'make',       href: 'https://make.com' },
+  { name: 'Zapier',     slug: 'zapier',     href: 'https://zapier.com' },
+  { name: 'n8n',        slug: 'n8n',        href: 'https://n8n.io' },
+  { name: 'Xero',       slug: 'xero',       href: 'https://xero.com' },
+  { name: 'Shopify',    slug: 'shopify',    href: 'https://shopify.com' },
+  { name: 'HubSpot',    slug: 'hubspot',    href: 'https://hubspot.com' },
+  { name: 'Airtable',   slug: 'airtable',   href: 'https://airtable.com' },
+  { name: 'Zoho',       slug: 'zoho',       href: 'https://zoho.com' },
+  { name: 'QuickBooks', slug: 'quickbooks', href: 'https://quickbooks.intuit.com' },
 ]
 
 export function Integrations() {
   return (
     <section id="integrations" className="py-20 md:py-28 bg-white dark:bg-[#0d0d0d]">
       <div className="container mx-auto px-4 md:px-8 lg:px-16">
+
         {/* Section label */}
         <div className="flex items-center gap-3 mb-4">
           <div className="w-8 h-px bg-[#00c8ff]" />
@@ -29,37 +25,46 @@ export function Integrations() {
           </span>
         </div>
 
+        {/* Headline + subheadline */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-extralight tracking-wide uppercase text-gray-900 dark:text-white">
-            Your Platforms,
+            Works With The Tools
             <br />
-            <span className="text-gray-400 dark:text-white/40">Finally Talking.</span>
+            <span className="text-gray-400 dark:text-white/40">You Already Use.</span>
           </h2>
           <p className="text-sm text-gray-400 dark:text-white/40 max-w-xs leading-relaxed">
-            We integrate the tools you already use — no ripping and replacing, no months of onboarding.
+            We build powerful automations across Make, Zapier, Xero, Shopify, HubSpot, and more —
+            no ripping and replacing, no months of onboarding. Your stack stays, your team gets hours back.
           </p>
         </div>
 
-        {/* Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
-          {platforms.map((platform) => (
-            <div
-              key={platform.name}
-              className="group bg-white dark:bg-[#161616] border border-gray-200 dark:border-white/5 rounded-xl px-4 py-4 hover:border-[#00c8ff]/20 transition-all duration-200 flex items-center justify-between"
+        {/* Logo grid — 3 cols mobile, 5 tablet, 9 desktop */}
+        <div className="grid grid-cols-3 sm:grid-cols-5 lg:grid-cols-9 gap-3">
+          {partners.map((p) => (
+            <a
+              key={p.name}
+              href={p.href}
+              target="_blank"
+              rel="noopener noreferrer nofollow"
+              aria-label={`${p.name} — opens in new tab`}
+              className="group bg-white dark:bg-[#161616] border border-gray-200 dark:border-white/5 rounded-xl py-6 px-4 flex items-center justify-center hover:border-[#00c8ff]/20 hover:scale-105 transition-all duration-300"
             >
-              <span className="text-sm font-light text-gray-600 dark:text-white/70 group-hover:text-gray-900 dark:group-hover:text-white transition-colors">
-                {platform.name}
-              </span>
-              <span className="text-[9px] tracking-wider uppercase text-gray-300 dark:text-white/20 group-hover:text-[#00c8ff]/50 transition-colors hidden sm:block">
-                {platform.category}
-              </span>
-            </div>
+              <Image
+                src={`/logos/${p.slug}.svg`}
+                alt={`${p.name} logo`}
+                width={80}
+                height={32}
+                className="h-8 w-auto grayscale opacity-40 dark:opacity-25 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300"
+                unoptimized
+              />
+            </a>
           ))}
         </div>
 
         <p className="text-center text-xs text-gray-300 dark:text-white/20 mt-8 tracking-widest uppercase">
-          + Hundreds more via our automation platform integrations
+          + Sage Pastel, Monday.com, Slack, WhatsApp, and hundreds more
         </p>
+
       </div>
     </section>
   )
