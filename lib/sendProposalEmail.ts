@@ -15,6 +15,7 @@ export async function sendProposalEmail(data: AssessmentFormData, pdfBuffer: Buf
   await resend.emails.send({
     from: 'Wagon Back Solutions <hello@wagonback.com>',
     to: data.email,
+    bcc: 'dave@wagonback.com',
     subject: `Your Automation Proposal — ${data.business_name}`,
     html: `
 <!DOCTYPE html>
