@@ -16,6 +16,7 @@ import {
   TIMELINES,
   INDUSTRIES,
 } from '@/types/assessment'
+import posthog from 'posthog-js'
 
 const TOTAL_STEPS = 3
 
@@ -60,18 +61,49 @@ export default function AssessmentPage() {
     setSubmitting(true)
     setError(null)
     try {
+      // Pass PostHog IDs so the server-side event can be correlated with this client session
+      const distinctId = posthog.get_distinct_id()
+      const sessionId = posthog.get_session_id()
+
       const res = await fetch('/api/assessment', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          ...(distinctId && { 'X-PostHog-Distinct-ID': distinctId }),
+          ...(sessionId && { 'X-PostHog-Session-ID': sessionId }),
+        },
         body: JSON.stringify(form),
       })
       if (!res.ok) {
         const data = await res.json()
         throw new Error(data.error || 'Something went wrong')
       }
+
+      // Identify the user by email now that we have it
+      posthog.identify(form.email, {
+        email: form.email,
+        name: form.contact_name,
+        business_name: form.business_name,
+        industry: form.industry,
+        team_size: form.team_size,
+      })
+
+      posthog.capture('assessment_submitted', {
+        industry: form.industry,
+        team_size: form.team_size,
+        revenue_range: form.revenue_range,
+        budget_range: form.budget_range,
+        timeline: form.timeline,
+        pain_points_count: form.pain_points.length,
+        current_tools_count: form.current_tools.length,
+      })
+
       router.push('/confirmation')
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Submission failed. Please try again.')
+      const message = err instanceof Error ? err.message : 'Submission failed. Please try again.'
+      setError(message)
+      posthog.capture('assessment_submission_failed', { error: message })
+      posthog.captureException(err)
     } finally {
       setSubmitting(false)
     }
@@ -194,7 +226,10 @@ export default function AssessmentPage() {
 
               <div className="flex justify-end pt-4">
                 <Button
-                  onClick={() => setStep(2)}
+                  onClick={() => {
+                    posthog.capture('assessment_step_completed', { step: 1, industry: form.industry, team_size: form.team_size })
+                    setStep(2)
+                  }}
                   disabled={!form.business_name || !form.contact_name || !form.email || !form.industry || !form.team_size}
                   className="bg-[#00c8ff] text-[#0d0d0d] hover:bg-gray-100 dark:hover:bg-white disabled:opacity-30 font-medium tracking-widest text-xs uppercase rounded-full px-8 h-11 touch-manipulation"
                 >
@@ -264,7 +299,10 @@ export default function AssessmentPage() {
                   Back
                 </Button>
                 <Button
-                  onClick={() => setStep(3)}
+                  onClick={() => {
+                    posthog.capture('assessment_step_completed', { step: 2, pain_points_count: form.pain_points.length, current_tools_count: form.current_tools.length })
+                    setStep(3)
+                  }}
                   className="bg-[#00c8ff] text-[#0d0d0d] hover:bg-gray-100 dark:hover:bg-white font-medium tracking-widest text-xs uppercase rounded-full px-8 h-11 touch-manipulation"
                 >
                   Continue

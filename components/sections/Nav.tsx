@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { Menu, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { ThemeToggle } from '@/components/ui/ThemeToggle'
+import posthog from 'posthog-js'
 
 export function Nav() {
   const [open, setOpen] = useState(false)
@@ -46,7 +47,7 @@ export function Nav() {
         {/* Desktop right: toggle + CTA */}
         <div className="hidden md:flex items-center gap-3">
           <ThemeToggle />
-          <Link href="/assessment">
+          <Link href="/assessment" onClick={() => posthog.capture('assessment_cta_clicked', { source: 'nav_desktop' })}>
             <Button
               size="sm"
               className="bg-[#00c8ff] text-[#0d0d0d] hover:bg-[#00c8ff]/90 font-medium tracking-wider text-xs uppercase rounded-full px-5 touch-manipulation"
@@ -82,7 +83,7 @@ export function Nav() {
               {link.label}
             </a>
           ))}
-          <Link href="/assessment" onClick={() => setOpen(false)}>
+          <Link href="/assessment" onClick={() => { setOpen(false); posthog.capture('assessment_cta_clicked', { source: 'nav_mobile' }) }}>
             <Button className="w-full bg-[#00c8ff] text-[#0d0d0d] hover:bg-[#00c8ff]/90 font-medium tracking-wider text-xs uppercase rounded-full touch-manipulation">
               Get Your Free Assessment
             </Button>

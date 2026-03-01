@@ -1,3 +1,14 @@
+export type LeadStatus = 'new' | 'contacted' | 'in_discussion' | 'won' | 'lost'
+
+export interface AssessmentRow extends AssessmentFormData {
+  id: string
+  created_at: string
+  proposal_sent_at: string | null
+  status: LeadStatus
+  admin_notes: string | null
+  archived: boolean
+}
+
 export interface AssessmentFormData {
   // Step 1: About Your Business
   business_name: string

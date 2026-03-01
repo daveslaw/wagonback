@@ -1,13 +1,9 @@
-import type { Metadata } from 'next'
+'use client'
+
 import Link from 'next/link'
 import { ArrowLeft, Mail, Calendar, CheckCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-
-export const metadata: Metadata = {
-  title: 'Assessment Received | Wagon Back Solutions',
-  description: 'Your automation assessment has been received. We\u2019ll review it and send your personalised proposal within 24 hours.',
-  robots: { index: false, follow: false },
-}
+import posthog from 'posthog-js'
 
 export default function ConfirmationPage() {
   const calendlyUrl = process.env.NEXT_PUBLIC_CALENDLY_URL || '#'
@@ -80,7 +76,7 @@ export default function ConfirmationPage() {
 
           {/* CTA */}
           <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
-            <a href={calendlyUrl} target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto">
+            <a href={calendlyUrl} target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto" onClick={() => posthog.capture('discovery_call_booked', { source: 'confirmation_page' })}>
               <Button className="w-full bg-[#00c8ff] text-[#0d0d0d] hover:bg-gray-100 dark:hover:bg-white font-medium tracking-widest text-xs uppercase rounded-full px-8 h-12 touch-manipulation transition-all duration-300">
                 Book a Discovery Call
                 <Calendar size={14} className="ml-2" />
