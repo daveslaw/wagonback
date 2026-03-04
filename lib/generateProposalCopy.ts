@@ -1,7 +1,6 @@
 import Anthropic from '@anthropic-ai/sdk'
-import fs from 'fs/promises'
-import path from 'path'
 import { AssessmentFormData } from '@/types/assessment'
+import { PROPOSAL_SYSTEM_PROMPT } from '@/content/proposal-prompt'
 
 export interface ProposalCopy {
   cover_subtitle: string
@@ -52,11 +51,6 @@ export function getROIEstimate(data: AssessmentFormData): string {
 
 export async function generateProposalCopy(data: AssessmentFormData): Promise<ProposalCopy> {
   try {
-    const systemPrompt = await fs.readFile(
-      path.join(process.cwd(), 'content', 'proposal-prompt.md'),
-      'utf-8'
-    )
-
     const tier = getRecommendedTier(data)
     const roi = getROIEstimate(data)
 
@@ -93,7 +87,7 @@ Computed values for your reference (do not repeat these verbatim — weave them 
     const message = await anthropic.messages.create({
       model: 'claude-haiku-4-5-20251001',
       max_tokens: 1800,
-      system: systemPrompt,
+      system: PROPOSAL_SYSTEM_PROMPT,
       messages: [{ role: 'user', content: userMessage }],
     })
 

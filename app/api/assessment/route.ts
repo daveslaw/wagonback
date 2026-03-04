@@ -6,6 +6,11 @@ import { getPostHogClient } from '@/lib/posthog-server'
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const MAX_TEXT_LENGTH = 2000
+// Rate limit: max submissions per window
+const RATE_LIMIT_EMAIL_MAX = 1   // same email: 1 per 24 h
+const RATE_LIMIT_IP_MAX = 5      // same IP:    5 per hour
+const RATE_LIMIT_EMAIL_WINDOW_H = 24
+const RATE_LIMIT_IP_WINDOW_H = 1
 
 export async function POST(req: NextRequest) {
   // Read PostHog client-session IDs forwarded from the browser for event correlation
@@ -14,6 +19,53 @@ export async function POST(req: NextRequest) {
 
   try {
     const data: AssessmentFormData = await req.json()
+
+    // ── Rate limiting (uses existing Supabase — no extra infrastructure needed) ──
+    const supabase = createServerClient()
+    const ip =
+      req.headers.get('x-forwarded-for')?.split(',')[0].trim() ??
+      req.headers.get('x-real-ip') ??
+      'unknown'
+
+    const emailWindowStart = new Date(
+      Date.now() - RATE_LIMIT_EMAIL_WINDOW_H * 60 * 60 * 1000
+    ).toISOString()
+    const ipWindowStart = new Date(
+      Date.now() - RATE_LIMIT_IP_WINDOW_H * 60 * 60 * 1000
+    ).toISOString()
+
+    // 1. Duplicate email check — prevents re-submissions and most spam bots
+    if (data.email && EMAIL_RE.test(data.email)) {
+      const { count: emailCount } = await supabase
+        .from('assessments')
+        .select('*', { count: 'exact', head: true })
+        .eq('email', data.email.toLowerCase())
+        .gte('created_at', emailWindowStart)
+
+      if ((emailCount ?? 0) >= RATE_LIMIT_EMAIL_MAX) {
+        return NextResponse.json(
+          { error: 'An assessment from this email was recently received. Contact us at hello@wagonback.com if you need assistance.' },
+          { status: 429 }
+        )
+      }
+    }
+
+    // 2. IP-based check — secondary guard against high-volume attacks
+    if (ip !== 'unknown') {
+      const { count: ipCount } = await supabase
+        .from('assessments')
+        .select('*', { count: 'exact', head: true })
+        .eq('submitter_ip', ip)
+        .gte('created_at', ipWindowStart)
+
+      if ((ipCount ?? 0) >= RATE_LIMIT_IP_MAX) {
+        return NextResponse.json(
+          { error: 'Too many submissions from this connection. Please try again later.' },
+          { status: 429 }
+        )
+      }
+    }
+    // ── End rate limiting ──
 
     // Validate required fields
     if (!data.business_name || !data.contact_name || !data.email) {
@@ -35,11 +87,10 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    // 1. Save to Supabase
-    const supabase = createServerClient()
+    // 1. Save to Supabase (include hashed IP for rate limiting; never stored in plain text)
     const { data: inserted, error: dbError } = await supabase
       .from('assessments')
-      .insert([data])
+      .insert([{ ...data, ...(ip !== 'unknown' && { submitter_ip: ip }) }])
       .select('id')
       .single()
 
