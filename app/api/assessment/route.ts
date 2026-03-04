@@ -87,10 +87,10 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    // 1. Save to Supabase (include hashed IP for rate limiting; never stored in plain text)
+    // 1. Save to Supabase
     const { data: inserted, error: dbError } = await supabase
       .from('assessments')
-      .insert([{ ...data, ...(ip !== 'unknown' && { submitter_ip: ip }) }])
+      .insert([data])
       .select('id')
       .single()
 
@@ -107,6 +107,18 @@ export async function POST(req: NextRequest) {
       })
       await posthog.shutdown()
       return NextResponse.json({ error: 'Failed to save assessment' }, { status: 500 })
+    }
+
+    // 1b. Store submitter IP for rate limiting (non-fatal — requires submitter_ip column to exist)
+    //     Run: ALTER TABLE assessments ADD COLUMN submitter_ip TEXT;
+    if (ip !== 'unknown') {
+      supabase
+        .from('assessments')
+        .update({ submitter_ip: ip })
+        .eq('id', inserted.id)
+        .then(({ error }) => {
+          if (error) console.warn('submitter_ip update skipped (column may not exist yet):', error.message)
+        })
     }
 
     // 2. Notify internally (non-fatal) — so you know a submission arrived
