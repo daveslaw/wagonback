@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { withSentryConfig } from "@sentry/nextjs";
 
 // Content-Security-Policy for this stack:
 //   - Next.js App Router requires 'unsafe-inline' for its bootstrap scripts.
@@ -7,13 +8,14 @@ import type { NextConfig } from "next";
 //   - Geist font is self-hosted via next/font — no external font CDN needed.
 //   - Three.js WebGL compiles shaders through the browser GPU, not JS eval().
 //   - placehold.co is whitelisted for placeholder images used in development/PDF preview.
+//   - Sentry sends error reports to *.ingest.sentry.io (client-side SDK only).
 const CSP = [
   "default-src 'self'",
   "script-src 'self' 'unsafe-inline'",
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: https://placehold.co",
   "font-src 'self'",
-  "connect-src 'self'",
+  "connect-src 'self' https://*.ingest.sentry.io",
   "worker-src 'self' blob:",
   "object-src 'none'",
   "base-uri 'self'",
@@ -52,4 +54,22 @@ const nextConfig: NextConfig = {
   skipTrailingSlashRedirect: true,
 };
 
-export default nextConfig;
+export default withSentryConfig(nextConfig, {
+  // Suppresses Sentry build output unless running in CI
+  silent: !process.env.CI,
+
+  // Upload source maps to Sentry for readable stack traces in production.
+  // Requires SENTRY_AUTH_TOKEN, SENTRY_ORG, SENTRY_PROJECT env vars.
+  // Leave blank and source maps still work locally; just won't be symbolicated in Sentry UI.
+  org: process.env.SENTRY_ORG,
+  project: process.env.SENTRY_PROJECT,
+
+  // Hides source maps from the browser bundle (they're uploaded to Sentry instead)
+  hideSourceMaps: true,
+
+  // Removes Sentry logger statements from the production bundle
+  disableLogger: true,
+
+  // Automatically instrument Vercel Cron Monitors (not used here, but harmless)
+  automaticVercelMonitors: false,
+});

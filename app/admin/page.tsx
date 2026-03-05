@@ -8,7 +8,9 @@ export default async function AdminPage() {
   const { data: rows, error } = await supabase
     .from('assessments')
     .select('*')
+    .eq('archived', false)
     .order('created_at', { ascending: false })
+    .limit(500)
 
   if (error) {
     return (

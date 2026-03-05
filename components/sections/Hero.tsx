@@ -1,11 +1,17 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import dynamic from 'next/dynamic'
 import Link from 'next/link'
-import { DotScreenShader } from '@/components/ui/dot-shader-background'
 import { Button } from '@/components/ui/button'
 import { ArrowRight } from 'lucide-react'
 import posthog from 'posthog-js'
+
+// Lazy-load the Three.js canvas — keeps it out of the initial JS bundle (~700 KB savings)
+const DotScreenShader = dynamic(
+  () => import('@/components/ui/dot-shader-background').then((m) => ({ default: m.DotScreenShader })),
+  { ssr: false, loading: () => null }
+)
 
 export function Hero() {
   const [isMobile, setIsMobile] = useState(false)

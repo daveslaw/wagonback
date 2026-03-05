@@ -26,7 +26,12 @@ export async function PATCH(
     }
     update.status = body.status
   }
-  if ('admin_notes' in body) update.admin_notes = body.admin_notes ?? null
+  if ('admin_notes' in body) {
+    if (typeof body.admin_notes === 'string' && body.admin_notes.length > 5000) {
+      return NextResponse.json({ error: 'admin_notes exceeds 5000 character limit' }, { status: 400 })
+    }
+    update.admin_notes = body.admin_notes ?? null
+  }
   if ('archived' in body) update.archived = !!body.archived
 
   if (Object.keys(update).length === 0) {

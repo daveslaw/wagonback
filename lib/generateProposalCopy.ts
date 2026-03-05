@@ -1,4 +1,5 @@
 import Anthropic from '@anthropic-ai/sdk'
+import * as Sentry from '@sentry/nextjs'
 import { AssessmentFormData } from '@/types/assessment'
 import { PROPOSAL_SYSTEM_PROMPT } from '@/content/proposal-prompt'
 
@@ -117,6 +118,8 @@ Computed values for your reference (do not repeat these verbatim — weave them 
 
     return parsed
   } catch (err) {
+    // Report to Sentry — this is a silent failure (fallback copy used) so it won't surface otherwise
+    Sentry.captureException(err, { tags: { context: 'generateProposalCopy' } })
     console.error('generateProposalCopy failed, using fallback copy:', err)
     return FALLBACK_COPY
   }

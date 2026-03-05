@@ -1,0 +1,6 @@
+{
+  "functions": {
+    "app/api/generate-proposal/route.ts": { "maxDuration": 30 },
+    "app/api/preview-proposal/route.ts": { "maxDuration": 30 }
+  }
+}

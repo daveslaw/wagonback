@@ -11,6 +11,8 @@ export async function loginAction(formData: FormData) {
   const adminToken = process.env.ADMIN_TOKEN
 
   if (!adminToken || !password || password !== adminToken) {
+    // Artificial delay on failure — makes brute-forcing impractical (~667 attempts/day max)
+    await new Promise((resolve) => setTimeout(resolve, 1500))
     return { error: 'Invalid password' }
   }
 

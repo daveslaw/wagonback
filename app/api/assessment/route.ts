@@ -1,7 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createServerClient } from '@/lib/supabase'
 import { sendInternalNotification } from '@/lib/sendProposalEmail'
-import { AssessmentFormData } from '@/types/assessment'
+import {
+  AssessmentFormData,
+  INDUSTRIES,
+  TEAM_SIZES,
+  REVENUE_RANGES,
+  BUDGET_RANGES,
+  TIMELINES,
+} from '@/types/assessment'
 import { getPostHogClient } from '@/lib/posthog-server'
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -75,6 +82,20 @@ export async function POST(req: NextRequest) {
     // Validate email format
     if (!EMAIL_RE.test(data.email)) {
       return NextResponse.json({ error: 'Invalid email address' }, { status: 400 })
+    }
+
+    // Validate enum fields against known constant arrays
+    const enumChecks: [string, string | undefined, readonly string[]][] = [
+      ['industry',      data.industry,      INDUSTRIES],
+      ['team_size',     data.team_size,     TEAM_SIZES],
+      ['revenue_range', data.revenue_range, REVENUE_RANGES],
+      ['budget_range',  data.budget_range,  BUDGET_RANGES],
+      ['timeline',      data.timeline,      TIMELINES],
+    ]
+    for (const [field, value, allowed] of enumChecks) {
+      if (value && !(allowed as readonly string[]).includes(value)) {
+        return NextResponse.json({ error: `Invalid value for ${field}` }, { status: 400 })
+      }
     }
 
     // Enforce length limits on free-text fields to prevent prompt bloat / oversized PDFs

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { renderToBuffer } from '@react-pdf/renderer'
+import * as Sentry from '@sentry/nextjs'
 import { createServerClient } from '@/lib/supabase'
 import { generateProposalDocument } from '@/lib/generateProposal'
 import { generateProposalCopy } from '@/lib/generateProposalCopy'
@@ -61,6 +62,10 @@ async function runPipeline(id: string, token: string): Promise<PipelineResult> {
     .update({ proposal_sent_at: new Date().toISOString() })
     .eq('id', id)
   if (markError) {
+    // Non-fatal but worth knowing — email went out but DB wasn't updated
+    Sentry.captureException(new Error('Failed to mark proposal as sent'), {
+      extra: { supabaseError: markError, assessmentId: id },
+    })
     console.error('Failed to mark proposal as sent — email was delivered but row not updated:', markError)
   }
 
@@ -93,6 +98,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ success: true })
   } catch (err) {
+    Sentry.captureException(err, { tags: { context: 'generate-proposal' } })
     console.error('generate-proposal error:', err)
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
