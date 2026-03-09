@@ -16,8 +16,8 @@ import { getPostHogClient } from '@/lib/posthog-server'
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const MAX_TEXT_LENGTH = 2000
 // Rate limit: max submissions per window
-const RATE_LIMIT_EMAIL_MAX = 1   // same email: 1 per 24 h
-const RATE_LIMIT_IP_MAX = 5      // same IP:    5 per hour
+const RATE_LIMIT_EMAIL_MAX = 1 // same email: 1 per 24 h
+const RATE_LIMIT_IP_MAX = 5 // same IP:    5 per hour
 const RATE_LIMIT_EMAIL_WINDOW_H = 24
 const RATE_LIMIT_IP_WINDOW_H = 1
 
@@ -53,7 +53,10 @@ export async function POST(req: NextRequest) {
 
       if ((emailCount ?? 0) >= RATE_LIMIT_EMAIL_MAX) {
         return NextResponse.json(
-          { error: 'An assessment from this email was recently received. Contact us at hello@wagonback.com if you need assistance.' },
+          {
+            error:
+              'An assessment from this email was recently received. Contact us at hello@wagonback.com if you need assistance.',
+          },
           { status: 429 }
         )
       }
@@ -88,11 +91,11 @@ export async function POST(req: NextRequest) {
 
     // Validate enum fields against known constant arrays
     const enumChecks: [string, string | undefined, readonly string[]][] = [
-      ['industry',      data.industry,      INDUSTRIES],
-      ['team_size',     data.team_size,     TEAM_SIZES],
+      ['industry', data.industry, INDUSTRIES],
+      ['team_size', data.team_size, TEAM_SIZES],
       ['revenue_range', data.revenue_range, REVENUE_RANGES],
-      ['budget_range',  data.budget_range,  BUDGET_RANGES],
-      ['timeline',      data.timeline,      TIMELINES],
+      ['budget_range', data.budget_range, BUDGET_RANGES],
+      ['timeline', data.timeline, TIMELINES],
     ]
     for (const [field, value, allowed] of enumChecks) {
       if (value && !(allowed as readonly string[]).includes(value)) {
@@ -112,11 +115,16 @@ export async function POST(req: NextRequest) {
     for (const field of ['time_drains', 'desired_outcomes', 'additional_notes'] as const) {
       if (data[field] && data[field].length > MAX_TEXT_LENGTH) {
         return NextResponse.json(
-          { error: `Response too long — please keep each field under ${MAX_TEXT_LENGTH} characters` },
+          {
+            error: `Response too long — please keep each field under ${MAX_TEXT_LENGTH} characters`,
+          },
           { status: 400 }
         )
       }
     }
+
+    // Normalise email to lowercase before insert to prevent duplicate detection misses
+    data.email = data.email.toLowerCase()
 
     // 1. Save to Supabase
     const { data: inserted, error: dbError } = await supabase
@@ -148,7 +156,8 @@ export async function POST(req: NextRequest) {
         .update({ submitter_ip: ip })
         .eq('id', inserted.id)
         .then(({ error }) => {
-          if (error) console.warn('submitter_ip update skipped (column may not exist yet):', error.message)
+          if (error)
+            console.warn('submitter_ip update skipped (column may not exist yet):', error.message)
         })
     }
 

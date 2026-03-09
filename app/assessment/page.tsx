@@ -5,6 +5,10 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { ArrowLeft, ArrowRight, Check } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { Field } from '@/components/assessment/Field'
+import { Input } from '@/components/assessment/Input'
+import { Select } from '@/components/assessment/Select'
+import { CheckItem } from '@/components/assessment/CheckItem'
 import styles from './assessment.module.css'
 import {
   AssessmentFormData,
@@ -113,7 +117,10 @@ export default function AssessmentPage() {
     <div className="min-h-screen bg-white dark:bg-[#0d0d0d] flex flex-col">
       {/* Top bar */}
       <div className="px-4 md:px-8 py-5 flex items-center justify-between border-b border-gray-200 dark:border-white/5">
-        <Link href="/" className="flex items-center gap-2 text-gray-400 dark:text-white/40 hover:text-gray-900 dark:hover:text-white transition-colors text-xs tracking-widest uppercase">
+        <Link
+          href="/"
+          className="flex items-center gap-2 text-gray-400 dark:text-white/40 hover:text-gray-900 dark:hover:text-white transition-colors text-xs tracking-widest uppercase"
+        >
           <ArrowLeft size={14} />
           Back
         </Link>
@@ -162,7 +169,9 @@ export default function AssessmentPage() {
                 <h1 className="text-2xl sm:text-3xl font-extralight tracking-wide uppercase text-gray-900 dark:text-white mb-2">
                   About Your Business
                 </h1>
-                <p className="text-sm text-gray-400 dark:text-white/40">Tell us a bit about who you are.</p>
+                <p className="text-sm text-gray-400 dark:text-white/40">
+                  Tell us a bit about who you are.
+                </p>
               </div>
 
               <div className="space-y-5">
@@ -227,10 +236,20 @@ export default function AssessmentPage() {
               <div className="flex justify-end pt-4">
                 <Button
                   onClick={() => {
-                    posthog.capture('assessment_step_completed', { step: 1, industry: form.industry, team_size: form.team_size })
+                    posthog.capture('assessment_step_completed', {
+                      step: 1,
+                      industry: form.industry,
+                      team_size: form.team_size,
+                    })
                     setStep(2)
                   }}
-                  disabled={!form.business_name || !form.contact_name || !form.email || !form.industry || !form.team_size}
+                  disabled={
+                    !form.business_name ||
+                    !form.contact_name ||
+                    !form.email ||
+                    !form.industry ||
+                    !form.team_size
+                  }
                   className="bg-[#00c8ff] text-[#0d0d0d] hover:bg-gray-100 dark:hover:bg-white disabled:opacity-30 font-medium tracking-widest text-xs uppercase rounded-full px-8 h-11 touch-manipulation"
                 >
                   Continue
@@ -247,7 +266,9 @@ export default function AssessmentPage() {
                 <h1 className="text-2xl sm:text-3xl font-extralight tracking-wide uppercase text-gray-900 dark:text-white mb-2">
                   Current Challenges
                 </h1>
-                <p className="text-sm text-gray-400 dark:text-white/40">Help us understand what&#39;s slowing you down.</p>
+                <p className="text-sm text-gray-400 dark:text-white/40">
+                  Help us understand what&#39;s slowing you down.
+                </p>
               </div>
 
               <div className="space-y-7">
@@ -300,7 +321,11 @@ export default function AssessmentPage() {
                 </Button>
                 <Button
                   onClick={() => {
-                    posthog.capture('assessment_step_completed', { step: 2, pain_points_count: form.pain_points.length, current_tools_count: form.current_tools.length })
+                    posthog.capture('assessment_step_completed', {
+                      step: 2,
+                      pain_points_count: form.pain_points.length,
+                      current_tools_count: form.current_tools.length,
+                    })
                     setStep(3)
                   }}
                   className="bg-[#00c8ff] text-[#0d0d0d] hover:bg-gray-100 dark:hover:bg-white font-medium tracking-widest text-xs uppercase rounded-full px-8 h-11 touch-manipulation"
@@ -319,7 +344,9 @@ export default function AssessmentPage() {
                 <h1 className="text-2xl sm:text-3xl font-extralight tracking-wide uppercase text-gray-900 dark:text-white mb-2">
                   Goals &amp; Budget
                 </h1>
-                <p className="text-sm text-gray-400 dark:text-white/40">Help us scope the right solution for you.</p>
+                <p className="text-sm text-gray-400 dark:text-white/40">
+                  Help us scope the right solution for you.
+                </p>
               </div>
 
               <div className="space-y-5">
@@ -378,7 +405,10 @@ export default function AssessmentPage() {
               </div>
 
               {error && (
-                <div role="alert" className="text-xs text-red-400 border border-red-400/20 bg-red-400/5 rounded-xl px-4 py-3">
+                <div
+                  role="alert"
+                  className="text-xs text-red-400 border border-red-400/20 bg-red-400/5 rounded-xl px-4 py-3"
+                >
                   {error}
                 </div>
               )}
@@ -394,7 +424,13 @@ export default function AssessmentPage() {
                 </Button>
                 <Button
                   onClick={handleSubmit}
-                  disabled={submitting || !form.desired_outcomes || !form.revenue_range || !form.budget_range || !form.timeline}
+                  disabled={
+                    submitting ||
+                    !form.desired_outcomes ||
+                    !form.revenue_range ||
+                    !form.budget_range ||
+                    !form.timeline
+                  }
                   className="bg-[#00c8ff] text-[#0d0d0d] hover:bg-gray-100 dark:hover:bg-white disabled:opacity-30 font-medium tracking-widest text-xs uppercase rounded-full px-8 h-11 touch-manipulation"
                 >
                   {submitting ? 'Sending...' : 'Submit Assessment'}
@@ -406,109 +442,5 @@ export default function AssessmentPage() {
         </div>
       </div>
     </div>
-  )
-}
-
-// ─── Reusable form primitives ──────────────────────────────────────────────
-
-function Field({ label, id, required, children }: { label: string; id?: string; required?: boolean; children: React.ReactNode }) {
-  return (
-    <div className="flex flex-col gap-2">
-      <label htmlFor={id} className="text-xs tracking-widest uppercase text-gray-400 dark:text-white/40">
-        {label}
-        {required && <span className="text-[#00c8ff] ml-1">*</span>}
-      </label>
-      {children}
-    </div>
-  )
-}
-
-function Input({
-  id,
-  value,
-  onChange,
-  placeholder,
-  type = 'text',
-}: {
-  id?: string
-  value: string
-  onChange: (v: string) => void
-  placeholder?: string
-  type?: string
-}) {
-  return (
-    <input
-      id={id}
-      type={type}
-      value={value}
-      onChange={(e) => onChange(e.target.value)}
-      placeholder={placeholder}
-      className="w-full bg-[#f5f5f5] dark:bg-[#1a1a1a] border border-gray-200 dark:border-white/10 rounded-xl px-4 py-3 text-sm text-gray-700 dark:text-white/80 placeholder:text-gray-400 dark:placeholder:text-white/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00c8ff]/60 focus:border-[#00c8ff]/40 transition-colors h-11 touch-manipulation"
-    />
-  )
-}
-
-function Select({
-  id,
-  value,
-  onChange,
-  options,
-  placeholder,
-}: {
-  id?: string
-  value: string
-  onChange: (v: string) => void
-  options: string[]
-  placeholder?: string
-}) {
-  return (
-    <select
-      id={id}
-      value={value}
-      onChange={(e) => onChange(e.target.value)}
-      className="w-full bg-[#f5f5f5] dark:bg-[#1a1a1a] border border-gray-200 dark:border-white/10 rounded-xl px-4 py-3 text-sm text-gray-700 dark:text-white/80 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00c8ff]/60 focus:border-[#00c8ff]/40 transition-colors h-11 appearance-none cursor-pointer touch-manipulation"
-    >
-      <option value="" disabled className="text-gray-400 dark:text-white/20">
-        {placeholder}
-      </option>
-      {options.map((opt) => (
-        <option key={opt} value={opt} className="bg-white dark:bg-[#1a1a1a]">
-          {opt}
-        </option>
-      ))}
-    </select>
-  )
-}
-
-function CheckItem({
-  label,
-  checked,
-  onChange,
-}: {
-  label: string
-  checked: boolean
-  onChange: () => void
-}) {
-  return (
-    <button
-      type="button"
-      role="checkbox"
-      aria-checked={checked}
-      onClick={onChange}
-      className={`flex items-center gap-3 px-3 py-2.5 rounded-xl border text-left text-xs transition-all duration-150 touch-manipulation focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00c8ff]/60 ${
-        checked
-          ? 'border-[#00c8ff]/40 bg-[#00c8ff]/5 text-gray-900 dark:text-white'
-          : 'border-gray-200 dark:border-white/8 bg-[#f5f5f5] dark:bg-[#1a1a1a] text-gray-400 dark:text-white/40 hover:border-gray-300 dark:hover:border-white/20 hover:text-gray-600 dark:hover:text-white/60'
-      }`}
-    >
-      <div
-        className={`w-4 h-4 rounded flex-shrink-0 flex items-center justify-center border transition-colors ${
-          checked ? 'bg-[#00c8ff] border-[#00c8ff]' : 'border-gray-300 dark:border-white/20'
-        }`}
-      >
-        {checked && <Check size={10} className="text-[#0d0d0d]" />}
-      </div>
-      <span className="leading-tight">{label}</span>
-    </button>
   )
 }

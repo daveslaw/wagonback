@@ -7,7 +7,7 @@ function getResend() {
 }
 
 export async function sendProposalEmail(data: AssessmentFormData, pdfBuffer: Buffer) {
-  const calendlyUrl = process.env.NEXT_PUBLIC_CALENDLY_URL || '#'
+  const bookingUrl = process.env.NEXT_PUBLIC_BOOKING_URL || '#'
   const safeContact = escapeHtml(data.contact_name)
   const safeBusiness = escapeHtml(data.business_name)
 
@@ -65,7 +65,7 @@ export async function sendProposalEmail(data: AssessmentFormData, pdfBuffer: Buf
           <!-- CTA -->
           <tr>
             <td style="padding-bottom:32px;">
-              <a href="${calendlyUrl}"
+              <a href="${bookingUrl}"
                  style="display:inline-block;background-color:#00c8ff;color:#0d0d0d;text-decoration:none;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;padding:14px 28px;border-radius:100px;">
                 Book Your Discovery Call →
               </a>
@@ -103,10 +103,7 @@ export async function sendInternalNotification(data: AssessmentFormData, id: str
   if (!internalEmail) return
 
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.wagonback.com'
-  const token = process.env.ADMIN_TOKEN || ''
-  // Link to the admin panel rather than a direct action URL to avoid
-  // embedding the admin token in an actionable email link.
-  const adminUrl = `${baseUrl}/admin?token=${encodeURIComponent(token)}`
+  const adminUrl = `${baseUrl}/admin`
 
   const resend = getResend()
   await resend.emails.send({

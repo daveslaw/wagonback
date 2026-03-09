@@ -1,12 +1,10 @@
-'use client'
-
 import Link from 'next/link'
-import { ArrowLeft, Mail, Calendar, CheckCircle } from 'lucide-react'
+import { ArrowLeft, Mail, Calendar } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import posthog from 'posthog-js'
+import { BookingButton } from '@/components/ui/BookingButton'
 
 export default function ConfirmationPage() {
-  const calendlyUrl = process.env.NEXT_PUBLIC_CALENDLY_URL || '#'
+  const bookingUrl = process.env.NEXT_PUBLIC_BOOKING_URL || '#'
 
   return (
     <div className="min-h-screen bg-white dark:bg-[#0d0d0d] flex flex-col">
@@ -35,7 +33,19 @@ export default function ConfirmationPage() {
         <div className="w-full max-w-xl text-center flex flex-col items-center gap-8">
           {/* Success icon */}
           <div className="w-16 h-16 rounded-full bg-[#00c8ff]/10 border border-[#00c8ff]/20 flex items-center justify-center">
-            <CheckCircle size={28} className="text-[#00c8ff]" />
+            <svg
+              width="28"
+              height="28"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#00c8ff"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <circle cx="12" cy="12" r="10" />
+              <polyline points="9 12 11 14 15 10" />
+            </svg>
           </div>
 
           <div className="flex flex-col gap-3">
@@ -43,7 +53,8 @@ export default function ConfirmationPage() {
               You&#39;re All Set.
             </h1>
             <p className="text-sm text-gray-400 dark:text-white/40 leading-relaxed max-w-md mx-auto">
-              Your assessment has been received. We&#39;ll review it and send your personalised automation proposal within 24 hours.
+              Your assessment has been received. We&#39;ll review it and send your personalised
+              automation proposal within 24 hours.
             </p>
           </div>
 
@@ -54,9 +65,13 @@ export default function ConfirmationPage() {
                 <Mail size={14} className="text-[#00c8ff]" />
               </div>
               <div>
-                <p className="text-sm font-light text-gray-900 dark:text-white mb-1">Expect Your Proposal</p>
+                <p className="text-sm font-light text-gray-900 dark:text-white mb-1">
+                  Expect Your Proposal
+                </p>
                 <p className="text-xs text-gray-400 dark:text-white/40 leading-relaxed">
-                  We&#39;ll review your answers and send a personalised automation proposal to your inbox — covering your key opportunities, our recommended approach, and estimated ROI.
+                  We&#39;ll review your answers and send a personalised automation proposal to your
+                  inbox — covering your key opportunities, our recommended approach, and estimated
+                  ROI.
                 </p>
               </div>
             </div>
@@ -66,9 +81,12 @@ export default function ConfirmationPage() {
                 <Calendar size={14} className="text-[#00c8ff]" />
               </div>
               <div>
-                <p className="text-sm font-light text-gray-900 dark:text-white mb-1">Book a Discovery Call</p>
+                <p className="text-sm font-light text-gray-900 dark:text-white mb-1">
+                  Book a Discovery Call
+                </p>
                 <p className="text-xs text-gray-400 dark:text-white/40 leading-relaxed">
-                  Can&#39;t wait? Book a free 30-minute call now and we&#39;ll walk through everything together — no obligation.
+                  Can&#39;t wait? Book a free 30-minute call now and we&#39;ll walk through
+                  everything together — no obligation.
                 </p>
               </div>
             </div>
@@ -76,12 +94,7 @@ export default function ConfirmationPage() {
 
           {/* CTA */}
           <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
-            <a href={calendlyUrl} target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto" onClick={() => posthog.capture('discovery_call_booked', { source: 'confirmation_page' })}>
-              <Button className="w-full bg-[#00c8ff] text-[#0d0d0d] hover:bg-gray-100 dark:hover:bg-white font-medium tracking-widest text-xs uppercase rounded-full px-8 h-12 touch-manipulation transition-all duration-300">
-                Book a Discovery Call
-                <Calendar size={14} className="ml-2" />
-              </Button>
-            </a>
+            <BookingButton href={bookingUrl} />
             <Link href="/" className="w-full sm:w-auto">
               <Button
                 variant="ghost"
@@ -94,7 +107,10 @@ export default function ConfirmationPage() {
 
           <p className="text-[10px] text-gray-300 dark:text-white/20 tracking-widest uppercase">
             Questions? Contact us at{' '}
-            <a href="mailto:hello@wagonback.com" className="text-[#00c8ff]/60 hover:text-[#00c8ff] transition-colors">
+            <a
+              href="mailto:hello@wagonback.com"
+              className="text-[#00c8ff]/60 hover:text-[#00c8ff] transition-colors"
+            >
               hello@wagonback.com
             </a>
           </p>

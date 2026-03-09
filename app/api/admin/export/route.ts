@@ -42,6 +42,7 @@ export async function GET(req: NextRequest) {
     .from('assessments')
     .select(COLUMNS.join(', '))
     .order('created_at', { ascending: false })
+    .limit(10000)
 
   if (error) return new NextResponse('Failed to fetch assessments', { status: 500 })
 

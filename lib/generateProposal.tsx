@@ -1,10 +1,4 @@
-import {
-  Document,
-  Page,
-  Text,
-  View,
-  StyleSheet,
-} from '@react-pdf/renderer'
+import { Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer'
 import { AssessmentFormData } from '@/types/assessment'
 import { ProposalCopy, getRecommendedTier, getROIEstimate } from '@/lib/generateProposalCopy'
 import { getIntegrationOpportunities } from '@/lib/integrationOpportunities'
@@ -199,8 +193,8 @@ const styles = StyleSheet.create({
 // Extended styles that spread base entries (react-pdf requires plain objects for spread)
 const extendedStyles = {
   painPointText: { ...styles.body, marginBottom: 0, flex: 1 },
-  toolsLabel:    { ...styles.sectionLabel, marginTop: 16 },
-  ctaCard:       { ...styles.card, marginTop: 20 },
+  toolsLabel: { ...styles.sectionLabel, marginTop: 16 },
+  ctaCard: { ...styles.card, marginTop: 20 },
 }
 
 export function generateProposalDocument(data: AssessmentFormData, copy: ProposalCopy) {
@@ -228,17 +222,13 @@ export function generateProposalDocument(data: AssessmentFormData, copy: Proposa
 
         <View>
           <View style={styles.accentLine} />
-          <Text style={styles.coverTitle}>
-            Automation{'\n'}Proposal
-          </Text>
+          <Text style={styles.coverTitle}>Automation{'\n'}Proposal</Text>
           <Text style={styles.coverSubtitle}>{copy.cover_subtitle}</Text>
         </View>
 
         <View>
           <Text style={styles.coverClient}>{data.business_name}</Text>
-          <Text style={styles.submittedOn}>
-            Prepared for: {data.contact_name}
-          </Text>
+          <Text style={styles.submittedOn}>Prepared for: {data.contact_name}</Text>
           <Text style={styles.coverDate}>{date}</Text>
         </View>
 
@@ -254,7 +244,9 @@ export function generateProposalDocument(data: AssessmentFormData, copy: Proposa
         <Text style={styles.sectionTitle}>The Opportunity</Text>
 
         {copy.exec_intro.split('\n\n').map((para, i) => (
-          <Text key={i} style={styles.body}>{para}</Text>
+          <Text key={i} style={styles.body}>
+            {para}
+          </Text>
         ))}
 
         {data.desired_outcomes ? (
@@ -321,7 +313,9 @@ export function generateProposalDocument(data: AssessmentFormData, copy: Proposa
         <Text style={styles.sectionTitle}>Our Approach</Text>
 
         {copy.solution_intro.split('\n\n').map((para, i) => (
-          <Text key={i} style={styles.body}>{para}</Text>
+          <Text key={i} style={styles.body}>
+            {para}
+          </Text>
         ))}
 
         <View style={styles.card}>
@@ -334,11 +328,14 @@ export function generateProposalDocument(data: AssessmentFormData, copy: Proposa
         <Text style={styles.sectionLabel}>Estimated ROI</Text>
         <Text style={styles.sectionTitle}>What To Expect</Text>
         <Text style={styles.body}>
-          Conservative estimate: <Text style={styles.roiHighlight}>{roi}</Text> saved through automation.
+          Conservative estimate: <Text style={styles.roiHighlight}>{roi}</Text> saved through
+          automation.
         </Text>
 
         {copy.roi_body.split('\n\n').map((para, i) => (
-          <Text key={i} style={styles.body}>{para}</Text>
+          <Text key={i} style={styles.body}>
+            {para}
+          </Text>
         ))}
 
         <View style={styles.footer}>
@@ -354,16 +351,30 @@ export function generateProposalDocument(data: AssessmentFormData, copy: Proposa
         <Text style={styles.body}>{copy.next_steps_intro}</Text>
 
         {[
-          { step: '01', title: 'Book a Discovery Call', desc: 'A 30-minute call to walk through this proposal, answer your questions, and refine the scope. No obligation.' },
-          { step: '02', title: 'Scoping & Proposal', desc: 'We produce a detailed technical scope, timeline, and fixed-price quote within 5 business days.' },
-          { step: '03', title: 'Build & Launch', desc: 'We build, test, and deploy your automation stack — typically within 2–6 weeks depending on scope.' },
-          { step: '04', title: 'Ongoing Support', desc: 'Monthly retainer for monitoring, optimisation, and expanding your automation as your business grows.' },
+          {
+            step: '01',
+            title: 'Book a Discovery Call',
+            desc: 'A 30-minute call to walk through this proposal, answer your questions, and refine the scope. No obligation.',
+          },
+          {
+            step: '02',
+            title: 'Scoping & Proposal',
+            desc: 'We produce a detailed technical scope, timeline, and fixed-price quote within 5 business days.',
+          },
+          {
+            step: '03',
+            title: 'Build & Launch',
+            desc: 'We build, test, and deploy your automation stack — typically within 2–6 weeks depending on scope.',
+          },
+          {
+            step: '04',
+            title: 'Ongoing Support',
+            desc: 'Monthly retainer for monitoring, optimisation, and expanding your automation as your business grows.',
+          },
         ].map((item) => (
           <View key={item.step} style={styles.card}>
             <View style={styles.nextStepRow}>
-              <Text style={styles.nextStepNumber}>
-                {item.step}
-              </Text>
+              <Text style={styles.nextStepNumber}>{item.step}</Text>
               <View style={styles.nextStepContent}>
                 <Text style={styles.cardTitle}>{item.title}</Text>
                 <Text style={styles.cardBody}>{item.desc}</Text>
@@ -375,7 +386,8 @@ export function generateProposalDocument(data: AssessmentFormData, copy: Proposa
         <View style={extendedStyles.ctaCard}>
           <Text style={styles.cardTitle}>Book Your Discovery Call</Text>
           <Text style={styles.cardBody}>
-            {process.env.NEXT_PUBLIC_CALENDLY_URL || 'Please contact us at hello@wagonback.com to schedule your call.'}
+            {process.env.NEXT_PUBLIC_BOOKING_URL ||
+              'Please contact us at hello@wagonback.com to schedule your call.'}
           </Text>
         </View>
 
