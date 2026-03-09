@@ -1,5 +1,5 @@
-import type { NextConfig } from "next";
-import { withSentryConfig } from "@sentry/nextjs";
+import type { NextConfig } from 'next'
+import { withSentryConfig } from '@sentry/nextjs'
 
 // Content-Security-Policy for this stack:
 //   - Next.js App Router requires 'unsafe-inline' for its bootstrap scripts.
@@ -33,7 +33,10 @@ const nextConfig: NextConfig = {
           { key: 'X-Content-Type-Options', value: 'nosniff' },
           { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
           { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=()' },
-          { key: 'Strict-Transport-Security', value: 'max-age=63072000; includeSubDomains; preload' },
+          {
+            key: 'Strict-Transport-Security',
+            value: 'max-age=63072000; includeSubDomains; preload',
+          },
         ],
       },
     ]
@@ -53,7 +56,7 @@ const nextConfig: NextConfig = {
   },
   // Required to support PostHog trailing-slash API requests
   skipTrailingSlashRedirect: true,
-};
+}
 
 export default withSentryConfig(nextConfig, {
   // Suppresses Sentry build output unless running in CI
@@ -66,11 +69,11 @@ export default withSentryConfig(nextConfig, {
   project: process.env.SENTRY_PROJECT,
 
   // Hides source maps from the browser bundle (they're uploaded to Sentry instead)
-  hideSourceMaps: true,
+  sourcemaps: { disable: true },
 
   // Removes Sentry logger statements from the production bundle
   disableLogger: true,
 
   // Automatically instrument Vercel Cron Monitors (not used here, but harmless)
   automaticVercelMonitors: false,
-});
+})
