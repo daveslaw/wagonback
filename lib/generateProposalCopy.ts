@@ -85,12 +85,15 @@ Computed values for your reference (do not repeat these verbatim — weave them 
 - Estimated weekly time savings: ${roi}`
 
     const anthropic = getAnthropic()
-    const message = await anthropic.messages.create({
-      model: 'claude-haiku-4-5-20251001',
-      max_tokens: 1800,
-      system: PROPOSAL_SYSTEM_PROMPT,
-      messages: [{ role: 'user', content: userMessage }],
-    })
+    const message = await anthropic.messages.create(
+      {
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: 1800,
+        system: PROPOSAL_SYSTEM_PROMPT,
+        messages: [{ role: 'user', content: userMessage }],
+      },
+      { timeout: 25000 }
+    )
 
     const text = message.content[0].type === 'text' ? message.content[0].text : ''
 

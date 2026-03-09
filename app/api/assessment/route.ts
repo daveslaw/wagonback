@@ -8,6 +8,8 @@ import {
   REVENUE_RANGES,
   BUDGET_RANGES,
   TIMELINES,
+  PAIN_POINTS,
+  TOOL_OPTIONS,
 } from '@/types/assessment'
 import { getPostHogClient } from '@/lib/posthog-server'
 
@@ -96,6 +98,14 @@ export async function POST(req: NextRequest) {
       if (value && !(allowed as readonly string[]).includes(value)) {
         return NextResponse.json({ error: `Invalid value for ${field}` }, { status: 400 })
       }
+    }
+
+    // Validate multi-select array lengths against the defined option sets
+    if (data.pain_points && data.pain_points.length > PAIN_POINTS.length) {
+      return NextResponse.json({ error: 'Invalid selection' }, { status: 400 })
+    }
+    if (data.current_tools && data.current_tools.length > TOOL_OPTIONS.length) {
+      return NextResponse.json({ error: 'Invalid selection' }, { status: 400 })
     }
 
     // Enforce length limits on free-text fields to prevent prompt bloat / oversized PDFs
