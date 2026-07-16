@@ -51,7 +51,12 @@ async function runPipeline(id: string, token: string): Promise<PipelineResult> {
 
   // 5. Generate PDF
   const doc: AnyElement = generateProposalDocument(data, proposalCopy)
-  const pdfBuffer = await renderToBuffer(doc)
+  const pdfBuffer = await Promise.race([
+    renderToBuffer(doc),
+    new Promise<never>((_, reject) =>
+      setTimeout(() => reject(new Error('PDF generation timed out after 20s')), 20000)
+    ),
+  ])
 
   // 6. Email to prospect
   await sendProposalEmail(data, Buffer.from(pdfBuffer))
@@ -66,7 +71,10 @@ async function runPipeline(id: string, token: string): Promise<PipelineResult> {
     Sentry.captureException(new Error('Failed to mark proposal as sent'), {
       extra: { supabaseError: markError, assessmentId: id },
     })
-    console.error('Failed to mark proposal as sent — email was delivered but row not updated:', markError)
+    console.error(
+      'Failed to mark proposal as sent — email was delivered but row not updated:',
+      markError
+    )
   }
 
   // 8. Track proposal sent server-side

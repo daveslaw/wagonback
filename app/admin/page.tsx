@@ -7,7 +7,9 @@ export default async function AdminPage() {
   const supabase = createServerClient()
   const { data: rows, error } = await supabase
     .from('assessments')
-    .select('*')
+    .select(
+      'id, created_at, business_name, contact_name, email, phone, industry, team_size, revenue_range, budget_range, timeline, pain_points, current_tools, time_drains, desired_outcomes, additional_notes, status, admin_notes, archived, proposal_sent_at'
+    )
     .eq('archived', false)
     .order('created_at', { ascending: false })
     .limit(500)
@@ -27,9 +29,7 @@ export default async function AdminPage() {
         <div>
           <div className="flex items-center gap-3 mb-3">
             <div className="w-8 h-px bg-[#00c8ff]" />
-            <span className="text-[10px] tracking-[0.3em] uppercase text-[#00c8ff]/70">
-              Admin
-            </span>
+            <span className="text-[10px] tracking-[0.3em] uppercase text-[#00c8ff]/70">Admin</span>
           </div>
           <h1 className="text-2xl font-extralight tracking-wide uppercase text-white">
             Assessment Submissions

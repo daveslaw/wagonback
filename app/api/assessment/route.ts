@@ -31,9 +31,11 @@ export async function POST(req: NextRequest) {
 
     // ── Rate limiting (uses existing Supabase — no extra infrastructure needed) ──
     const supabase = createServerClient()
+    // x-vercel-forwarded-for is set by the Vercel CDN and cannot be spoofed by the client.
+    // Fall back to x-forwarded-for for local dev / non-Vercel environments.
     const ip =
+      req.headers.get('x-vercel-forwarded-for') ??
       req.headers.get('x-forwarded-for')?.split(',')[0].trim() ??
-      req.headers.get('x-real-ip') ??
       'unknown'
 
     const emailWindowStart = new Date(

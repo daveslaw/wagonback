@@ -2,26 +2,11 @@
 
 import { useMemo, useState } from 'react'
 import { AssessmentRow, LeadStatus, INDUSTRIES } from '@/types/assessment'
+import { STATUS_LABELS, STATUS_BADGE_COLOURS } from './adminConstants'
 import { AdminDrawer } from './AdminDrawer'
 
 interface Props {
   initialRows: AssessmentRow[]
-}
-
-const STATUS_LABELS: Record<LeadStatus, string> = {
-  new: 'New',
-  contacted: 'Contacted',
-  in_discussion: 'In Discussion',
-  won: 'Won',
-  lost: 'Lost',
-}
-
-const STATUS_COLOURS: Record<LeadStatus, string> = {
-  new: 'text-amber-400 bg-amber-400/10',
-  contacted: 'text-blue-400 bg-blue-400/10',
-  in_discussion: 'text-purple-400 bg-purple-400/10',
-  won: 'text-emerald-400 bg-emerald-400/10',
-  lost: 'text-red-400/60 bg-red-400/5',
 }
 
 type SortKey = 'created_at' | 'business_name' | 'budget_range' | 'status'
@@ -57,8 +42,7 @@ export function AdminClientPanel({ initialRows }: Props) {
   })
   const sentCount = activeRows.filter((r) => r.proposal_sent_at).length
   const wonCount = activeRows.filter((r) => r.status === 'won').length
-  const conversionPct =
-    sentCount > 0 ? Math.round((wonCount / sentCount) * 100) : 0
+  const conversionPct = sentCount > 0 ? Math.round((wonCount / sentCount) * 100) : 0
 
   // Filtered + sorted rows
   const displayed = useMemo(() => {
@@ -122,7 +106,11 @@ export function AdminClientPanel({ initialRows }: Props) {
         <StatCard label="Total Leads" value={activeRows.length} />
         <StatCard label="Proposals Sent" value={sentCount} />
         <StatCard label="This Month" value={thisMonth.length} />
-        <StatCard label="Conversion" value={`${conversionPct}%`} sub={`${wonCount} won of ${sentCount} sent`} />
+        <StatCard
+          label="Conversion"
+          value={`${conversionPct}%`}
+          sub={`${wonCount} won of ${sentCount} sent`}
+        />
       </div>
 
       {/* Toolbar */}
@@ -183,7 +171,9 @@ export function AdminClientPanel({ initialRows }: Props) {
       {/* Table */}
       {displayed.length === 0 ? (
         <p className="text-white/30 text-sm">
-          {search || filterStatus || filterIndustry ? 'No results match your filters.' : 'No submissions yet.'}
+          {search || filterStatus || filterIndustry
+            ? 'No results match your filters.'
+            : 'No submissions yet.'}
         </p>
       ) : (
         <div className="overflow-x-auto">
@@ -191,13 +181,21 @@ export function AdminClientPanel({ initialRows }: Props) {
             <thead>
               <tr className="border-b border-white/5">
                 <SortHeader label="Business" col="business_name" />
-                <th className="pb-3 pr-6 text-[9px] tracking-widest uppercase text-white/30 font-normal">Contact</th>
-                <th className="pb-3 pr-6 text-[9px] tracking-widest uppercase text-white/30 font-normal">Industry</th>
-                <th className="pb-3 pr-6 text-[9px] tracking-widest uppercase text-white/30 font-normal">Team</th>
+                <th className="pb-3 pr-6 text-[9px] tracking-widest uppercase text-white/30 font-normal">
+                  Contact
+                </th>
+                <th className="pb-3 pr-6 text-[9px] tracking-widest uppercase text-white/30 font-normal">
+                  Industry
+                </th>
+                <th className="pb-3 pr-6 text-[9px] tracking-widest uppercase text-white/30 font-normal">
+                  Team
+                </th>
                 <SortHeader label="Budget" col="budget_range" />
                 <SortHeader label="Submitted" col="created_at" />
                 <SortHeader label="Status" col="status" />
-                <th className="pb-3 text-[9px] tracking-widest uppercase text-white/30 font-normal">Proposal</th>
+                <th className="pb-3 text-[9px] tracking-widest uppercase text-white/30 font-normal">
+                  Proposal
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -232,7 +230,7 @@ export function AdminClientPanel({ initialRows }: Props) {
                     <td className="py-4 pr-6 text-xs text-white/30">{submittedDate}</td>
                     <td className="py-4 pr-6">
                       <span
-                        className={`text-[9px] tracking-widest uppercase px-2 py-1 rounded-full ${STATUS_COLOURS[row.status]}`}
+                        className={`text-[9px] tracking-widest uppercase px-2 py-1 rounded-full ${STATUS_BADGE_COLOURS[row.status]}`}
                       >
                         {STATUS_LABELS[row.status]}
                       </span>

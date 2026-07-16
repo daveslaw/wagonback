@@ -2,28 +2,13 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { AssessmentRow, LeadStatus } from '@/types/assessment'
+import { STATUS_LABELS, STATUS_TEXT_COLOURS } from './adminConstants'
 import { GenerateButton } from './GenerateButton'
 
 interface AdminDrawerProps {
   row: AssessmentRow | null
   onClose: () => void
   onUpdate: (id: string, patch: Partial<AssessmentRow>) => void
-}
-
-const STATUS_LABELS: Record<LeadStatus, string> = {
-  new: 'New',
-  contacted: 'Contacted',
-  in_discussion: 'In Discussion',
-  won: 'Won',
-  lost: 'Lost',
-}
-
-const STATUS_COLOURS: Record<LeadStatus, string> = {
-  new: 'text-amber-400',
-  contacted: 'text-blue-400',
-  in_discussion: 'text-purple-400',
-  won: 'text-emerald-400',
-  lost: 'text-red-400/60',
 }
 
 async function patchAssessment(id: string, patch: Record<string, unknown>) {
@@ -93,11 +78,7 @@ export function AdminDrawer({ row, onClose, onUpdate }: AdminDrawerProps) {
   return (
     <>
       {/* Backdrop */}
-      <div
-        className="fixed inset-0 bg-black/60 z-40"
-        onClick={onClose}
-        aria-hidden="true"
-      />
+      <div className="fixed inset-0 bg-black/60 z-40" onClick={onClose} aria-hidden="true" />
 
       {/* Drawer */}
       <aside className="fixed right-0 top-0 h-full w-full max-w-[520px] bg-[#111] border-l border-white/5 z-50 flex flex-col overflow-hidden">
@@ -135,7 +116,7 @@ export function AdminDrawer({ row, onClose, onUpdate }: AdminDrawerProps) {
                   onClick={() => handleStatusChange(s)}
                   className={`text-[9px] tracking-widest uppercase px-3 py-1.5 rounded-full border transition-all ${
                     row.status === s
-                      ? `border-current ${STATUS_COLOURS[s]} bg-current/10`
+                      ? `border-current ${STATUS_TEXT_COLOURS[s]} bg-current/10`
                       : 'border-white/10 text-white/30 hover:border-white/20 hover:text-white/50'
                   }`}
                 >
@@ -187,7 +168,9 @@ export function AdminDrawer({ row, onClose, onUpdate }: AdminDrawerProps) {
           {/* Current tools */}
           {row.current_tools?.length > 0 && (
             <div>
-              <p className="text-[9px] tracking-widest uppercase text-white/30 mb-2">Current Tools</p>
+              <p className="text-[9px] tracking-widest uppercase text-white/30 mb-2">
+                Current Tools
+              </p>
               <div className="flex flex-wrap gap-1.5">
                 {row.current_tools.map((t) => (
                   <span
@@ -205,23 +188,33 @@ export function AdminDrawer({ row, onClose, onUpdate }: AdminDrawerProps) {
           {row.time_drains && (
             <div>
               <p className="text-[9px] tracking-widest uppercase text-white/30 mb-2">Time Drains</p>
-              <p className="text-xs text-white/50 leading-relaxed whitespace-pre-wrap">{row.time_drains}</p>
+              <p className="text-xs text-white/50 leading-relaxed whitespace-pre-wrap">
+                {row.time_drains}
+              </p>
             </div>
           )}
 
           {/* Desired outcomes */}
           {row.desired_outcomes && (
             <div>
-              <p className="text-[9px] tracking-widest uppercase text-white/30 mb-2">Desired Outcomes</p>
-              <p className="text-xs text-white/50 leading-relaxed whitespace-pre-wrap">{row.desired_outcomes}</p>
+              <p className="text-[9px] tracking-widest uppercase text-white/30 mb-2">
+                Desired Outcomes
+              </p>
+              <p className="text-xs text-white/50 leading-relaxed whitespace-pre-wrap">
+                {row.desired_outcomes}
+              </p>
             </div>
           )}
 
           {/* Additional notes */}
           {row.additional_notes && (
             <div>
-              <p className="text-[9px] tracking-widest uppercase text-white/30 mb-2">Additional Notes (from prospect)</p>
-              <p className="text-xs text-white/50 leading-relaxed whitespace-pre-wrap">{row.additional_notes}</p>
+              <p className="text-[9px] tracking-widest uppercase text-white/30 mb-2">
+                Additional Notes (from prospect)
+              </p>
+              <p className="text-xs text-white/50 leading-relaxed whitespace-pre-wrap">
+                {row.additional_notes}
+              </p>
             </div>
           )}
 
