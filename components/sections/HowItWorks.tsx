@@ -13,7 +13,7 @@ const steps = [
     icon: Cpu,
     title: 'Custom Design',
     description:
-      'We design a tailored integration and AI workflow plan — connecting your platforms and automating the right touchpoints for your business.',
+      'We design an AI-driven plan — building new tools where you need them, and connecting the platforms you already run, so both halves work as one system.',
   },
   {
     number: '03',

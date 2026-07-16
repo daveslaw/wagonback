@@ -53,8 +53,8 @@ export default function ConfirmationPage() {
               You&#39;re All Set.
             </h1>
             <p className="text-sm text-gray-400 dark:text-white/40 leading-relaxed max-w-md mx-auto">
-              Your assessment has been received. We&#39;ll review it and send your personalised
-              automation proposal within 24 hours.
+              Your assessment has been received. We&#39;ll review it and send your personalised AI
+              automation plan within 24 hours.
             </p>
           </div>
 
@@ -69,7 +69,7 @@ export default function ConfirmationPage() {
                   Expect Your Proposal
                 </p>
                 <p className="text-xs text-gray-400 dark:text-white/40 leading-relaxed">
-                  We&#39;ll review your answers and send a personalised automation proposal to your
+                  We&#39;ll review your answers and send a personalised AI automation plan to your
                   inbox — covering your key opportunities, our recommended approach, and estimated
                   ROI.
                 </p>

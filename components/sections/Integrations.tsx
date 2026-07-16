@@ -39,7 +39,6 @@ export function Integrations() {
   return (
     <section id="integrations" className="py-20 md:py-28 bg-white dark:bg-[#0d0d0d]">
       <div className="container mx-auto px-4 md:px-8 lg:px-16">
-
         {/* Section label */}
         <div className="flex items-center gap-3 mb-4">
           <div className="w-8 h-px bg-[#00c8ff]" />
@@ -56,8 +55,8 @@ export function Integrations() {
             <span className="text-gray-400 dark:text-white/40">You Already Use.</span>
           </h2>
           <p className="text-sm text-gray-400 dark:text-white/40 max-w-xs leading-relaxed">
-            We build powerful automations across Xero, Shopify, HubSpot, Zoho, Monday.com and more —
-            no ripping and replacing, no months of onboarding. Your stack stays, your team gets hours back.
+            We connect AI to Xero, Shopify, HubSpot, Zoho, Monday.com and more — no ripping and
+            replacing, no months of onboarding. Your stack stays, your team gets hours back.
           </p>
         </div>
 
@@ -90,7 +89,6 @@ export function Integrations() {
             ))}
           </div>
         </div>
-
       </div>
     </section>
   )

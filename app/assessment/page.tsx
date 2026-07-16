@@ -286,6 +286,9 @@ export default function AssessmentPage() {
                 </Field>
 
                 <Field label="Which tools / platforms does your business currently use?">
+                  <p className="text-xs text-gray-400 dark:text-white/30 -mt-1 mb-1">
+                    So we know what to connect, and what to build around it.
+                  </p>
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mt-2">
                     {TOOL_OPTIONS.map((tool) => (
                       <CheckItem
@@ -355,7 +358,7 @@ export default function AssessmentPage() {
                     id="desired_outcomes"
                     value={form.desired_outcomes}
                     onChange={(e) => setField('desired_outcomes', e.target.value)}
-                    placeholder="e.g. I want my team to stop doing manual data entry. I want leads from Shopify to flow into HubSpot automatically..."
+                    placeholder="e.g. I want my team to stop doing manual data entry. I want leads from Shopify to flow into HubSpot automatically, or an AI agent handling routine replies..."
                     rows={4}
                     className="w-full bg-[#f5f5f5] dark:bg-[#1a1a1a] border border-gray-200 dark:border-white/10 rounded-xl px-4 py-3 text-sm text-gray-700 dark:text-white/80 placeholder:text-gray-400 dark:placeholder:text-white/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00c8ff]/60 focus:border-[#00c8ff]/40 resize-none transition-colors"
                   />

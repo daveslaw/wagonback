@@ -1,27 +1,27 @@
-import { Clock, TrendingUp, Zap } from 'lucide-react'
+import { MessageSquareText, FileSpreadsheet, Headset } from 'lucide-react'
 
 const props = [
   {
-    icon: Clock,
-    title: 'Cut Admin Cost, Not Headcount',
+    icon: MessageSquareText,
+    title: 'Sales & Leads',
     description:
-      'Replace manual data entry, reporting, and copy-paste workflows with automated systems. Same team, significantly lower cost per transaction.',
+      'Every lead gets a reply in minutes, not days. AI qualifies, follows up, and hands your team only the conversations worth having.',
     stat: 'Avg. 22 hrs',
     statLabel: 'recovered per team/week',
   },
   {
-    icon: TrendingUp,
-    title: 'Payback in Weeks, Not Years',
+    icon: FileSpreadsheet,
+    title: 'Admin & Ops',
     description:
-      'Faster invoicing, zero-error reconciliation, and instant lead response. Most clients recover their full investment within 6–10 weeks.',
+      'Invoicing, reconciliation, reporting — done automatically and correctly, every time. The hours your team spent copying data into spreadsheets go back into the business.',
     stat: '6–10 wks',
     statLabel: 'typical payback period',
   },
   {
-    icon: Zap,
-    title: 'Scale Without Hiring',
+    icon: Headset,
+    title: 'Customer Service',
     description:
-      'Handle 2× the orders, leads, and admin without 2× the headcount. Your platforms work in sync — automatically, in real time.',
+      'Faster responses, fewer dropped tickets, consistent answers around the clock — without hiring a bigger support team.',
     stat: '50+',
     statLabel: 'platforms connected',
   },
@@ -63,7 +63,9 @@ export function ValueProps() {
                 <h3 className="text-base font-light tracking-wide text-gray-900 dark:text-white mb-3">
                   {prop.title}
                 </h3>
-                <p className="text-sm text-gray-400 dark:text-white/40 leading-relaxed">{prop.description}</p>
+                <p className="text-sm text-gray-400 dark:text-white/40 leading-relaxed">
+                  {prop.description}
+                </p>
               </div>
             )
           })}

@@ -36,10 +36,10 @@ function getAnthropic() {
 
 export function getRecommendedTier(data: AssessmentFormData): string {
   const budget = data.budget_range
-  if (budget === 'Over R20,000/month') return 'Enterprise Integration Layer'
-  if (budget === 'R8,000 – R20,000/month') return 'Visual Workflow Engine'
-  if (budget === 'R3,000 – R8,000/month') return 'Visual Workflow Engine'
-  return 'AI-Native Automation'
+  if (budget === 'Over R20,000/month') return 'AI Integration Platform'
+  if (budget === 'R8,000 – R20,000/month') return 'AI Workflow Engine'
+  if (budget === 'R3,000 – R8,000/month') return 'AI Workflow Engine'
+  return 'AI Foundations'
 }
 
 export function getROIEstimate(data: AssessmentFormData): string {

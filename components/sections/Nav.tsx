@@ -14,7 +14,6 @@ export function Nav() {
     { label: 'Services', href: '#services' },
     { label: 'How It Works', href: '#how-it-works' },
     { label: 'Integrations', href: '#integrations' },
-    { label: 'Tools', href: '#tools' },
   ]
 
   return (
@@ -47,7 +46,10 @@ export function Nav() {
         {/* Desktop right: toggle + CTA */}
         <div className="hidden md:flex items-center gap-3">
           <ThemeToggle />
-          <Link href="/assessment" onClick={() => posthog.capture('assessment_cta_clicked', { source: 'nav_desktop' })}>
+          <Link
+            href="/assessment"
+            onClick={() => posthog.capture('assessment_cta_clicked', { source: 'nav_desktop' })}
+          >
             <Button
               size="sm"
               className="bg-[#00c8ff] text-[#0d0d0d] hover:bg-[#00c8ff]/90 font-medium tracking-wider text-xs uppercase rounded-full px-5 touch-manipulation"
@@ -83,7 +85,13 @@ export function Nav() {
               {link.label}
             </a>
           ))}
-          <Link href="/assessment" onClick={() => { setOpen(false); posthog.capture('assessment_cta_clicked', { source: 'nav_mobile' }) }}>
+          <Link
+            href="/assessment"
+            onClick={() => {
+              setOpen(false)
+              posthog.capture('assessment_cta_clicked', { source: 'nav_mobile' })
+            }}
+          >
             <Button className="w-full bg-[#00c8ff] text-[#0d0d0d] hover:bg-[#00c8ff]/90 font-medium tracking-wider text-xs uppercase rounded-full touch-manipulation">
               Get Your Free Assessment
             </Button>
