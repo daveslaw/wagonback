@@ -20,6 +20,7 @@ npm run start     # Run production build locally
 app/
   layout.tsx                  # Root layout — ThemeProvider (dark default), metadata, Geist fonts
   page.tsx                    # Landing page — assembles all section components
+  about/page.tsx              # Founder bio page
   assessment/page.tsx         # Multi-step assessment form (3 steps, client component)
   confirmation/page.tsx       # Post-submit confirmation page with Calendly link
   api/assessment/route.ts     # POST handler: Supabase → PDF → Resend email
@@ -33,7 +34,8 @@ components/
     ValueProps.tsx   # 3-card value proposition section
     HowItWorks.tsx   # 3-step process section
     Integrations.tsx # Platform logos grid
-    Tools.tsx        # Workato / Make.com / n8n cards
+    Services.tsx     # 5-card project-based offerings grid
+    About.tsx        # Founder bio content
     CTABanner.tsx    # Repeated CTA section
     Footer.tsx       # Footer with contact info
 lib/
@@ -48,14 +50,14 @@ types/
 
 Copy `.env.local.example` to `.env.local` and fill in values:
 
-| Variable | Source |
-|---|---|
-| `NEXT_PUBLIC_SUPABASE_URL` | Supabase → Settings → API |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase → Settings → API |
-| `SUPABASE_SERVICE_ROLE_KEY` | Supabase → Settings → API (server-only) |
-| `RESEND_API_KEY` | resend.com → API Keys |
-| `NEXT_PUBLIC_CALENDLY_URL` | Your Calendly booking URL |
-| `INTERNAL_NOTIFICATION_EMAIL` | (Optional) Your email for lead notifications |
+| Variable                        | Source                                       |
+| ------------------------------- | -------------------------------------------- |
+| `NEXT_PUBLIC_SUPABASE_URL`      | Supabase → Settings → API                    |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase → Settings → API                    |
+| `SUPABASE_SERVICE_ROLE_KEY`     | Supabase → Settings → API (server-only)      |
+| `RESEND_API_KEY`                | resend.com → API Keys                        |
+| `NEXT_PUBLIC_CALENDLY_URL`      | Your Calendly booking URL                    |
+| `INTERNAL_NOTIFICATION_EMAIL`   | (Optional) Your email for lead notifications |
 
 ## Supabase Schema
 
@@ -91,14 +93,14 @@ Deployed on Vercel. To redeploy after changes:
 
 Add/update environment variables in: **Vercel dashboard → Project → Settings → Environment Variables**
 
-| Variable | Used in |
-|---|---|
-| `NEXT_PUBLIC_SUPABASE_URL` | All environments |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | All environments |
-| `SUPABASE_SERVICE_ROLE_KEY` | Production / Preview |
-| `RESEND_API_KEY` | Production / Preview |
-| `NEXT_PUBLIC_CALENDLY_URL` | All environments |
-| `INTERNAL_NOTIFICATION_EMAIL` | Production / Preview |
+| Variable                        | Used in              |
+| ------------------------------- | -------------------- |
+| `NEXT_PUBLIC_SUPABASE_URL`      | All environments     |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | All environments     |
+| `SUPABASE_SERVICE_ROLE_KEY`     | Production / Preview |
+| `RESEND_API_KEY`                | Production / Preview |
+| `NEXT_PUBLIC_CALENDLY_URL`      | All environments     |
+| `INTERNAL_NOTIFICATION_EMAIL`   | Production / Preview |
 
 ## Design Tokens
 

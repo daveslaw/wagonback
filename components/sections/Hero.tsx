@@ -9,7 +9,8 @@ import posthog from 'posthog-js'
 
 // Lazy-load the Three.js canvas — keeps it out of the initial JS bundle (~700 KB savings)
 const DotScreenShader = dynamic(
-  () => import('@/components/ui/dot-shader-background').then((m) => ({ default: m.DotScreenShader })),
+  () =>
+    import('@/components/ui/dot-shader-background').then((m) => ({ default: m.DotScreenShader })),
   { ssr: false, loading: () => null }
 )
 
@@ -52,16 +53,22 @@ export function Hero() {
         </p>
 
         <div className="flex flex-col sm:flex-row items-center gap-4 mt-4">
-          <Link href="/assessment" onClick={() => posthog.capture('assessment_cta_clicked', { source: 'hero' })}>
+          <Link
+            href="/assessment"
+            onClick={() => posthog.capture('assessment_cta_clicked', { source: 'hero' })}
+          >
             <Button
               size="lg"
               className="bg-[#00c8ff] text-[#0d0d0d] hover:bg-gray-100 dark:hover:bg-white font-medium tracking-widest text-xs uppercase rounded-full px-8 h-12 touch-manipulation transition-all duration-300"
             >
-              Get Your Free Assessment
+              Get Your Free Audit
               <ArrowRight size={14} className="ml-2" />
             </Button>
           </Link>
-          <a href="#how-it-works" onClick={() => posthog.capture('how_it_works_section_viewed', { source: 'hero' })}>
+          <a
+            href="#how-it-works"
+            onClick={() => posthog.capture('how_it_works_section_viewed', { source: 'hero' })}
+          >
             <Button
               size="lg"
               variant="ghost"
@@ -75,7 +82,9 @@ export function Hero() {
 
       {/* Scroll indicator */}
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-30">
-        <span className="text-[9px] tracking-[0.3em] uppercase text-gray-400 dark:text-white">Scroll</span>
+        <span className="text-[9px] tracking-[0.3em] uppercase text-gray-400 dark:text-white">
+          Scroll
+        </span>
         <div className="w-px h-8 bg-gradient-to-b from-gray-400 dark:from-white to-transparent" />
       </div>
     </section>

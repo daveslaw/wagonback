@@ -4,7 +4,7 @@ const steps = [
   {
     number: '01',
     icon: Search,
-    title: 'Free Assessment',
+    title: 'Free Audit',
     description:
       'Tell us about your business, the tools you use, and the processes eating your time. We map out exactly where automation can help.',
   },

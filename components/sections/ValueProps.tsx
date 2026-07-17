@@ -1,4 +1,4 @@
-import { Clock, TrendingUp, Zap } from 'lucide-react'
+import { Clock, MessageCircle, Zap } from 'lucide-react'
 
 const props = [
   {
@@ -10,12 +10,12 @@ const props = [
     statLabel: 'recovered per team/week',
   },
   {
-    icon: TrendingUp,
-    title: 'Payback in Weeks, Not Years',
+    icon: MessageCircle,
+    title: 'Answers On Demand, Not Bottlenecks',
     description:
-      'Faster invoicing, zero-error reconciliation, and instant lead response. Most clients recover their full investment within 6–10 weeks.',
-    stat: '6–10 wks',
-    statLabel: 'typical payback period',
+      'From instant answers pulled from your internal knowledge base to automated lead qualification and proposal generation — judgment-heavy work gets done without a person in the loop for every step.',
+    stat: '24/7',
+    statLabel: 'instant response, no waiting on a person',
   },
   {
     icon: Zap,
@@ -29,7 +29,7 @@ const props = [
 
 export function ValueProps() {
   return (
-    <section id="services" className="py-20 md:py-28 bg-white dark:bg-[#0d0d0d]">
+    <section id="why-us" className="py-20 md:py-28 bg-white dark:bg-[#0d0d0d]">
       <div className="container mx-auto px-4 md:px-8 lg:px-16">
         {/* Section label */}
         <div className="flex items-center gap-3 mb-12">
@@ -63,7 +63,9 @@ export function ValueProps() {
                 <h3 className="text-base font-light tracking-wide text-gray-900 dark:text-white mb-3">
                   {prop.title}
                 </h3>
-                <p className="text-sm text-gray-400 dark:text-white/40 leading-relaxed">{prop.description}</p>
+                <p className="text-sm text-gray-400 dark:text-white/40 leading-relaxed">
+                  {prop.description}
+                </p>
               </div>
             )
           })}

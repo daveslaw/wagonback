@@ -433,7 +433,7 @@ export default function AssessmentPage() {
                   }
                   className="bg-[#00c8ff] text-[#0d0d0d] hover:bg-gray-100 dark:hover:bg-white disabled:opacity-30 font-medium tracking-widest text-xs uppercase rounded-full px-8 h-11 touch-manipulation"
                 >
-                  {submitting ? 'Sending...' : 'Submit Assessment'}
+                  {submitting ? 'Sending...' : 'Submit Audit'}
                   {!submitting && <Check size={14} className="ml-2" />}
                 </Button>
               </div>

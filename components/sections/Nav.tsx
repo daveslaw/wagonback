@@ -11,10 +11,11 @@ export function Nav() {
   const [open, setOpen] = useState(false)
 
   const links = [
-    { label: 'Services', href: '#services' },
-    { label: 'How It Works', href: '#how-it-works' },
-    { label: 'Integrations', href: '#integrations' },
-    { label: 'Tools', href: '#tools' },
+    { label: 'Why Us', href: '/#why-us' },
+    { label: 'How It Works', href: '/#how-it-works' },
+    { label: 'Integrations', href: '/#integrations' },
+    { label: 'Services', href: '/#services' },
+    { label: 'About', href: '/about' },
   ]
 
   return (
@@ -34,25 +35,28 @@ export function Nav() {
         {/* Desktop nav */}
         <div className="hidden md:flex items-center gap-8">
           {links.map((link) => (
-            <a
+            <Link
               key={link.href}
               href={link.href}
               className="text-xs tracking-widest uppercase text-gray-500 dark:text-white/50 hover:text-gray-900 dark:hover:text-white transition-colors duration-200"
             >
               {link.label}
-            </a>
+            </Link>
           ))}
         </div>
 
         {/* Desktop right: toggle + CTA */}
         <div className="hidden md:flex items-center gap-3">
           <ThemeToggle />
-          <Link href="/assessment" onClick={() => posthog.capture('assessment_cta_clicked', { source: 'nav_desktop' })}>
+          <Link
+            href="/assessment"
+            onClick={() => posthog.capture('assessment_cta_clicked', { source: 'nav_desktop' })}
+          >
             <Button
               size="sm"
               className="bg-[#00c8ff] text-[#0d0d0d] hover:bg-[#00c8ff]/90 font-medium tracking-wider text-xs uppercase rounded-full px-5 touch-manipulation"
             >
-              Free Assessment
+              Free Audit
             </Button>
           </Link>
         </div>
@@ -74,18 +78,24 @@ export function Nav() {
       {open && (
         <div className="md:hidden bg-white dark:bg-[#0d0d0d] border-t border-gray-200 dark:border-white/5 px-4 py-6 flex flex-col gap-5">
           {links.map((link) => (
-            <a
+            <Link
               key={link.href}
               href={link.href}
               className="text-sm tracking-widest uppercase text-gray-500 dark:text-white/60 hover:text-gray-900 dark:hover:text-white transition-colors"
               onClick={() => setOpen(false)}
             >
               {link.label}
-            </a>
+            </Link>
           ))}
-          <Link href="/assessment" onClick={() => { setOpen(false); posthog.capture('assessment_cta_clicked', { source: 'nav_mobile' }) }}>
+          <Link
+            href="/assessment"
+            onClick={() => {
+              setOpen(false)
+              posthog.capture('assessment_cta_clicked', { source: 'nav_mobile' })
+            }}
+          >
             <Button className="w-full bg-[#00c8ff] text-[#0d0d0d] hover:bg-[#00c8ff]/90 font-medium tracking-wider text-xs uppercase rounded-full touch-manipulation">
-              Get Your Free Assessment
+              Get Your Free Audit
             </Button>
           </Link>
         </div>

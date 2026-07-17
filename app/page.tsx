@@ -3,7 +3,7 @@ import { Hero } from '@/components/sections/Hero'
 import { ValueProps } from '@/components/sections/ValueProps'
 import { HowItWorks } from '@/components/sections/HowItWorks'
 import { Integrations } from '@/components/sections/Integrations'
-import { Tools } from '@/components/sections/Tools'
+import { Services } from '@/components/sections/Services'
 import { CTABanner } from '@/components/sections/CTABanner'
 import { Footer } from '@/components/sections/Footer'
 
@@ -15,7 +15,7 @@ export default function Home() {
       <ValueProps />
       <HowItWorks />
       <Integrations />
-      <Tools />
+      <Services />
       <CTABanner />
       <Footer />
     </main>
