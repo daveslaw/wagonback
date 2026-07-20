@@ -1,27 +1,27 @@
-import { MessageSquareText, FileSpreadsheet, Headset } from 'lucide-react'
+import { Clock, MessageCircle, Zap } from 'lucide-react'
 
 const props = [
   {
-    icon: MessageSquareText,
-    title: 'Sales & Leads',
+    icon: Clock,
+    title: 'Cut Admin Cost, Not Headcount',
     description:
-      'Every lead gets a reply in minutes, not days. AI qualifies, follows up, and hands your team only the conversations worth having.',
+      'Replace manual data entry, reporting, and copy-paste workflows with automated systems. Same team, significantly lower cost per transaction.',
     stat: 'Avg. 22 hrs',
     statLabel: 'recovered per team/week',
   },
   {
-    icon: FileSpreadsheet,
-    title: 'Admin & Ops',
+    icon: MessageCircle,
+    title: 'Answers On Demand, Not Bottlenecks',
     description:
-      'Invoicing, reconciliation, reporting — done automatically and correctly, every time. The hours your team spent copying data into spreadsheets go back into the business.',
-    stat: '6–10 wks',
-    statLabel: 'typical payback period',
+      'From instant answers pulled from your internal knowledge base to automated lead qualification and proposal generation — judgment-heavy work gets done without a person in the loop for every step.',
+    stat: '24/7',
+    statLabel: 'instant response, no waiting on a person',
   },
   {
-    icon: Headset,
-    title: 'Customer Service',
+    icon: Zap,
+    title: 'Scale Without Hiring',
     description:
-      'Faster responses, fewer dropped tickets, consistent answers around the clock — without hiring a bigger support team.',
+      'Handle 2× the orders, leads, and admin without 2× the headcount. Your platforms work in sync — automatically, in real time.',
     stat: '50+',
     statLabel: 'platforms connected',
   },
