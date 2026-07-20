@@ -2,30 +2,37 @@ import Anthropic from '@anthropic-ai/sdk'
 import * as Sentry from '@sentry/nextjs'
 import { AssessmentFormData } from '@/types/assessment'
 import { PROPOSAL_SYSTEM_PROMPT } from '@/content/proposal-prompt'
+import { getRecommendedServices, getHeadlineTotal, ServiceName } from '@/lib/recommendedServices'
 
 export interface ProposalCopy {
   cover_subtitle: string
   exec_intro: string
-  integration_intro: string
-  solution_intro: string
-  solution_tier_description: string
-  roi_body: string
+  services_intro: string
+  service_narratives: Partial<Record<ServiceName, string>>
   next_steps_intro: string
+}
+
+const FALLBACK_SERVICE_NARRATIVES: Record<ServiceName, string> = {
+  'Process Redesign & Optimisation':
+    'Before any automation goes in, we map your workflows end to end and strip out the steps that only exist because no one has redesigned them. The result is a foundation that holds up as you grow, and fewer inconsistencies for your team to work around day to day.',
+  '"Quick-Win" Automations':
+    'We connect the tools you already use so information moves between them on its own — no more re-typing the same data into two systems. Most clients feel the difference within the first week: fewer errors, less admin, faster turnaround on the tasks that used to eat up a day.',
+  'AI Knowledge Systems':
+    'We train a custom AI on your internal documentation, SOPs, or catalogues so your team — and your customers — get accurate answers instantly, without waiting on whoever happens to know the answer. It also means service quality stops depending on who is available that day.',
+  'Custom Workflows & AI Skills':
+    'For the judgment-heavy work that is too nuanced for a simple template but too repetitive to keep doing by hand, we build intelligent pipelines that handle the routine parts and flag the parts that genuinely need a human. That means faster response times and fewer things falling through the cracks.',
+  'Full Ecosystem Sync':
+    'As you scale, keeping every system in sync manually stops being realistic. We build enterprise-grade integration across your core platforms so your operations can grow without your admin overhead growing alongside them — with real-time visibility instead of end-of-month reconciliation surprises.',
 }
 
 const FALLBACK_COPY: ProposalCopy = {
   cover_subtitle:
-    'An automation and integration plan prepared specifically for your business and the challenges you described.',
+    'Our AI-driven analysis of your assessment identified clear, high-value automation opportunities specific to your business.',
   exec_intro:
     'Your business is at a point where the manual work holding you back is no longer a small inconvenience — it is a constraint on growth. The good news is that the tools and workflows you already have in place are exactly the right foundation to build on.\n\nWagon Back Solutions has reviewed your assessment and identified clear, high-value opportunities to connect your systems, eliminate repetitive tasks, and give your team time back for work that actually moves the business forward.',
-  integration_intro:
-    'The platforms your business uses today create natural integration points. Rather than replacing what works, we build the connections between them — so data flows automatically, without anyone in the middle copying, pasting, or chasing updates.',
-  solution_intro:
-    'After reviewing your team size, workflow complexity, and budget range, we have identified the right automation tier for where your business is today and where it is heading.',
-  solution_tier_description:
-    'Designed for businesses that need reliable, scalable automation without the overhead of managing it themselves. Handles multi-step workflows, real-time data sync, and grows with your business.',
-  roi_body:
-    'Conservative estimates point to meaningful time savings from the first week of deployment. For a team of your size, that typically translates to hours reclaimed per person, per week — time that was previously lost to manual data entry, chasing updates, or fixing errors that crept in between systems.\n\nBeyond raw hours, the compounding benefits tend to be equally valuable: fewer mistakes at month-end, faster response times to new leads, and the confidence that comes from knowing your systems are in sync without anyone having to check.',
+  services_intro:
+    'Our AI analyzed your assessment responses — your pain points, your current tools, and how your business is structured — to identify which of our services would create the most value for you. Here is what we recommend, and what it should mean for your week.',
+  service_narratives: FALLBACK_SERVICE_NARRATIVES,
   next_steps_intro:
     "We'd love to walk you through this proposal and refine the scope together. The next step is a short discovery call — no obligation, just a conversation.",
 }
@@ -34,26 +41,12 @@ function getAnthropic() {
   return new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY! })
 }
 
-export function getRecommendedTier(data: AssessmentFormData): string {
-  const budget = data.budget_range
-  if (budget === 'Over R20,000/month') return 'Enterprise Integration Layer'
-  if (budget === 'R8,000 – R20,000/month') return 'Visual Workflow Engine'
-  if (budget === 'R3,000 – R8,000/month') return 'Visual Workflow Engine'
-  return 'AI-Native Automation'
-}
-
-export function getROIEstimate(data: AssessmentFormData): string {
-  const size = data.team_size
-  if (size === '100+' || size === '51–100') return '20–40 hours/week across your team'
-  if (size === '21–50') return '10–20 hours/week across your team'
-  if (size === '6–20') return '5–15 hours/week across your team'
-  return '3–10 hours/week'
-}
-
 export async function generateProposalCopy(data: AssessmentFormData): Promise<ProposalCopy> {
+  const recommended = getRecommendedServices(data)
+  const headlineTotal = getHeadlineTotal(recommended)
+
   try {
-    const tier = getRecommendedTier(data)
-    const roi = getROIEstimate(data)
+    const serviceNames = recommended.map((s) => s.name)
 
     const userMessage = `Client Assessment:
 
@@ -81,8 +74,17 @@ Additional Notes: ${data.additional_notes || 'None'}
 
 ---
 Computed values for your reference (do not repeat these verbatim — weave them in naturally):
-- Recommended automation tier: ${tier}
-- Estimated weekly time savings: ${roi}`
+- Recommended services for this client, in priority order: ${serviceNames.join(', ') || 'None'}
+- Estimated combined time savings: ${headlineTotal.low}–${headlineTotal.high} hours/week
+- Per-service detail:
+${recommended
+  .map(
+    (s) =>
+      `  - ${s.name} (${s.isPrimary ? 'primary recommendation' : 'also worth considering'}): ${s.roiRange.low}–${s.roiRange.high} hrs/week. Matched pain points: ${s.matchedPainPoints.join('; ') || 'none — matched on business profile instead'}`
+  )
+  .join('\n')}
+
+The "service_narratives" object in your response must have exactly one key per recommended service, using these exact names: ${serviceNames.map((n) => `"${n}"`).join(', ')}`
 
     const anthropic = getAnthropic()
     const message = await anthropic.messages.create(
@@ -105,18 +107,23 @@ Computed values for your reference (do not repeat these verbatim — weave them 
 
     const parsed = JSON.parse(cleaned) as ProposalCopy
 
-    // Fill in any missing keys with fallback
-    const keys: (keyof ProposalCopy)[] = [
+    // Fill in any missing top-level keys with fallback
+    const keys: (keyof Omit<ProposalCopy, 'service_narratives'>)[] = [
       'cover_subtitle',
       'exec_intro',
-      'integration_intro',
-      'solution_intro',
-      'solution_tier_description',
-      'roi_body',
+      'services_intro',
       'next_steps_intro',
     ]
     for (const key of keys) {
       if (!parsed[key]) parsed[key] = FALLBACK_COPY[key]
+    }
+
+    // Fill in missing per-service narratives with fallback, one service at a time
+    parsed.service_narratives = parsed.service_narratives ?? {}
+    for (const name of serviceNames) {
+      if (!parsed.service_narratives[name]) {
+        parsed.service_narratives[name] = FALLBACK_SERVICE_NARRATIVES[name]
+      }
     }
 
     return parsed

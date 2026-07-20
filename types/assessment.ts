@@ -40,6 +40,7 @@ export const PAIN_POINTS = [
   'Delayed order fulfillment',
   'Inconsistent lead follow-up',
   'Time-consuming HR and onboarding processes',
+  'Repeatedly answering the same customer or staff questions',
 ] as const
 
 export const TOOL_OPTIONS = [
