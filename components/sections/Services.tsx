@@ -59,13 +59,13 @@ export function Services() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="flex flex-wrap justify-center gap-6">
           {services.map((service) => {
             const Icon = service.icon
             return (
               <div
                 key={service.name}
-                className="bg-white dark:bg-[#161616] border border-gray-200 dark:border-white/5 rounded-2xl p-7 hover:border-[#00c8ff]/20 transition-all duration-300"
+                className="w-full sm:w-[calc(50%-0.75rem)] lg:w-[calc(33.333%-1rem)] bg-white dark:bg-[#161616] border border-gray-200 dark:border-white/5 rounded-2xl p-7 hover:border-[#00c8ff]/20 transition-all duration-300"
               >
                 <div className="w-10 h-10 rounded-xl bg-[#00c8ff]/10 flex items-center justify-center mb-5">
                   <Icon size={18} className="text-[#00c8ff]" />
