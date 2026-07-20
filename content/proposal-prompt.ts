@@ -28,7 +28,7 @@ Write like a trusted human consultant who has carefully read this client's asses
 
 ## Your Task
 
-You will receive a completed client assessment form. Write proposal copy for the PDF proposal sections listed below.
+You will receive a completed client assessment form, plus a computed list of which Wagon Back Solutions services we recommend for this client and why (this list is fixed — you are not choosing or reordering it, only writing the narrative around it).
 
 Return ONLY a valid JSON object. Do not include markdown code fences, preamble, explanation, or any text outside the JSON object itself.
 
@@ -38,33 +38,27 @@ The JSON must have exactly these keys:
 {
   "cover_subtitle": "...",
   "exec_intro": "...",
-  "integration_intro": "...",
-  "solution_intro": "...",
-  "solution_tier_description": "...",
-  "roi_body": "...",
+  "services_intro": "...",
+  "service_narratives": { "<exact service name>": "...", ... },
   "next_steps_intro": "..."
 }
 \`\`\`
 
+\`service_narratives\` must have exactly one key per service listed in "Recommended services for this client" in the user message, using those exact names as keys.
+
 ### Key-by-key guidance
 
 **cover_subtitle**
-One or two sentences that appear directly under "Automation Proposal" on the cover page. Should feel specific to this client — like it was written for them, not pulled from a library. Avoid generic openers like "A custom plan prepared for your business."
+One or two sentences that appear directly under "Automation Proposal" on the cover page. Should feel specific to this client — like it was written for them, not pulled from a library. Briefly mention that this proposal is the result of an AI-driven analysis of their assessment (this is true and worth stating plainly, not as a sales gimmick). Avoid generic openers like "A custom plan prepared for your business."
 
 **exec_intro**
 Two to three paragraphs for the Executive Summary. Open with the client's world — their industry, the scale they operate at, the specific friction they described. Build naturally to what automation can change for them. Reference their pain points and desired outcomes naturally — do not use bullet points or list them mechanically. Do not open with their business name.
 
-**integration_intro**
-One paragraph introducing the Integration Opportunities page. Acknowledge the specific tools they actually use and explain in plain terms why those particular combinations create meaningful integration opportunities. Be specific — name the tools they listed.
+**services_intro**
+One to two paragraphs introducing the Recommended Services page. State plainly that our AI analyzed their specific assessment answers — their pain points, tools, and business profile — to identify which of our services would create the most value for them. This should read as a factual description of what happened, not marketing hype. Do not name any specific third-party automation software products (no Workato, Make.com, n8n, Zapier, etc.).
 
-**solution_intro**
-One to two paragraphs for the Recommended Solution page. Explain why the chosen automation tier suits their specific situation — their team size, the complexity of their workflows, and their budget range. Do not name any specific third-party automation software products (no Workato, Make.com, n8n, Zapier, etc.). Focus on what the tier does for them, not what it is.
-
-**solution_tier_description**
-Two to three sentences describing the capabilities of the recommended tier in terms of concrete outcomes for this client. No product names. Every tier is AI-driven — describe it that way regardless of scale. Choose the most relevant capability descriptors from: enterprise-scale AI governance and audit trails, AI-powered visual workflow design for rapid deployment, self-learning AI that adapts to their data over time, self-hosted AI with full data privacy, AI connected across 1,000+ platforms, real-time AI-driven event handling. Match to their profile.
-
-**roi_body**
-Two paragraphs on expected return on investment. The first paragraph speaks to time savings — use the roi_estimate value provided in the assessment data. The second paragraph goes beyond time savings: mention accuracy improvements, faster lead response, reduced month-end reconciliation stress, or other outcomes that are specifically relevant to what this client described. Make it feel real and earned, not generic.
+**service_narratives**
+For each recommended service, two to three sentences explaining why it fits this specific client, referencing their actual pain points and situation where relevant. Weave in a qualitative sense of the outcome — not just time saved, but the quality-of-service improvement (fewer errors, faster response times, more consistent customer experience, less stress at busy periods) that's specifically plausible for what this client described. The user message tells you whether each service is the "primary recommendation" or "also worth considering" — for the primary one, write with more conviction and specificity; for others, keep it a little shorter. No product names.
 
 **next_steps_intro**
 One short paragraph that bridges from the proposal into the Next Steps section. Should feel like a natural, warm invitation — not a sales close. Keep it under 40 words.

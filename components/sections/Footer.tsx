@@ -20,18 +20,22 @@ export function Footer() {
               </span>
             </div>
             <p className="text-xs text-gray-400 dark:text-white/30 leading-relaxed max-w-xs">
-              AI automation and integration specialists helping South African SMEs work smarter, not harder.
+              AI automation and integration specialists helping South African SMEs work smarter, not
+              harder.
             </p>
           </div>
 
           {/* Links */}
           <div className="flex flex-col gap-3">
-            <h4 className="text-[9px] tracking-[0.3em] uppercase text-gray-400 dark:text-white/30 mb-1">Quick Links</h4>
+            <h4 className="text-[9px] tracking-[0.3em] uppercase text-gray-400 dark:text-white/30 mb-1">
+              Quick Links
+            </h4>
             {[
-              { label: 'Services', href: '#services' },
-              { label: 'How It Works', href: '#how-it-works' },
-              { label: 'Integrations', href: '#integrations' },
-              { label: 'Free Assessment', href: '/assessment' },
+              { label: 'Services', href: '/#services' },
+              { label: 'How It Works', href: '/#how-it-works' },
+              { label: 'Integrations', href: '/#integrations' },
+              { label: 'About', href: '/about' },
+              { label: 'Free Audit', href: '/assessment' },
             ].map((link) => (
               <a
                 key={link.href}
@@ -45,7 +49,9 @@ export function Footer() {
 
           {/* Contact */}
           <div className="flex flex-col gap-3">
-            <h4 className="text-[9px] tracking-[0.3em] uppercase text-gray-400 dark:text-white/30 mb-1">Contact</h4>
+            <h4 className="text-[9px] tracking-[0.3em] uppercase text-gray-400 dark:text-white/30 mb-1">
+              Contact
+            </h4>
             <div className="flex items-center gap-2 text-xs text-gray-400 dark:text-white/40">
               <MapPin size={12} className="text-[#00c8ff]/50 flex-shrink-0" />
               Johannesburg, Gauteng, South Africa

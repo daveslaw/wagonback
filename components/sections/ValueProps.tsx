@@ -29,7 +29,7 @@ const props = [
 
 export function ValueProps() {
   return (
-    <section id="services" className="py-20 md:py-28 bg-white dark:bg-[#0d0d0d]">
+    <section id="why-us" className="py-20 md:py-28 bg-white dark:bg-[#0d0d0d]">
       <div className="container mx-auto px-4 md:px-8 lg:px-16">
         {/* Section label */}
         <div className="flex items-center gap-3 mb-12">

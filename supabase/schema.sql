@@ -52,22 +52,29 @@ CREATE TABLE IF NOT EXISTS assessments (
 
 -- ── Indexes ───────────────────────────────────────────────────────────────────
 -- Run these in the Supabase SQL editor.
--- Use CONCURRENTLY to avoid locking the table in production.
+-- NOTE: the Supabase SQL editor runs statements inside an implicit transaction,
+-- and CONCURRENTLY cannot run inside a transaction block — so these are plain
+-- CREATE INDEX. On a live table with data, run them one at a time via the CLI
+-- or a direct psql connection with CONCURRENTLY instead, to avoid locking it.
 
 -- Required for email + IP rate limiting (runs on every public form submission)
-CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_assessments_email
+CREATE INDEX IF NOT EXISTS idx_assessments_email
   ON assessments (email);
 
-CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_assessments_submitter_ip
+CREATE INDEX IF NOT EXISTS idx_assessments_submitter_ip
   ON assessments (submitter_ip);
 
 -- Required for date-range filtering in rate limit queries
-CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_assessments_created_at
+CREATE INDEX IF NOT EXISTS idx_assessments_created_at
   ON assessments (created_at DESC);
 
 -- Required for admin panel default query (archived=false ORDER BY created_at DESC)
-CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_assessments_archived_created
+CREATE INDEX IF NOT EXISTS idx_assessments_archived_created
   ON assessments (archived, created_at DESC);
+
+-- Required for the admin panel status filter dropdown
+CREATE INDEX IF NOT EXISTS idx_assessments_status
+  ON assessments (status);
 
 -- ── Notes ─────────────────────────────────────────────────────────────────────
 -- • No ORM — all queries use the Supabase JS query builder directly

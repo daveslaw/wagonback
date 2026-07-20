@@ -62,7 +62,7 @@ export function Hero() {
               size="lg"
               className="bg-[#00c8ff] text-[#0d0d0d] hover:bg-gray-100 dark:hover:bg-white font-medium tracking-widest text-xs uppercase rounded-full px-8 h-12 touch-manipulation transition-all duration-300"
             >
-              Get Your Free Assessment
+              Get Your Free Audit
               <ArrowRight size={14} className="ml-2" />
             </Button>
           </Link>

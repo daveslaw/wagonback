@@ -1,7 +1,8 @@
 import { Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer'
 import { AssessmentFormData } from '@/types/assessment'
-import { ProposalCopy, getRecommendedTier, getROIEstimate } from '@/lib/generateProposalCopy'
-import { getIntegrationOpportunities } from '@/lib/integrationOpportunities'
+import { ProposalCopy } from '@/lib/generateProposalCopy'
+import { getRecommendedServices, getHeadlineTotal } from '@/lib/recommendedServices'
+import { ServiceIcon } from '@/lib/pdfServiceIcons'
 
 // Use built-in Helvetica — no font registration needed for deployment
 const styles = StyleSheet.create({
@@ -170,9 +171,6 @@ const styles = StyleSheet.create({
     marginRight: 8,
     marginTop: 1,
   },
-  roiHighlight: {
-    color: '#00c8ff',
-  },
   nextStepRow: {
     flexDirection: 'row',
     alignItems: 'flex-start',
@@ -188,25 +186,101 @@ const styles = StyleSheet.create({
   nextStepContent: {
     flex: 1,
   },
+  // Recommended Services page
+  headlineStat: {
+    backgroundColor: '#161616',
+    borderRadius: 8,
+    padding: 16,
+    marginBottom: 16,
+    alignItems: 'center',
+  },
+  headlineStatLabel: {
+    fontSize: 8,
+    letterSpacing: 2,
+    color: '#888',
+    textTransform: 'uppercase',
+    marginBottom: 6,
+  },
+  headlineStatValue: {
+    fontSize: 22,
+    fontFamily: 'Helvetica-Bold',
+    color: '#00c8ff',
+  },
+  primaryCard: {
+    backgroundColor: '#161616',
+    borderRadius: 10,
+    padding: 18,
+    marginBottom: 12,
+    borderLeft: '3px solid #00c8ff',
+  },
+  secondaryCard: {
+    backgroundColor: '#141414',
+    borderRadius: 8,
+    padding: 12,
+    marginBottom: 8,
+    borderLeft: '2px solid #333',
+  },
+  serviceHeaderRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    marginBottom: 8,
+  },
+  iconWrap: {
+    width: 26,
+    height: 26,
+    borderRadius: 6,
+    backgroundColor: '#00c8ff1a',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  primaryBadge: {
+    fontSize: 7,
+    letterSpacing: 1.5,
+    color: '#00c8ff',
+    textTransform: 'uppercase',
+    marginBottom: 2,
+  },
+  serviceTitle: {
+    fontSize: 12,
+    fontFamily: 'Helvetica-Bold',
+    color: '#f5f5f5',
+  },
+  serviceRoi: {
+    fontSize: 9,
+    color: '#00c8ff',
+    marginTop: 8,
+    marginBottom: 6,
+  },
+  toolPairBullet: {
+    fontSize: 8,
+    color: '#777',
+    marginBottom: 3,
+  },
 })
 
 // Extended styles that spread base entries (react-pdf requires plain objects for spread)
 const extendedStyles = {
-  painPointText: { ...styles.body, marginBottom: 0, flex: 1 },
   toolsLabel: { ...styles.sectionLabel, marginTop: 16 },
   ctaCard: { ...styles.card, marginTop: 20 },
 }
 
+function firstSentence(text: string): string {
+  const match = text.match(/^.*?[.!?](\s|$)/)
+  return match ? match[0].trim() : text
+}
+
 export function generateProposalDocument(data: AssessmentFormData, copy: ProposalCopy) {
-  const tier = getRecommendedTier(data)
-  const roi = getROIEstimate(data)
   const date = new Date().toLocaleDateString('en-ZA', {
     day: 'numeric',
     month: 'long',
     year: 'numeric',
   })
 
-  const integrationOpportunities = getIntegrationOpportunities(data)
+  const recommended = getRecommendedServices(data)
+  const headlineTotal = getHeadlineTotal(recommended)
+  const primary = recommended.find((s) => s.isPrimary) ?? recommended[0]
+  const secondary = recommended.filter((s) => !s.isPrimary)
 
   return (
     <Document>
@@ -269,7 +343,7 @@ export function generateProposalDocument(data: AssessmentFormData, copy: Proposa
         {(data.pain_points ?? []).map((pt, i) => (
           <View key={i} style={styles.painPointRow}>
             <Text style={styles.painPointArrow}>→</Text>
-            <Text style={extendedStyles.painPointText}>{pt}</Text>
+            <Text style={{ ...styles.body, marginBottom: 0, flex: 1 }}>{pt}</Text>
           </View>
         ))}
 
@@ -279,16 +353,56 @@ export function generateProposalDocument(data: AssessmentFormData, copy: Proposa
         </View>
       </Page>
 
-      {/* ── Integration Opportunities ── */}
+      {/* ── Recommended Services ── */}
       <Page size="A4" style={styles.page}>
-        <Text style={styles.sectionLabel}>02 — Integration Opportunities</Text>
+        <Text style={styles.sectionLabel}>02 — Recommended Services</Text>
         <Text style={styles.sectionTitle}>Where We Can Help</Text>
-        <Text style={styles.body}>{copy.integration_intro}</Text>
+        <Text style={styles.body}>{copy.services_intro}</Text>
 
-        {integrationOpportunities.map((opp, i) => (
-          <View key={i} style={styles.card}>
-            <Text style={styles.cardTitle}>{opp.title}</Text>
-            <Text style={styles.cardBody}>{opp.description}</Text>
+        <View style={styles.headlineStat}>
+          <Text style={styles.headlineStatLabel}>Estimated Combined Time Savings</Text>
+          <Text style={styles.headlineStatValue}>
+            {headlineTotal.low}–{headlineTotal.high} hrs/week
+          </Text>
+        </View>
+
+        {/* Primary service — full detail */}
+        <View style={styles.primaryCard}>
+          <View style={styles.serviceHeaderRow}>
+            <View style={styles.iconWrap}>
+              <ServiceIcon service={primary.name} />
+            </View>
+            <View>
+              <Text style={styles.primaryBadge}>Primary Recommendation</Text>
+              <Text style={styles.serviceTitle}>{primary.name}</Text>
+            </View>
+          </View>
+          <Text style={styles.cardBody}>{copy.service_narratives[primary.name]}</Text>
+          <Text style={styles.serviceRoi}>
+            Estimated {primary.roiRange.low}–{primary.roiRange.high} hrs/week saved
+          </Text>
+          {primary.toolPairOpportunities.map((opp, i) => (
+            <Text key={i} style={styles.toolPairBullet}>
+              → {opp.title}
+            </Text>
+          ))}
+        </View>
+
+        {/* Secondary services — compact */}
+        {secondary.map((service) => (
+          <View key={service.name} style={styles.secondaryCard}>
+            <View style={styles.serviceHeaderRow}>
+              <View style={styles.iconWrap}>
+                <ServiceIcon service={service.name} size={14} color="#666" />
+              </View>
+              <Text style={styles.serviceTitle}>{service.name}</Text>
+            </View>
+            <Text style={styles.cardBody}>
+              {firstSentence(copy.service_narratives[service.name] ?? '')}
+            </Text>
+            <Text style={styles.serviceRoi}>
+              Estimated {service.roiRange.low}–{service.roiRange.high} hrs/week saved
+            </Text>
           </View>
         ))}
 
@@ -307,46 +421,9 @@ export function generateProposalDocument(data: AssessmentFormData, copy: Proposa
         </View>
       </Page>
 
-      {/* ── Recommended Solution ── */}
-      <Page size="A4" style={styles.page}>
-        <Text style={styles.sectionLabel}>03 — Recommended Solution</Text>
-        <Text style={styles.sectionTitle}>Our Approach</Text>
-
-        {copy.solution_intro.split('\n\n').map((para, i) => (
-          <Text key={i} style={styles.body}>
-            {para}
-          </Text>
-        ))}
-
-        <View style={styles.card}>
-          <Text style={styles.cardTitle}>{tier}</Text>
-          <Text style={styles.cardBody}>{copy.solution_tier_description}</Text>
-        </View>
-
-        <View style={styles.divider} />
-
-        <Text style={styles.sectionLabel}>Estimated ROI</Text>
-        <Text style={styles.sectionTitle}>What To Expect</Text>
-        <Text style={styles.body}>
-          Conservative estimate: <Text style={styles.roiHighlight}>{roi}</Text> saved through
-          automation.
-        </Text>
-
-        {copy.roi_body.split('\n\n').map((para, i) => (
-          <Text key={i} style={styles.body}>
-            {para}
-          </Text>
-        ))}
-
-        <View style={styles.footer}>
-          <Text style={styles.footerText}>WAGON BACK SOLUTIONS — CONFIDENTIAL</Text>
-          <Text style={styles.footerText}>PAGE 4</Text>
-        </View>
-      </Page>
-
       {/* ── Next Steps ── */}
       <Page size="A4" style={styles.page}>
-        <Text style={styles.sectionLabel}>04 — Next Steps</Text>
+        <Text style={styles.sectionLabel}>03 — Next Steps</Text>
         <Text style={styles.sectionTitle}>Let&#39;s Get Started</Text>
         <Text style={styles.body}>{copy.next_steps_intro}</Text>
 
@@ -393,7 +470,7 @@ export function generateProposalDocument(data: AssessmentFormData, copy: Proposa
 
         <View style={styles.footer}>
           <Text style={styles.footerText}>WAGON BACK SOLUTIONS · hello@wagonback.com</Text>
-          <Text style={styles.footerText}>PAGE 5</Text>
+          <Text style={styles.footerText}>PAGE 4</Text>
         </View>
       </Page>
     </Document>

@@ -5,7 +5,7 @@ import { AssessmentFormData } from '@/types/assessment'
 vi.mock('@anthropic-ai/sdk')
 vi.mock('@sentry/nextjs', () => ({ captureException: vi.fn() }))
 
-import { getRecommendedTier, getROIEstimate, generateProposalCopy } from '@/lib/generateProposalCopy'
+import { generateProposalCopy } from '@/lib/generateProposalCopy'
 import Anthropic from '@anthropic-ai/sdk'
 
 const base: AssessmentFormData = {
@@ -16,7 +16,7 @@ const base: AssessmentFormData = {
   industry: 'Technology',
   team_size: '6–20',
   pain_points: ['Manual data entry across multiple systems'],
-  current_tools: ['HubSpot'],
+  current_tools: ['HubSpot', 'Xero'],
   time_drains: 'Too many manual reports',
   desired_outcomes: 'Automate everything',
   revenue_range: 'R1M – R5M/year',
@@ -25,46 +25,6 @@ const base: AssessmentFormData = {
   additional_notes: '',
 }
 
-// ── getRecommendedTier ────────────────────────────────────────────────────────
-
-describe('getRecommendedTier', () => {
-  it('returns Enterprise Integration Layer for Over R20,000/month', () => {
-    expect(getRecommendedTier({ ...base, budget_range: 'Over R20,000/month' }))
-      .toBe('Enterprise Integration Layer')
-  })
-
-  it('returns Visual Workflow Engine for R8,000 – R20,000/month', () => {
-    expect(getRecommendedTier({ ...base, budget_range: 'R8,000 – R20,000/month' }))
-      .toBe('Visual Workflow Engine')
-  })
-
-  it('returns Visual Workflow Engine for R3,000 – R8,000/month', () => {
-    expect(getRecommendedTier({ ...base, budget_range: 'R3,000 – R8,000/month' }))
-      .toBe('Visual Workflow Engine')
-  })
-
-  it('returns AI-Native Automation for lower budgets', () => {
-    expect(getRecommendedTier({ ...base, budget_range: 'Under R3,000/month' }))
-      .toBe('AI-Native Automation')
-    expect(getRecommendedTier({ ...base, budget_range: 'Not sure yet' }))
-      .toBe('AI-Native Automation')
-  })
-})
-
-// ── getROIEstimate ────────────────────────────────────────────────────────────
-
-describe('getROIEstimate', () => {
-  it.each([
-    ['100+',    '20–40 hours/week across your team'],
-    ['51–100',  '20–40 hours/week across your team'],
-    ['21–50',   '10–20 hours/week across your team'],
-    ['6–20',    '5–15 hours/week across your team'],
-    ['1–5',     '3–10 hours/week'],
-  ])('team size %s → %s', (size, expected) => {
-    expect(getROIEstimate({ ...base, team_size: size })).toBe(expected)
-  })
-})
-
 // ── generateProposalCopy ──────────────────────────────────────────────────────
 
 describe('generateProposalCopy', () => {
@@ -72,20 +32,22 @@ describe('generateProposalCopy', () => {
 
   beforeEach(() => {
     mockCreate = vi.fn()
-    vi.mocked(Anthropic).mockImplementation(() => ({
-      messages: { create: mockCreate },
-    }) as unknown as Anthropic)
+    vi.mocked(Anthropic).mockImplementation(
+      () =>
+        ({
+          messages: { create: mockCreate },
+        }) as unknown as Anthropic
+    )
   })
 
   it('returns valid fallback copy when the API throws', async () => {
     mockCreate.mockRejectedValue(new Error('API unavailable'))
     const result = await generateProposalCopy(base)
-    // All 7 keys must be present and non-empty
-    const keys = ['cover_subtitle', 'exec_intro', 'integration_intro',
-                  'solution_intro', 'solution_tier_description', 'roi_body', 'next_steps_intro'] as const
+    const keys = ['cover_subtitle', 'exec_intro', 'services_intro', 'next_steps_intro'] as const
     for (const key of keys) {
       expect(result[key], `key "${key}" should be non-empty`).toBeTruthy()
     }
+    expect(Object.keys(result.service_narratives).length).toBeGreaterThan(0)
   })
 
   it('returns fallback copy when the API returns malformed JSON', async () => {
@@ -99,10 +61,8 @@ describe('generateProposalCopy', () => {
     const payload = {
       cover_subtitle: 'A subtitle',
       exec_intro: 'An intro',
-      integration_intro: 'Integrations',
-      solution_intro: 'Solution',
-      solution_tier_description: 'Tier desc',
-      roi_body: 'ROI info',
+      services_intro: 'Services intro',
+      service_narratives: { '"Quick-Win" Automations': 'Quick win narrative' },
       next_steps_intro: 'Next steps',
     }
     mockCreate.mockResolvedValue({
@@ -113,7 +73,7 @@ describe('generateProposalCopy', () => {
     expect(result.next_steps_intro).toBe('Next steps')
   })
 
-  it('fills missing keys from fallback copy', async () => {
+  it('fills missing top-level keys from fallback copy', async () => {
     const partial = { cover_subtitle: 'Custom subtitle', exec_intro: 'Custom intro' }
     mockCreate.mockResolvedValue({
       content: [{ type: 'text', text: JSON.stringify(partial) }],
@@ -123,19 +83,39 @@ describe('generateProposalCopy', () => {
     expect(result.cover_subtitle).toBe('Custom subtitle')
     expect(result.exec_intro).toBe('Custom intro')
     // Missing keys filled from fallback (non-empty)
-    expect(result.integration_intro).toBeTruthy()
-    expect(result.solution_intro).toBeTruthy()
-    expect(result.roi_body).toBeTruthy()
+    expect(result.services_intro).toBeTruthy()
     expect(result.next_steps_intro).toBeTruthy()
+  })
+
+  it('fills missing per-service narratives from fallback while keeping provided ones', async () => {
+    const partial = {
+      cover_subtitle: 'c',
+      exec_intro: 'e',
+      services_intro: 's',
+      service_narratives: { '"Quick-Win" Automations': 'Custom narrative' },
+      next_steps_intro: 'n',
+    }
+    mockCreate.mockResolvedValue({ content: [{ type: 'text', text: JSON.stringify(partial) }] })
+    const result = await generateProposalCopy({
+      ...base,
+      pain_points: [],
+      current_tools: [], // triggers the Process Redesign & Optimisation fallback candidate too
+    })
+    // A lead with these tools/pain points recommends Process Redesign & Optimisation (no AI-provided narrative)
+    expect(result.service_narratives['Process Redesign & Optimisation']).toBeTruthy()
   })
 
   it('returns a successful parse when API responds with valid JSON', async () => {
     const full = {
-      cover_subtitle: 'c', exec_intro: 'e', integration_intro: 'i',
-      solution_intro: 's', solution_tier_description: 'd', roi_body: 'r', next_steps_intro: 'n',
+      cover_subtitle: 'c',
+      exec_intro: 'e',
+      services_intro: 's',
+      service_narratives: { '"Quick-Win" Automations': 'n1' },
+      next_steps_intro: 'n',
     }
     mockCreate.mockResolvedValue({ content: [{ type: 'text', text: JSON.stringify(full) }] })
     const result = await generateProposalCopy(base)
-    expect(result).toEqual(full)
+    expect(result.cover_subtitle).toBe('c')
+    expect(result.service_narratives['"Quick-Win" Automations']).toBe('n1')
   })
 })
