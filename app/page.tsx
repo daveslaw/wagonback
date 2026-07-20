@@ -4,7 +4,6 @@ import { ValueProps } from '@/components/sections/ValueProps'
 import { HowItWorks } from '@/components/sections/HowItWorks'
 import { Integrations } from '@/components/sections/Integrations'
 import { Services } from '@/components/sections/Services'
-import { FounderProfile } from '@/components/sections/FounderProfile'
 import { CTABanner } from '@/components/sections/CTABanner'
 import { Footer } from '@/components/sections/Footer'
 
@@ -17,7 +16,6 @@ export default function Home() {
       <HowItWorks />
       <Integrations />
       <Services />
-      <FounderProfile />
       <CTABanner />
       <Footer />
     </main>

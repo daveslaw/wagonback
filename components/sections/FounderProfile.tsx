@@ -2,7 +2,7 @@ import Image from 'next/image'
 
 export function FounderProfile() {
   return (
-    <section id="about" className="py-20 md:py-28 bg-[#f5f5f5] dark:bg-[#111111]">
+    <section className="py-20 md:py-28 bg-[#f5f5f5] dark:bg-[#111111]">
       <div className="container mx-auto px-4 md:px-8 lg:px-16">
         {/* Section label */}
         <div className="flex items-center gap-3 mb-12">
