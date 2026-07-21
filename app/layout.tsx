@@ -1,8 +1,6 @@
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import { ThemeProvider } from 'next-themes'
-import { Providers } from './providers'
-import { WebVitals } from '@/components/ui/WebVitals'
 import './globals.css'
 
 const geistSans = Geist({
@@ -91,17 +89,14 @@ export default function RootLayout({
             }),
           }}
         />
-        <Providers>
-          <WebVitals />
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="dark"
-            enableSystem={false}
-            disableTransitionOnChange
-          >
-            {children}
-          </ThemeProvider>
-        </Providers>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem={false}
+          disableTransitionOnChange
+        >
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   )

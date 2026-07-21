@@ -11,7 +11,6 @@ import {
   PAIN_POINTS,
   TOOL_OPTIONS,
 } from '@/types/assessment'
-import { getPostHogClient } from '@/lib/posthog-server'
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const MAX_TEXT_LENGTH = 2000
@@ -22,10 +21,6 @@ const RATE_LIMIT_EMAIL_WINDOW_H = 24
 const RATE_LIMIT_IP_WINDOW_H = 1
 
 export async function POST(req: NextRequest) {
-  // Read PostHog client-session IDs forwarded from the browser for event correlation
-  const phDistinctId = req.headers.get('X-PostHog-Distinct-ID')
-  const phSessionId = req.headers.get('X-PostHog-Session-ID')
-
   try {
     const data: AssessmentFormData = await req.json()
 
@@ -137,16 +132,6 @@ export async function POST(req: NextRequest) {
 
     if (dbError) {
       console.error('Supabase error:', dbError)
-      const posthog = getPostHogClient()
-      posthog.capture({
-        distinctId: phDistinctId ?? data.email,
-        event: 'assessment_submission_error',
-        properties: {
-          error_type: 'db_error',
-          ...(phSessionId && { $session_id: phSessionId }),
-        },
-      })
-      await posthog.shutdown()
       return NextResponse.json({ error: 'Failed to save assessment' }, { status: 500 })
     }
 
@@ -168,46 +153,9 @@ export async function POST(req: NextRequest) {
       console.warn('Internal notification failed (non-fatal):', err)
     )
 
-    // 3. Track successful assessment receipt server-side
-    const posthog = getPostHogClient()
-    posthog.identify({
-      distinctId: phDistinctId ?? data.email,
-      properties: {
-        email: data.email,
-        name: data.contact_name,
-        business_name: data.business_name,
-        industry: data.industry,
-        team_size: data.team_size,
-      },
-    })
-    posthog.capture({
-      distinctId: phDistinctId ?? data.email,
-      event: 'assessment_received',
-      properties: {
-        assessment_id: inserted.id,
-        industry: data.industry,
-        team_size: data.team_size,
-        revenue_range: data.revenue_range,
-        budget_range: data.budget_range,
-        timeline: data.timeline,
-        ...(phSessionId && { $session_id: phSessionId }),
-      },
-    })
-    await posthog.shutdown()
-
     return NextResponse.json({ success: true, id: inserted.id })
   } catch (err) {
     console.error('Assessment API error:', err)
-    const posthog = getPostHogClient()
-    posthog.capture({
-      distinctId: phDistinctId ?? 'unknown',
-      event: 'assessment_submission_error',
-      properties: {
-        error_type: 'internal_server_error',
-        ...(phSessionId && { $session_id: phSessionId }),
-      },
-    })
-    await posthog.shutdown()
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }

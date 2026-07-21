@@ -1,15 +1,15 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { AssessmentFormData, INDUSTRIES, TEAM_SIZES, REVENUE_RANGES, BUDGET_RANGES, TIMELINES } from '@/types/assessment'
+import {
+  AssessmentFormData,
+  INDUSTRIES,
+  TEAM_SIZES,
+  REVENUE_RANGES,
+  BUDGET_RANGES,
+  TIMELINES,
+} from '@/types/assessment'
 
 // Mock all external services before any imports that might pull them in
 vi.mock('@/lib/supabase')
-vi.mock('@/lib/posthog-server', () => ({
-  getPostHogClient: vi.fn(() => ({
-    identify: vi.fn(),
-    capture: vi.fn(),
-    shutdown: vi.fn().mockResolvedValue(undefined),
-  })),
-}))
 vi.mock('@/lib/sendProposalEmail', () => ({
   sendInternalNotification: vi.fn().mockResolvedValue(undefined),
 }))
@@ -27,19 +27,22 @@ import { POST } from '@/app/api/assessment/route'
 function makeSupabaseMock({
   emailCount = 0,
   ipCount = 0,
-  insertResult = { data: { id: 'test-id' }, error: null } as { data: { id: string } | null, error: unknown },
+  insertResult = { data: { id: 'test-id' }, error: null } as {
+    data: { id: string } | null
+    error: unknown
+  },
 } = {}) {
   let gteCallCount = 0
 
   const builder: Record<string, ReturnType<typeof vi.fn>> = {
     select: vi.fn(),
-    eq:     vi.fn(),
+    eq: vi.fn(),
     insert: vi.fn(),
     update: vi.fn(),
     single: vi.fn().mockResolvedValue(insertResult),
     // thenable for the fire-and-forget ip update: .update().eq().then(cb)
-    then:   vi.fn((cb: (v: { error: null }) => void) => Promise.resolve(cb({ error: null }))),
-    gte:    vi.fn(() => {
+    then: vi.fn((cb: (v: { error: null }) => void) => Promise.resolve(cb({ error: null }))),
+    gte: vi.fn(() => {
       gteCallCount++
       if (gteCallCount === 1) return Promise.resolve({ count: emailCount })
       return Promise.resolve({ count: ipCount })
@@ -58,19 +61,19 @@ function makeSupabaseMock({
 // ── Test fixtures ─────────────────────────────────────────────────────────────
 
 const validData: AssessmentFormData = {
-  business_name:    'Test Corp',
-  contact_name:     'Jane Doe',
-  email:            'jane@testcorp.com',
-  phone:            '0800000000',
-  industry:         INDUSTRIES[0],       // 'Retail / E-commerce'
-  team_size:        TEAM_SIZES[1],       // '6–20'
-  pain_points:      [],
-  current_tools:    [],
-  time_drains:      'Too much manual work',
+  business_name: 'Test Corp',
+  contact_name: 'Jane Doe',
+  email: 'jane@testcorp.com',
+  phone: '0800000000',
+  industry: INDUSTRIES[0], // 'Retail / E-commerce'
+  team_size: TEAM_SIZES[1], // '6–20'
+  pain_points: [],
+  current_tools: [],
+  time_drains: 'Too much manual work',
   desired_outcomes: 'Automate reporting',
-  revenue_range:    REVENUE_RANGES[0],   // 'Under R1M/year'
-  budget_range:     BUDGET_RANGES[1],    // 'R3,000 – R8,000/month'
-  timeline:         TIMELINES[0],        // 'ASAP – we have an urgent problem'
+  revenue_range: REVENUE_RANGES[0], // 'Under R1M/year'
+  budget_range: BUDGET_RANGES[1], // 'R3,000 – R8,000/month'
+  timeline: TIMELINES[0], // 'ASAP – we have an urgent problem'
   additional_notes: '',
 }
 
@@ -83,7 +86,9 @@ function makeReq(body: object, headers: Record<string, string> = {}) {
 }
 
 beforeEach(() => {
-  vi.mocked(createServerClient).mockReturnValue(makeSupabaseMock() as ReturnType<typeof createServerClient>)
+  vi.mocked(createServerClient).mockReturnValue(
+    makeSupabaseMock() as ReturnType<typeof createServerClient>
+  )
 })
 
 // ── Validation ────────────────────────────────────────────────────────────────

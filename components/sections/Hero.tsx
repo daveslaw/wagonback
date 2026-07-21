@@ -5,7 +5,6 @@ import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { ArrowRight } from 'lucide-react'
-import posthog from 'posthog-js'
 
 // Lazy-load the Three.js canvas — keeps it out of the initial JS bundle (~700 KB savings)
 const DotScreenShader = dynamic(
@@ -54,10 +53,7 @@ export function Hero() {
         </p>
 
         <div className="flex flex-col sm:flex-row items-center gap-4 mt-4">
-          <Link
-            href="/assessment"
-            onClick={() => posthog.capture('assessment_cta_clicked', { source: 'hero' })}
-          >
+          <Link href="/assessment">
             <Button
               size="lg"
               className="bg-[#00c8ff] text-[#0d0d0d] hover:bg-gray-100 dark:hover:bg-white font-medium tracking-widest text-xs uppercase rounded-full px-8 h-12 touch-manipulation transition-all duration-300"
@@ -66,10 +62,7 @@ export function Hero() {
               <ArrowRight size={14} className="ml-2" />
             </Button>
           </Link>
-          <a
-            href="#how-it-works"
-            onClick={() => posthog.capture('how_it_works_section_viewed', { source: 'hero' })}
-          >
+          <a href="#how-it-works">
             <Button
               size="lg"
               variant="ghost"

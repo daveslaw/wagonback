@@ -6,7 +6,6 @@ import { generateProposalDocument } from '@/lib/generateProposal'
 import { generateProposalCopy } from '@/lib/generateProposalCopy'
 import { sendProposalEmail } from '@/lib/sendProposalEmail'
 import { AssessmentFormData } from '@/types/assessment'
-import { getPostHogClient } from '@/lib/posthog-server'
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type AnyElement = any
 
@@ -76,20 +75,6 @@ async function runPipeline(id: string, token: string): Promise<PipelineResult> {
       markError
     )
   }
-
-  // 8. Track proposal sent server-side
-  const posthog = getPostHogClient()
-  posthog.capture({
-    distinctId: data.email,
-    event: 'proposal_sent',
-    properties: {
-      assessment_id: id,
-      industry: data.industry,
-      team_size: data.team_size,
-      budget_range: data.budget_range,
-    },
-  })
-  await posthog.shutdown()
 
   return { status: 200, data }
 }

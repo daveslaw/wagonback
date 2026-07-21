@@ -3,7 +3,6 @@
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import posthog from 'posthog-js'
 
 export function CTABanner() {
   return (
@@ -31,10 +30,7 @@ export function CTABanner() {
               back — in rand, not hours.
             </p>
 
-            <Link
-              href="/assessment"
-              onClick={() => posthog.capture('assessment_cta_clicked', { source: 'cta_banner' })}
-            >
+            <Link href="/assessment">
               <Button
                 size="lg"
                 className="bg-[#00c8ff] text-[#0d0d0d] hover:bg-gray-100 dark:hover:bg-white font-medium tracking-widest text-xs uppercase rounded-full px-10 h-12 touch-manipulation transition-all duration-300 mt-2"

@@ -4,7 +4,6 @@ import { withSentryConfig } from '@sentry/nextjs'
 // Content-Security-Policy for this stack:
 //   - Next.js App Router requires 'unsafe-inline' for its bootstrap scripts.
 //     Nonce-based CSP is the stricter alternative but requires middleware changes.
-//   - PostHog is reverse-proxied via /ingest/* so only 'self' is needed for connect-src.
 //   - Geist font is self-hosted via next/font — no external font CDN needed.
 //   - Three.js WebGL compiles shaders through the browser GPU, not JS eval().
 //   - placehold.co is whitelisted for placeholder images used in development/PDF preview.
@@ -41,21 +40,6 @@ const nextConfig: NextConfig = {
       },
     ]
   },
-  // PostHog reverse proxy — routes ingestion through Next.js to avoid ad blockers
-  async rewrites() {
-    return [
-      {
-        source: '/ingest/static/:path*',
-        destination: 'https://eu-assets.i.posthog.com/static/:path*',
-      },
-      {
-        source: '/ingest/:path*',
-        destination: 'https://eu.i.posthog.com/:path*',
-      },
-    ]
-  },
-  // Required to support PostHog trailing-slash API requests
-  skipTrailingSlashRedirect: true,
 }
 
 export default withSentryConfig(nextConfig, {
