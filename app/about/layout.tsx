@@ -27,5 +27,29 @@ export const metadata: Metadata = {
 }
 
 export default function AboutLayout({ children }: { children: React.ReactNode }) {
-  return <>{children}</>
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'Person',
+            name: 'Dave Lawrence',
+            jobTitle: 'Founder & Lead Engineer',
+            worksFor: {
+              '@id': 'https://www.wagonback.com/#organization',
+            },
+            url: 'https://www.wagonback.com/about',
+            image: 'https://www.wagonback.com/dave-lawrence.jpg',
+            homeLocation: {
+              '@type': 'Place',
+              name: 'Johannesburg, South Africa',
+            },
+          }),
+        }}
+      />
+      {children}
+    </>
+  )
 }

@@ -26,9 +26,9 @@ export function FounderProfile() {
               />
             </div>
 
-            <h2 className="text-2xl font-extralight tracking-[0.06em] text-gray-900 dark:text-white mb-1">
+            <h1 className="text-2xl font-extralight tracking-[0.06em] text-gray-900 dark:text-white mb-1">
               Dave Lawrence
-            </h2>
+            </h1>
             <p className="text-xs tracking-[0.2em] uppercase text-[#00c8ff]/70 mb-8">
               Founder &amp; Lead Engineer
             </p>
@@ -53,10 +53,10 @@ export function FounderProfile() {
 
           {/* Right: Copy */}
           <div className="space-y-6 lg:pt-2">
-            <h3 className="text-3xl sm:text-4xl font-extralight tracking-[0.04em] text-gray-900 dark:text-white leading-snug">
+            <h2 className="text-3xl sm:text-4xl font-extralight tracking-[0.04em] text-gray-900 dark:text-white leading-snug">
               I&apos;m Dave Lawrence, founder of Wagon Back Solutions — an AI automation and
               integration studio based in Johannesburg.
-            </h3>
+            </h2>
 
             <div className="w-12 h-px bg-[#00c8ff]/40" />
 

@@ -6,7 +6,7 @@ const steps = [
     icon: Search,
     title: 'Free Audit',
     description:
-      'Tell us about your business, the tools you use, and the processes eating your time. We map out exactly where automation can help.',
+      'Tell us about your business, the tools you use, and the processes eating your time. We map out exactly where automation can help — and send your personalised proposal within 24 hours.',
   },
   {
     number: '02',
@@ -20,7 +20,7 @@ const steps = [
     icon: Rocket,
     title: 'Deploy & Scale',
     description:
-      'We build, test, and launch your automations. You see results fast — and we stay on to refine and scale as your business grows.',
+      'We build, test, and launch your automations — typically delivering measurable ROI within 6–10 weeks — then stay on to refine and scale as your business grows.',
   },
 ]
 
