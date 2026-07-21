@@ -14,7 +14,8 @@ const DotScreenShader = dynamic(
 )
 
 export function Hero() {
-  const [isMobile, setIsMobile] = useState(false)
+  // null = not yet determined (avoids ever mounting the WebGL canvas on mobile)
+  const [isMobile, setIsMobile] = useState<boolean | null>(null)
 
   useEffect(() => {
     const check = () => setIsMobile(window.innerWidth < 768)
@@ -25,10 +26,14 @@ export function Hero() {
 
   return (
     <section className="relative h-svh w-full flex flex-col items-center justify-center overflow-hidden">
-      {/* Dot shader background */}
-      <div className={`absolute inset-0 ${isMobile ? 'pointer-events-none' : ''}`}>
-        <DotScreenShader isMobile={isMobile} />
-      </div>
+      {/* Dot shader background — desktop/tablet only. The shader's render loop runs
+          continuously regardless of the isMobile prop, so it must not mount at all
+          on mobile rather than being hidden/disabled after the fact. */}
+      {isMobile === false && (
+        <div className="absolute inset-0">
+          <DotScreenShader />
+        </div>
+      )}
 
       {/* Gradient overlay for content legibility */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-white dark:to-[#0d0d0d]" />

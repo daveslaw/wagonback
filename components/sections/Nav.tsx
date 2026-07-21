@@ -32,7 +32,7 @@ export function Nav() {
         </Link>
 
         {/* Desktop nav */}
-        <div className="hidden md:flex items-center gap-8">
+        <div className="hidden lg:flex items-center gap-8">
           {links.map((link) => (
             <Link
               key={link.href}
@@ -45,7 +45,7 @@ export function Nav() {
         </div>
 
         {/* Desktop right: toggle + CTA */}
-        <div className="hidden md:flex items-center gap-3">
+        <div className="hidden lg:flex items-center gap-3">
           <ThemeToggle />
           <Link href="/assessment">
             <Button
@@ -58,7 +58,7 @@ export function Nav() {
         </div>
 
         {/* Mobile: toggle + hamburger */}
-        <div className="md:hidden flex items-center gap-1">
+        <div className="lg:hidden flex items-center gap-1">
           <ThemeToggle />
           <button
             className="text-gray-600 dark:text-white/70 hover:text-gray-900 dark:hover:text-white touch-manipulation p-2"
@@ -72,7 +72,7 @@ export function Nav() {
 
       {/* Mobile drawer */}
       {open && (
-        <div className="md:hidden bg-white dark:bg-[#0d0d0d] border-t border-gray-200 dark:border-white/5 px-4 py-6 flex flex-col gap-5">
+        <div className="lg:hidden bg-white dark:bg-[#0d0d0d] border-t border-gray-200 dark:border-white/5 px-4 py-6 flex flex-col gap-5">
           {links.map((link) => (
             <Link
               key={link.href}

@@ -69,12 +69,14 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               '@context': 'https://schema.org',
-              '@type': 'LocalBusiness',
+              '@type': 'ProfessionalService',
+              '@id': 'https://www.wagonback.com/#organization',
               name: 'Wagon Back Solutions',
               description:
                 'Johannesburg-based AI automation and integration specialists helping South African SMEs connect their platforms, automate workflows, and amplify results.',
               url: 'https://www.wagonback.com',
               email: 'hello@wagonback.com',
+              image: 'https://www.wagonback.com/og-image.png',
               address: {
                 '@type': 'PostalAddress',
                 addressLocality: 'Johannesburg',

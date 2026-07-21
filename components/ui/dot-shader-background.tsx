@@ -16,7 +16,7 @@ const DotMaterial = shaderMaterial(
     render: 0,
     rotation: 0,
     gridSize: 50,
-    dotOpacity: 0.05
+    dotOpacity: 0.05,
   },
   /* glsl */ `
     void main() {
@@ -98,7 +98,7 @@ const DotMaterial = shaderMaterial(
   `
 )
 
-function Scene({ isMobile }: { isMobile: boolean }) {
+function Scene() {
   const size = useThree((s) => s.size)
   const viewport = useThree((s) => s.viewport)
   const { theme } = useTheme()
@@ -126,18 +126,14 @@ function Scene({ isMobile }: { isMobile: boolean }) {
       return x < 0.5
         ? (1 - Math.sqrt(1 - Math.pow(2 * x, 2))) / 2
         : (Math.sqrt(1 - Math.pow(-2 * x + 2, 2)) + 1) / 2
-    }
+    },
   })
 
   const dotMaterial = useMemo(() => new DotMaterial(), [])
 
   useEffect(() => {
-    dotMaterial.uniforms.dotColor.value.setHex(
-      parseInt(themeColors.dotColor.replace('#', ''), 16)
-    )
-    dotMaterial.uniforms.bgColor.value.setHex(
-      parseInt(themeColors.bgColor.replace('#', ''), 16)
-    )
+    dotMaterial.uniforms.dotColor.value.setHex(parseInt(themeColors.dotColor.replace('#', ''), 16))
+    dotMaterial.uniforms.bgColor.value.setHex(parseInt(themeColors.bgColor.replace('#', ''), 16))
     dotMaterial.uniforms.dotOpacity.value = themeColors.dotOpacity
   }, [theme, dotMaterial, themeColors])
 
@@ -146,7 +142,7 @@ function Scene({ isMobile }: { isMobile: boolean }) {
   })
 
   const handlePointerMove = (e: ThreeEvent<PointerEvent>) => {
-    if (!isMobile) onMove(e)
+    onMove(e)
   }
 
   const scale = Math.max(viewport.width, viewport.height) / 2
@@ -166,16 +162,17 @@ function Scene({ isMobile }: { isMobile: boolean }) {
   )
 }
 
-export const DotScreenShader = ({ isMobile = false }: { isMobile?: boolean }) => {
+export const DotScreenShader = () => {
   return (
     <Canvas
       gl={{
         antialias: true,
         powerPreference: 'high-performance',
         outputColorSpace: THREE.SRGBColorSpace,
-        toneMapping: THREE.NoToneMapping
-      }}>
-      <Scene isMobile={isMobile} />
+        toneMapping: THREE.NoToneMapping,
+      }}
+    >
+      <Scene />
     </Canvas>
   )
 }
