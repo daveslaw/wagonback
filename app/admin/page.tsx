@@ -3,6 +3,10 @@ import { AssessmentRow } from '@/types/assessment'
 import { logoutAction } from './login/actions'
 import { AdminClientPanel } from './AdminClientPanel'
 
+// Must never be statically prerendered — this shows live, auth-gated lead
+// data that has to be fetched fresh on every request.
+export const dynamic = 'force-dynamic'
+
 export default async function AdminPage() {
   const supabase = createServerClient()
   const { data: rows, error } = await supabase
