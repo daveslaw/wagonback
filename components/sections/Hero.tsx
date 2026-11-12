@@ -71,6 +71,7 @@ export function Hero() {
   }
 
   const isDeepwater = variant !== 'current' // PROTOTYPE — B/A also preview the new palette + type
+  const isCubeGrid = variant === 'A' // PROTOTYPE — busiest background, needs its own text treatment
 
   return (
     <section className="relative h-svh w-full flex flex-col items-center justify-center overflow-hidden">
@@ -87,6 +88,19 @@ export function Hero() {
         style={isDeepwater ? { ['--tw-gradient-to' as string]: '#0a0e14' } : undefined}
       />
 
+      {/* PROTOTYPE — the cube grid's bright specular highlights wash out mid-tone text;
+          a soft dark scrim behind the content block keeps it legible without flattening
+          the background everywhere else */}
+      {isCubeGrid && (
+        <div
+          className="absolute inset-0 z-[5] pointer-events-none"
+          style={{
+            background:
+              'radial-gradient(60% 50% at 50% 42%, rgba(5,8,14,0.65) 0%, rgba(5,8,14,0.25) 55%, rgba(5,8,14,0) 80%)',
+          }}
+        />
+      )}
+
       <div className="relative z-10 flex flex-col items-center text-center px-4 md:px-8 max-w-5xl mx-auto gap-6">
         <div
           className="inline-flex items-center gap-2 border rounded-full px-4 py-1.5 text-[10px] tracking-[0.25em] uppercase mb-2"
@@ -102,20 +116,39 @@ export function Hero() {
               ? protoHeading.className + ' font-light'
               : 'font-extralight text-gray-900 dark:text-white'
           }`}
-          style={isDeepwater ? { color: '#f2f5f8' } : undefined}
+          style={
+            isDeepwater
+              ? {
+                  color: '#f2f5f8',
+                  // PROTOTYPE — cube grid's bright highlights need a stronger anchor than
+                  // the heightfield variant does
+                  textShadow: isCubeGrid
+                    ? '0 2px 20px rgba(5,8,14,0.85), 0 1px 3px rgba(5,8,14,0.9)'
+                    : undefined,
+                }
+              : undefined
+          }
         >
           Automate The Work.
           <br />
           <span
             style={
-              isDeepwater
+              isCubeGrid
                 ? {
-                    background: 'linear-gradient(120deg, #00c8ff, #5b4fff)',
-                    WebkitBackgroundClip: 'text',
-                    backgroundClip: 'text',
-                    color: 'transparent',
+                    // PROTOTYPE — gradient-clipped text loses contrast against the cube
+                    // grid's bright specular highlights; a solid light cyan with a dark
+                    // glow holds up against both the lit cubes and the dark gaps between
+                    color: '#9fe8ff',
+                    textShadow: '0 2px 20px rgba(5,8,14,0.9), 0 1px 3px rgba(5,8,14,0.95)',
                   }
-                : { color: '#00c8ff' }
+                : isDeepwater
+                  ? {
+                      background: 'linear-gradient(120deg, #00c8ff, #5b4fff)',
+                      WebkitBackgroundClip: 'text',
+                      backgroundClip: 'text',
+                      color: 'transparent',
+                    }
+                  : { color: '#00c8ff' }
             }
           >
             Amplify The Results.
