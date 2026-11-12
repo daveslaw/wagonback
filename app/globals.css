@@ -65,6 +65,17 @@
 }
 
 :root {
+  /* Deepwater — hero visual direction (ADR 0003). Scoped to the Hero section for now;
+     site-wide rollout to the rest of the brand palette is a separate follow-on effort. */
+  --hero-bg: #f4f7fa;
+  --hero-surface: #ffffff;
+  --hero-border: #d7e0ea;
+  --hero-text: #0d1420;
+  --hero-muted: #5c6b80;
+  --hero-accent-a: #0088c9;
+  --hero-accent-b: #4a3fe0;
+  --hero-accent-text: #0d6a93;
+
   --radius: 0.625rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
@@ -100,6 +111,15 @@
 }
 
 .dark {
+  --hero-bg: #0a0e14;
+  --hero-surface: #131a24;
+  --hero-border: #223044;
+  --hero-text: #f2f5f8;
+  --hero-muted: #7c8aa0;
+  --hero-accent-a: #00c8ff;
+  --hero-accent-b: #5b4fff;
+  --hero-accent-text: #9fe8ff;
+
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.205 0 0);
