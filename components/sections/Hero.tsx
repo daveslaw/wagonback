@@ -62,13 +62,13 @@ export function Hero() {
         <div
           className="inline-flex items-center gap-2 border rounded-[6px] px-4 py-1.5 text-[10px] tracking-[0.25em] uppercase mb-2"
           style={{
-            borderColor: 'color-mix(in srgb, var(--hero-accent-a) 20%, transparent)',
-            color: 'var(--hero-accent-text)',
+            borderColor: 'color-mix(in srgb, var(--hero-overlay-accent) 20%, transparent)',
+            color: 'var(--hero-overlay-accent-text)',
           }}
         >
           <span
             className="w-1.5 h-1.5 rounded-full animate-pulse"
-            style={{ background: 'var(--hero-accent-a)' }}
+            style={{ background: 'var(--hero-overlay-accent)' }}
           />
           Johannesburg, South Africa
         </div>
@@ -76,7 +76,7 @@ export function Hero() {
         <h1
           className={`${heroHeading.className} font-light text-4xl sm:text-5xl md:text-6xl lg:text-7xl tracking-[0.08em] uppercase leading-[1.1]`}
           style={{
-            color: 'var(--hero-text)',
+            color: 'var(--hero-overlay-text)',
             textShadow: '0 2px 20px rgba(5,8,14,0.85), 0 1px 3px rgba(5,8,14,0.9)',
           }}
         >
@@ -84,7 +84,7 @@ export function Hero() {
           <br />
           <span
             style={{
-              color: 'var(--hero-accent-text)',
+              color: 'var(--hero-overlay-accent-text)',
               textShadow: '0 2px 20px rgba(5,8,14,0.9), 0 1px 3px rgba(5,8,14,0.95)',
             }}
           >
@@ -94,7 +94,7 @@ export function Hero() {
 
         <p
           className={`${heroBody.className} text-sm sm:text-base md:text-lg max-w-2xl leading-relaxed`}
-          style={{ color: 'var(--hero-muted)' }}
+          style={{ color: 'var(--hero-overlay-muted)' }}
         >
           Most SA businesses are paying people to do work a machine should handle. We identify
           exactly what to automate, build it, and show you the rand value — before you commit.
@@ -124,7 +124,10 @@ export function Hero() {
             <Button
               size="lg"
               variant="ghost"
-              className="rounded-[10px] text-gray-500 dark:text-white/50 hover:text-gray-900 dark:hover:text-white border border-gray-200 dark:border-white/10 hover:border-gray-400 dark:hover:border-white/30 tracking-widest text-xs uppercase px-8 h-12 touch-manipulation"
+              className="rounded-[10px] border tracking-widest text-xs uppercase px-8 h-12 touch-manipulation transition-colors"
+              style={{ color: 'var(--hero-overlay-muted)', borderColor: 'rgba(255,255,255,0.15)' }}
+              onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--hero-overlay-text)')}
+              onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--hero-overlay-muted)')}
             >
               See How It Works
             </Button>
@@ -133,11 +136,19 @@ export function Hero() {
       </div>
 
       {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-30">
-        <span className="text-[9px] tracking-[0.3em] uppercase text-gray-400 dark:text-white">
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-30 z-10">
+        <span
+          className="text-[9px] tracking-[0.3em] uppercase"
+          style={{ color: 'var(--hero-overlay-text)' }}
+        >
           Scroll
         </span>
-        <div className="w-px h-8 bg-gradient-to-b from-gray-400 dark:from-white to-transparent" />
+        <div
+          className="w-px h-8"
+          style={{
+            background: 'linear-gradient(to bottom, var(--hero-overlay-text), transparent)',
+          }}
+        />
       </div>
     </section>
   )

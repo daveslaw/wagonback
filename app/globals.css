@@ -76,6 +76,14 @@
   --hero-accent-b: #4a3fe0;
   --hero-accent-text: #0d6a93;
 
+  /* Text/accents that sit directly on the WebGL canvas, not the page background —
+     the cube grid doesn't theme-switch, so this overlay text can't either. Defined
+     once here (not re-declared under .dark) so both themes inherit the same value. */
+  --hero-overlay-text: #f2f5f8;
+  --hero-overlay-muted: #a9b4c4;
+  --hero-overlay-accent: #00c8ff;
+  --hero-overlay-accent-text: #9fe8ff;
+
   --radius: 0.625rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
